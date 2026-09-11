@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dnsr47wnjj140"]
+
+[node name="base_scene" type="Node2D" unique_id=2008706374]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=10752842]
+position = Vector2(80, 72)
+scale = Vector2(4, 4)
+
+[node name="Background" type="ColorRect" parent="." unique_id=690367307]
+z_index = -1000
+offset_right = 160.0
+offset_bottom = 144.0
+localize_numeral_system = false
