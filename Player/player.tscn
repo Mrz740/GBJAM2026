@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bq3xqon1f8nud"]
+
+[ext_resource type="Script" uid="uid://84aucg1s1cpd" path="res://Player/player.gd" id="1_4ntmi"]
+[ext_resource type="Texture2D" uid="uid://b4ivu7y27bdkx" path="res://icon.svg" id="1_l8h54"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g4v7s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_l8h54")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
+size = Vector2(12, 6)
+
+[node name="Player" type="CharacterBody2D" unique_id=277292832]
+script = ExtResource("1_4ntmi")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1750787578]
+scale = Vector2(0.1, 0.1)
+sprite_frames = SubResource("SpriteFrames_g4v7s")
+
+[node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1577805754]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_g4v7s")
