@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://duu15kldg4j2t"]
+
+[ext_resource type="Texture2D" uid="uid://b4ivu7y27bdkx" path="res://icon.svg" id="1_7dysc"]
+[ext_resource type="Script" uid="uid://b447lo7hoi1jm" path="res://Test_Pathfinding/scripts/gold.gd" id="1_yl0l8"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yl0l8"]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ufimc"]
+size = Vector2(8, 8)
+
+[node name="Gold" type="Area2D" unique_id=433800455]
+script = ExtResource("1_yl0l8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=479737314]
+material = SubResource("CanvasItemMaterial_yl0l8")
+scale = Vector2(0.0625, 0.0625)
+texture = ExtResource("1_7dysc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=617189465]
+shape = SubResource("RectangleShape2D_ufimc")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
