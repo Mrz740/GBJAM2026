@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b4x521v72fv"]
+
+[ext_resource type="Script" uid="uid://vsagr6vo0j3q" path="res://UI/Score/score_hud.gd" id="1_3xrhy"]
+
+[node name="ScoreHUD" type="Control" unique_id=209382086 node_paths=PackedStringArray("score_label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_3xrhy")
+score_label = NodePath("ScoreTextLabel")
+
+[node name="ScoreTextLabel" type="Label" parent="." unique_id=316085397]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 11.0
+text = "Score: 0"

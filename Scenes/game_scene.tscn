@@ -1,7 +1,8 @@
-[gd_scene format=3 uid="uid://6t0wmxli5lns"]
+[gd_scene load_steps=4 format=3 uid="uid://6t0wmxli5lns"]
 
 [ext_resource type="PackedScene" uid="uid://dnsr47wnjj140" path="res://Scenes/base_scene.tscn" id="1_x87qo"]
 [ext_resource type="PackedScene" uid="uid://bq3xqon1f8nud" path="res://Player/player.tscn" id="2_b6fju"]
+[ext_resource type="PackedScene" uid="uid://b4x521v72fv" path="res://UI/Score/score_hud.tscn" id="3_hud"]
 
 [node name="game_scene" unique_id=2008706374 instance=ExtResource("1_x87qo")]
 
@@ -10,3 +11,7 @@ color = Color(0.21230483, 0.21230483, 0.21230483, 1)
 
 [node name="Player" parent="." index="2" unique_id=277292832 instance=ExtResource("2_b6fju")]
 position = Vector2(77, 71)
+
+[node name="HUDLayer" type="CanvasLayer" parent="."]
+
+[node name="ScoreHUD" parent="HUDLayer" instance=ExtResource("3_hud")]
