@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dnsr47wnjj140" path="res://Scenes/base_scene.tscn" id="1_x87qo"]
 [ext_resource type="PackedScene" uid="uid://bq3xqon1f8nud" path="res://Player/player.tscn" id="2_b6fju"]
 [ext_resource type="PackedScene" uid="uid://b4x521v72fv" path="res://UI/Score/score_hud.tscn" id="3_hud"]
+[ext_resource type="Script" uid="uid://dcfbniihhtb23" path="res://Scenes/game_scene.gd" id="4_gsc"]
 [ext_resource type="Script" uid="uid://c0dye24a1pniw" path="res://Test_Pathfinding/scripts/gold_spawner.gd" id="5_5dgvu"]
 [ext_resource type="PackedScene" uid="uid://duu15kldg4j2t" path="res://Test_Pathfinding/scenes/gold.tscn" id="6_uscyt"]
 [ext_resource type="Script" uid="uid://c5quhpf533no3" path="res://Test_Pathfinding/scripts/game_map.gd" id="7_2fmhe"]
@@ -24,6 +25,7 @@ fill = 2
 fill_from = Vector2(0.5, 0.5)
 
 [node name="game_scene" unique_id=2008706374 instance=ExtResource("1_x87qo")]
+script = ExtResource("4_gsc")
 
 [node name="Background" parent="." index="0" unique_id=690367307]
 color = Color(0.21230483, 0.21230483, 0.21230483, 1)
