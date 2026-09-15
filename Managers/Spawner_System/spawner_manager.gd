@@ -4,10 +4,10 @@ extends Node
 const COIN_SCENE: PackedScene = preload("res://Pickups/coin.tscn")
 
 const TILE_TYPE_DATA_LAYER: String = "type"
-const BLOCKING_TILE_TYPES: Array[String] = ["placeholder1", "placeholder2"]
+const BLOCKING_TILE_TYPES: Array[String] = ["water"]
 const INVALID_TILE: Vector2i = Vector2i(-1, -1)
 
-var coin_value: int = 1
+var coin_value: int = 10
 var seconds_per_coin: float = 3.0
 
 var map: TileMapLayer = null
@@ -58,9 +58,10 @@ func stop_run() -> void:
 
 
 func spawn_entity_at(entity: Node2D, tile: Vector2i) -> void:
-	entity.position = map.map_to_local(tile)
 	_get_spawn_parent().add_child(entity)
+	entity.global_position = map.to_global(map.map_to_local(tile))
 	_occupied_tiles[tile] = entity
+	entity.tree_exiting.connect(free_tile.bind(tile), CONNECT_ONE_SHOT)
 
 
 func spawn_coin_at(tile: Vector2i) -> void:
@@ -105,9 +106,13 @@ func is_tile_spawnable(tile: Vector2i) -> bool:
 	return tile_data.get_custom_data(TILE_TYPE_DATA_LAYER) not in BLOCKING_TILE_TYPES
 
 
-func free_tile_at(position: Vector2) -> void:
+func free_tile(tile: Vector2i) -> void:
+	_occupied_tiles.erase(tile)
+
+
+func free_tile_at(global_pos: Vector2) -> void:
 	if has_map():
-		_occupied_tiles.erase(map.local_to_map(position))
+		free_tile(map.local_to_map(map.to_local(global_pos)))
 
 
 func _get_spawn_parent() -> Node:

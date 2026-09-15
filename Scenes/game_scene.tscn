@@ -24,8 +24,10 @@ height = 20
 fill = 2
 fill_from = Vector2(0.5, 0.5)
 
-[node name="game_scene" unique_id=2008706374 instance=ExtResource("1_x87qo")]
+[node name="game_scene" unique_id=2008706374 node_paths=PackedStringArray("map", "spawn_parent") instance=ExtResource("1_x87qo")]
 script = ExtResource("4_gsc")
+map = NodePath("GameMap/DataLayer")
+spawn_parent = NodePath("Pickups")
 
 [node name="Background" parent="." index="0" unique_id=690367307]
 color = Color(0.21230483, 0.21230483, 0.21230483, 1)
@@ -105,3 +107,5 @@ idx = 1
 [node name="HUDLayer" type="CanvasLayer" parent="." index="6" unique_id=551856579]
 
 [node name="ScoreHUD" parent="HUDLayer" index="0" unique_id=717716672 instance=ExtResource("3_hud")]
+
+[node name="Pickups" type="Node2D" parent="." index="7" unique_id=1087534242]
