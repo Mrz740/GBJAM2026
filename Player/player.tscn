@@ -17,13 +17,24 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
 size = Vector2(12, 6)
 
-[node name="Player" type="CharacterBody2D" unique_id=277292832]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ufimc"]
+radius = 7.0
+
+[node name="Player" type="CharacterBody2D" unique_id=277292832 groups=["player"]]
+collision_mask = 3
 script = ExtResource("1_4ntmi")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1750787578]
+unique_name_in_owner = true
 scale = Vector2(0.1, 0.1)
 sprite_frames = SubResource("SpriteFrames_g4v7s")
 
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1577805754]
 position = Vector2(0, 3)
 shape = SubResource("RectangleShape2D_g4v7s")
+
+[node name="CollisionArea" type="Area2D" parent="." unique_id=693450794]
+unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea" unique_id=218511771]
+shape = SubResource("CircleShape2D_ufimc")

@@ -34,6 +34,11 @@ window/size/transparent=true
 window/stretch/mode="canvas_items"
 window/stretch/scale_mode="integer"
 
+[global_group]
+
+enemy=""
+player=""
+
 [input]
 
 UP={

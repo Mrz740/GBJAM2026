@@ -39,9 +39,12 @@ func _move_ai(delta: float) -> void:
 	
 	if current_path.is_empty():
 		can_update_path = true
+		
+		if (current_target.global_position - global_position).length() > 0.5:
+			_update_enemy_path()
 		return
 	
-	target_position = game_map.map_to_local(current_path.front()) - game_map.tile_size * 0.5
+	target_position = game_map.map_to_local(current_path.front()) - (Vector2.ONE * game_map.TILE_SIZE * 0.5)
 	
 	if !game_map.has_enemy_tile_and_can_move(self, current_path.front()):
 		return
@@ -82,8 +85,8 @@ func _update_enemy_path() -> void:
 		if visualize_path:
 			var test: Array
 			for p in current_path:
-				var offset: Vector2i = Vector2i.ONE * floori(game_map.tile_size.x * 0.5)
-				test.append(p * game_map.tile_size + offset)
+				var offset: Vector2i = Vector2i.ONE * floori(game_map.TILE_SIZE * 0.5)
+				test.append(p * game_map.TILE_SIZE + offset)
 			line_2d.points = test
 
 
