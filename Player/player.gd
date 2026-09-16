@@ -10,6 +10,8 @@ static var instance: Player
 @export var move_speed: float = 5.0
 
 var current_gold: int = 0
+var dead: bool
+var digging: bool
 
 @onready var player_label: Label = %player_label
 @onready var collision_area: Area2D = %CollisionArea
@@ -37,6 +39,8 @@ func _process(delta):
 
 
 func _physics_process(_delta: float) -> void:
+	if dead:
+		return
 	get_input()
 	move_and_slide()
 
@@ -44,9 +48,27 @@ func _physics_process(_delta: float) -> void:
 func get_input() -> void:
 	var input_direction: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN")
 	
+	if digging:
+		velocity = Vector2.ZERO
+		if !animated_sprite_2d.is_playing():
+			digging = false
+		return
+	
 	if !input_direction:
+		animated_sprite_2d.play("idle")
 		velocity = Vector2.ZERO
 		return
+	
+	if input_direction.y < 0:
+		animated_sprite_2d.play("walk_up")
+	elif input_direction.y > 0:
+		animated_sprite_2d.play("walk_down")
+	
+	if input_direction == Vector2.RIGHT or input_direction == Vector2.LEFT:
+		if animated_sprite_2d.animation == "walk_up":
+			animated_sprite_2d.play("walk_up")
+		else:
+			animated_sprite_2d.play("walk_down")
 	
 	player_did_move.emit()
 	velocity = input_direction.normalized() * move_speed
@@ -54,6 +76,10 @@ func get_input() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("A"):
+		if digging:
+			return
+		animated_sprite_2d.play("dig")
+		digging = true
 		game_map.dig(global_position)
 	elif event.is_action_pressed("B"):
 		drop_gold()
@@ -82,4 +108,6 @@ func show_message() -> void:
 
 func _on_collision_area_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
-		hide()
+		dead = true
+		animated_sprite_2d.play("death")
+		#hide()

@@ -49,6 +49,8 @@ static var neighbors_to_atlas_coord: Dictionary[Vector4i, Vector2i] = {
 
 var land_tiles: Array[Vector2i] = []
 
+var tile_source_idx: int = 1
+
 var NEIGHBORS: Array[Vector2i] = [
 	Vector2i(0, 0),
 	Vector2i(1, 0),
@@ -56,21 +58,18 @@ var NEIGHBORS: Array[Vector2i] = [
 	Vector2i(1, 1),
 ]
 
-var water_atlas_placeholder: Vector2i = Vector2i(15, 0)
-var grass_atlas_placeholder: Vector2i = Vector2i(15, 1)
-var sand_atlas_placeholder: Vector2i = Vector2i(15, 2)
+var water_atlas_placeholder: Vector2i = Vector2i(13, 0)
+var grass_atlas_placeholder: Vector2i = Vector2i(13, 1)
+var sand_atlas_placeholder: Vector2i = Vector2i(13, 2)
 
 # coords can be checked in the tileset
 var water_atlas: Vector2i = Vector2i(0, 0)
 var grass_atlas: Vector2i = Vector2i(4, 0)
 var sand_atlas: Vector2i = Vector2i(8, 0)
-var barely_dirt_atlas: Vector2i = Vector2i(14, 2)
+var barely_dirt_atlas: Vector2i = Vector2i(12, 2)
 
 var astar: AStarGrid2D = AStarGrid2D.new()
 var map_rect: Rect2i = Rect2i()
-
-var enemy_next_tile: Dictionary[Enemy, Vector2i] = {}
-var enemy_current_tile: Dictionary[Enemy, Vector2i] = {}
 
 var noise_val_arr : Array[float] = []
 
@@ -132,10 +131,10 @@ func generate_world() -> void:
 			if noise_val >= 0.0:
 				set_tile(tile, TerrainType.GRASS)
 				land_tiles.append(tile)
-				#data_layer.set_cell(Vector2(x,y), tile_set.get_source_id(0), grass_atlas_placeholder)
+				#data_layer.set_cell(Vector2(x,y), tile_set.get_source_id(tile_source_idx), grass_atlas_placeholder)
 			else:
 				set_tile(tile, TerrainType.WATER)
-				#data_layer.set_cell(Vector2(x,y), tile_set.get_source_id(0), water_atlas_placeholder)
+				#data_layer.set_cell(Vector2(x,y), tile_set.get_source_id(tile_source_idx), water_atlas_placeholder)
 	
 	var map_areas: Array[MapArea] = _get_map_areas()
 	var biggest_area: MapArea
@@ -152,7 +151,7 @@ func generate_world() -> void:
 			for tile in map_area.cells:
 				set_tile(tile, TerrainType.WATER)
 				land_tiles.erase(tile)
-				#data_layer.set_cell(tile, tile_set.get_source_id(0), water_atlas_placeholder)
+				#data_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), water_atlas_placeholder)
 				#astar.set_point_solid(tile)
 
 
@@ -166,7 +165,7 @@ func _refresh_all_tiles() -> void:
 func set_tile(coords: Vector2i, terrain_type: TerrainType) -> void:
 	var old_terrain_type: TerrainType = get_terrain_type(coords)
 	
-	data_layer.set_cell(coords, tile_set.get_source_id(0), _get_data_atlas_coord(terrain_type))
+	data_layer.set_cell(coords, tile_set.get_source_id(tile_source_idx), _get_data_atlas_coord(terrain_type))
 	_refresh_display_tile(coords, _get_display_layer(terrain_type), terrain_type)
 	
 	if old_terrain_type != terrain_type and old_terrain_type != TerrainType.EMPTY:
@@ -181,7 +180,19 @@ func _refresh_display_tile(cell_pos: Vector2i, display_layer: TileMapLayer, terr
 		if atlas_coords - _get_atlas_coord(terrain_type) == Vector2i(-1,-1):
 			display_layer.erase_cell(new_pos)
 		else:
-			display_layer.set_cell(new_pos, tile_set.get_source_id(0), atlas_coords)
+			
+			if display_layer == grass_display_layer:
+				
+				# the grass center atlas coord, the full white sprite
+				if atlas_coords == Vector2i(6,1):
+					if randi_range(0, 10) < 10:
+						display_layer.set_cell(new_pos, tile_set.get_source_id(tile_source_idx), atlas_coords)
+					else:
+						display_layer.set_cell(new_pos, tile_set.get_source_id(tile_source_idx), Vector2i(9,7))
+				else:
+					display_layer.set_cell(new_pos, tile_set.get_source_id(tile_source_idx), atlas_coords)
+			else:
+				display_layer.set_cell(new_pos, tile_set.get_source_id(tile_source_idx), atlas_coords)
 
 
 func _calculate_display_tile_atlas_coords(coords: Vector2i, terrain_type: TerrainType) -> Vector2i:
@@ -279,11 +290,11 @@ func dig(pos: Vector2) -> void:
 	var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(coord)
 	
 	if atlas_coord == Vector2i(-1, -1):
-		temp_dig_layer.set_cell(coord, tile_set.get_source_id(0), barely_dirt_atlas)
+		temp_dig_layer.set_cell(coord, tile_set.get_source_id(tile_source_idx), barely_dirt_atlas)
 	
 	else:
 		if (atlas_coord - Vector2i(0,1)).y >= 0:
-			temp_dig_layer.set_cell(coord, tile_set.get_source_id(0), atlas_coord - Vector2i(0, 1))
+			temp_dig_layer.set_cell(coord, tile_set.get_source_id(tile_source_idx), atlas_coord - Vector2i(0, 1))
 		
 		if temp_dig_layer.get_cell_atlas_coords(coord).y == 0:
 			set_tile(coord, TerrainType.DIRT)
@@ -367,7 +378,7 @@ func _destroy_map() -> void:
 			cells_to_destroy += area.cells
 	
 	for tile in cells_to_destroy:
-		#data_layer.set_cell(tile, tile_set.get_source_id(0), water_atlas_placeholder)
+		#data_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), water_atlas_placeholder)
 		set_tile(tile, TerrainType.WATER)
 		temp_dig_layer.erase_cell(tile)
 		astar.set_point_solid(tile)
@@ -378,6 +389,7 @@ func _destroy_map() -> void:
 
 
 func _get_map_areas() -> Array[MapArea]:
+	print("get map areas")
 	var unvisited: Dictionary = {}
 	var regions: Array[MapArea] = []
 	var dirt_tiles: Array[Vector2i] = []
@@ -465,46 +477,12 @@ func _flood_fill(start: Vector2i, unvisited: Dictionary) -> MapArea:
 #endregion
 
 
-#region CHECK VALID PATH
+#region HELPERS
 
 func is_point_walkable(pos: Vector2) -> bool:
 	var coord: Vector2i = local_to_map(pos)
 	return map_rect.has_point(coord) and not astar.is_point_solid(coord)
 
-
-func has_reserved_tile_and_can_move(enemy: Enemy, tile: Vector2i) -> bool:
-	for e in enemy_next_tile:
-		if not is_instance_valid(e) or not is_instance_valid(enemy_next_tile[e]):
-			enemy_next_tile.erase(e)
-			continue
-		if enemy_next_tile[e] == tile:
-			return enemy.idx <= e.idx
-	return true
-
-
-func has_enemy_tile_and_can_move(enemy: Enemy, tile: Vector2i) -> bool:
-	for e in enemy_current_tile:
-		if not is_instance_valid(e) or not is_instance_valid(enemy_current_tile[e]):
-			enemy_current_tile.erase(e)
-			continue
-		if enemy_current_tile[e] == tile:
-			return enemy.idx <= e.idx
-		elif enemy_current_tile[e] == tile and e != enemy:
-			return true
-	return true
-
-
-func update_enemy_current_tile(enemy: Enemy, tile: Vector2i) -> void:
-	enemy_current_tile[enemy] = tile
-
-
-func update_enemy_next_tile(enemy: Enemy, tile: Vector2i) -> void:
-	enemy_next_tile[enemy] = tile
-
-#endregion
-
-
-#region HELPERS
 
 func get_land_tiles() -> Array[Vector2i]:
 	return land_tiles
@@ -536,28 +514,12 @@ func local_to_map(pos: Vector2) -> Vector2i:
 	return data_layer.local_to_map(pos)
 
 
-func map_to_local(tile: Vector2i) -> Vector2:
-	return data_layer.map_to_local(tile)
+func map_to_local(coord: Vector2i) -> Vector2:
+	return data_layer.map_to_local(coord)
 
 
-#func get_gold_pos() -> Vector2i:
-	#var candidates: Array[Vector2i] = []
-	#for pos in gold_positions:
-		#var tile_data: TileData = data_layer.get_cell_tile_data(pos)
-		#if !tile_data:
-			#continue
-		#if !gold_positions[pos] and tile_data.get_custom_data("type") != "water":
-			#candidates.append(pos)
-	#
-	#if candidates.size() <= 0:
-		#return Vector2i(-1,-1)
-	#
-	#var rng_idx: int = randi_range(0, candidates.size() - 1)
-	#return candidates[rng_idx]
-
-
-#func update_gold_dictionary(gold: Gold, coord: Vector2i) -> void:
-	#gold_positions[coord] = gold
+func get_cell_world(coord: Vector2i) -> Vector2:
+	return map_to_local(coord) - Vector2.ONE * TILE_SIZE * 0.5
 
 #endregion
 

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://debxdo7i2qqhs"]
 
 [ext_resource type="Script" uid="uid://c4ei8oa1vulyn" path="res://Pickups/coin.gd" id="1_oayp1"]
-[ext_resource type="Texture2D" uid="uid://b4ivu7y27bdkx" path="res://icon.svg" id="2_qgrjt"]
+[ext_resource type="Texture2D" uid="uid://cc8vwrqb2savq" path="res://Test_Pathfinding/assets/new_atlas_texture.tres" id="2_qgrjt"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
 size = Vector2(12, 12)
@@ -17,8 +17,6 @@ top_level = true
 shape = SubResource("RectangleShape2D_g4v7s")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=496001887]
-modulate = Color(2.95397, 3.0022678, 0, 1)
-scale = Vector2(0.14, 0.14)
 texture = ExtResource("2_qgrjt")
 
 [connection signal="body_entered" from="PickupArea" to="." method="_on_pickup_area_body_entered"]
