@@ -2,15 +2,20 @@ class_name Player
 extends CharacterBody2D
 
 signal player_did_move
+signal health_changed(new_health: int)
 
 static var instance: Player
 
 @export var game_map: GameMap
 @export var move_speed: float = 5.0
 
+var current_health: int = 3
+var max_health: int = 3
+
 var current_gold: int = 0
 var dead: bool
 var digging: bool
+var hurt: bool
 
 @onready var player_label: Label = %player_label
 @onready var collision_area: Area2D = %CollisionArea
@@ -47,6 +52,9 @@ func _physics_process(_delta: float) -> void:
 func get_input() -> void:
 	var input_direction: Vector2 = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN")
 	
+	if hurt and !animated_sprite_2d.is_playing():
+		hurt = false
+
 	if digging:
 		velocity = Vector2.ZERO
 		if !animated_sprite_2d.is_playing():
@@ -54,21 +62,23 @@ func get_input() -> void:
 		return
 	
 	if !input_direction:
-		animated_sprite_2d.play("idle")
+		if !hurt:
+			animated_sprite_2d.play("idle")
 		velocity = Vector2.ZERO
 		return
-	
-	if input_direction.y < 0:
-		animated_sprite_2d.play("walk_up")
-	elif input_direction.y > 0:
-		animated_sprite_2d.play("walk_down")
-	
-	if input_direction == Vector2.RIGHT or input_direction == Vector2.LEFT:
-		if animated_sprite_2d.animation == "walk_up":
+
+	if !hurt:
+		if input_direction.y < 0:
 			animated_sprite_2d.play("walk_up")
-		else:
+		elif input_direction.y > 0:
 			animated_sprite_2d.play("walk_down")
-	
+
+		if input_direction == Vector2.RIGHT or input_direction == Vector2.LEFT:
+			if animated_sprite_2d.animation == "walk_up":
+				animated_sprite_2d.play("walk_up")
+			else:
+				animated_sprite_2d.play("walk_down")
+
 	player_did_move.emit()
 	velocity = input_direction.normalized() * move_speed
 
@@ -105,9 +115,19 @@ func show_message() -> void:
 
 func _on_collision_area_body_entered(body: Node2D):
 	if body.is_in_group("enemy"):
-		dead = true
-		animated_sprite_2d.play("death")
-		#hide()
-		await animated_sprite_2d.animation_finished
-		await get_tree().create_timer(0.25).timeout
-		$"../HUDLayer/DiedScreen".show()
+		current_health -= 1
+		health_changed.emit(current_health)
+		if current_health <= 0:
+			dead = true
+			animated_sprite_2d.play("death")
+			#hide()
+			await animated_sprite_2d.animation_finished
+			await get_tree().create_timer(0.25).timeout
+			$"../HUDLayer/DiedScreen".show()
+			return
+
+		digging = false
+		hurt = true
+		animated_sprite_2d.play("hit")
+
+

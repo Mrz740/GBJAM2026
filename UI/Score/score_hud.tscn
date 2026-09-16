@@ -15,7 +15,7 @@ region = Rect2(32, 290, 16, 16)
 atlas = ExtResource("3_t4lat")
 region = Rect2(0, 77, 16, 16)
 
-[node name="ScoreHUD" type="Control" unique_id=209382086 node_paths=PackedStringArray("score_label")]
+[node name="ScoreHUD" type="Control" unique_id=209382086 node_paths=PackedStringArray("score_label", "life_icons")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,6 +25,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_3xrhy")
 score_label = NodePath("ScoreTextLabel")
+life_icons = [NodePath("Life1"), NodePath("Life2"), NodePath("Life3")]
 
 [node name="Panel" type="Panel" parent="." unique_id=515210923]
 layout_mode = 0

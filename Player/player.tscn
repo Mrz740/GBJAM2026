@@ -95,6 +95,23 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_k53q1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btcbx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k53q1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_btcbx")
+}],
+"loop": 0,
+"name": &"hit",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_00tjw")
 }],
 "loop": 1,
@@ -149,7 +166,7 @@ script = ExtResource("1_4ntmi")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1750787578]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_g4v7s")
-animation = &"walk_up"
+animation = &"hit"
 
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1577805754]
 position = Vector2(0, 3)
