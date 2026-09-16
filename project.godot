@@ -30,7 +30,6 @@ SpawnerManager="*res://Managers/Spawner_System/spawner_manager.gd"
 window/size/viewport_width=160
 window/size/viewport_height=144
 window/size/mode=3
-window/size/resizable=false
 window/size/borderless=true
 window/size/transparent=true
 window/stretch/mode="canvas_items"

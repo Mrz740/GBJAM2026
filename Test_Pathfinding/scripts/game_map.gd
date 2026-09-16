@@ -14,10 +14,17 @@ enum TerrainType {
 	DIRT = 3,
 }
 
-static var TILE_SIZE: int = 16
-static var HALF_TILE_SIZE: int = floori(TILE_SIZE * 0.5)
+const DIG_FRAMES: Array[Vector2i] = [
+	Vector2i(0, 17),
+	Vector2i(1, 17),
+	Vector2i(2, 17),
+	Vector2i(3, 17),
+	Vector2i(4, 17),
+	Vector2i(5, 17),
+]
+const DIG_FRAME_TIME: float = 0.1
 
-static var neighbors_to_atlas_coord: Dictionary[Vector4i, Vector2i] = {
+const NEIGHBORS_TO_ATLAS_COORD: Dictionary[Vector4i, Vector2i] = {
 	Vector4i( 1, 1, 1, 1 ) : Vector2i(2, 1),
 	Vector4i( 0, 0, 0, 1 ) : Vector2i(1, 3),
 	Vector4i( 0, 0, 1, 0 ) : Vector2i(0, 0),
@@ -36,6 +43,34 @@ static var neighbors_to_atlas_coord: Dictionary[Vector4i, Vector2i] = {
 	Vector4i( 0, 0, 0, 0 ) : Vector2i(-1, -1)
 };
 
+const NEIGHBORS: Array[Vector2i] = [
+	Vector2i(0, 0),
+	Vector2i(1, 0),
+	Vector2i(0, 1),
+	Vector2i(1, 1),
+]
+
+const DIRECTIONS_8: Array[Vector2i] = [
+	Vector2i.LEFT,
+	Vector2i.RIGHT,
+	Vector2i.UP,
+	Vector2i.DOWN,
+	Vector2i(-1, -1),
+	Vector2i(1, 1),
+	Vector2i(-1, 1),
+	Vector2i(1, -1),
+]
+
+const DIRECTIONS_4: Array[Vector2i] = [
+	Vector2i.LEFT,
+	Vector2i.RIGHT,
+	Vector2i.UP,
+	Vector2i.DOWN,
+]
+
+static var TILE_SIZE: int = 16
+static var HALF_TILE_SIZE: int = floori(TILE_SIZE * 0.5)
+
 @export var tile_set: TileSet
 @export var noise: Noise
 @export var falloff_texture: Texture2D
@@ -50,13 +85,6 @@ static var neighbors_to_atlas_coord: Dictionary[Vector4i, Vector2i] = {
 var land_tiles: Array[Vector2i] = []
 
 var tile_source_idx: int = 1
-
-var NEIGHBORS: Array[Vector2i] = [
-	Vector2i(0, 0),
-	Vector2i(1, 0),
-	Vector2i(0, 1),
-	Vector2i(1, 1),
-]
 
 var water_atlas_placeholder: Vector2i = Vector2i(13, 0)
 var grass_atlas_placeholder: Vector2i = Vector2i(13, 1)
@@ -74,24 +102,6 @@ var map_rect: Rect2i = Rect2i()
 var noise_val_arr : Array[float] = []
 
 #var gold_positions: Dictionary[Vector2i, Gold] = {}
-
-var directions_8: Array[Vector2i] = [
-	Vector2i.LEFT,
-	Vector2i.RIGHT,
-	Vector2i.UP,
-	Vector2i.DOWN,
-	Vector2i(-1, -1),
-	Vector2i(1, 1),
-	Vector2i(-1, 1),
-	Vector2i(1, -1),
-]
-
-var directions_4: Array[Vector2i] = [
-	Vector2i.LEFT,
-	Vector2i.RIGHT,
-	Vector2i.UP,
-	Vector2i.DOWN,
-]
 
 @onready var data_layer: TileMapLayer = %DataLayer
 @onready var water_display_layer: TileMapLayer = %WaterDisplayLayer
@@ -145,6 +155,11 @@ func generate_world() -> void:
 		if map_area.tile_count > biggest_area_size:
 			biggest_area_size = map_area.tile_count
 			biggest_area = map_area
+	
+	for tile in data_layer.get_used_cells():
+		if tile.x == 0 or tile.x == map_size - 1 or tile.y == 0 or tile.y == map_size - 1:
+			set_tile(tile, TerrainType.WATER)
+			land_tiles.erase(tile)
 	
 	for map_area in map_areas:
 		if map_area != biggest_area:
@@ -201,7 +216,7 @@ func _calculate_display_tile_atlas_coords(coords: Vector2i, terrain_type: Terrai
 	var topRight: TileType = _get_matching_tile_type(coords - NEIGHBORS[2], terrain_type)
 	var topLeft: TileType = _get_matching_tile_type(coords - NEIGHBORS[3], terrain_type)
 	
-	return neighbors_to_atlas_coord[Vector4i(topLeft, topRight, botLeft, botRight)] + _get_atlas_coord(terrain_type)
+	return NEIGHBORS_TO_ATLAS_COORD[Vector4i(topLeft, topRight, botLeft, botRight)] + _get_atlas_coord(terrain_type)
 
 
 func _get_matching_tile_type(coords: Vector2i, terrain_type: TerrainType) -> TileType:
@@ -309,12 +324,12 @@ func dig(pos: Vector2) -> void:
 
 
 func _can_destroy_map(start: Vector2i) -> bool:
-	for direction in directions_8:
+	for direction in DIRECTIONS_8:
 		var opposite: Vector2i = -direction
 		var end_a: Vector2i = _find_line_end(start, direction)
 		
 		if _is_blocking_tile(end_a):
-			for direction2 in directions_8:
+			for direction2 in DIRECTIONS_8:
 				opposite = -direction2
 				var end_b: Vector2i = _find_line_end(start, opposite)
 				if _is_blocking_tile(end_b):
@@ -382,14 +397,22 @@ func _destroy_map() -> void:
 		set_tile(tile, TerrainType.WATER)
 		temp_dig_layer.erase_cell(tile)
 		astar.set_point_solid(tile)
-		
 		land_tiles.erase(tile)
+		
+		play_dig_animation(tile)
 		#if gold_positions[tile]:
 			#gold_positions[tile].queue_free()
 
 
+func play_dig_animation(tile: Vector2i) -> void:
+	for frame in DIG_FRAMES:
+		temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), frame)
+		await get_tree().create_timer(DIG_FRAME_TIME).timeout
+	temp_dig_layer.erase_cell(tile)
+
+
 func _get_map_areas() -> Array[MapArea]:
-	print("get map areas")
+	#print("get map areas")
 	var unvisited: Dictionary = {}
 	var regions: Array[MapArea] = []
 	var dirt_tiles: Array[Vector2i] = []
@@ -415,7 +438,7 @@ func _get_map_areas() -> Array[MapArea]:
 	for dirt in dirt_tiles:
 		var adjacent_regions: Array[MapArea] = []
 		
-		for direction in directions_8:
+		for direction in DIRECTIONS_8:
 			var neighbor: Vector2i = dirt + direction
 			
 			if get_terrain_type(neighbor) == TerrainType.DIRT:
@@ -463,7 +486,7 @@ func _flood_fill(start: Vector2i, unvisited: Dictionary) -> MapArea:
 		tile_count += 1
 		tiles.append(current)
 		
-		for direction in directions_4:
+		for direction in DIRECTIONS_4:
 			var neighbor: Vector2i = current + direction
 			if unvisited.has(neighbor):
 				unvisited.erase(neighbor)

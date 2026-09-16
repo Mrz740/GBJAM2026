@@ -9,7 +9,7 @@ func _on_body_entered(body: Node2D):
 	if !can_pick_up:
 		return
 	
-	if body.is_in_group("player"):
+	if body == Player.instance:
 		body.current_gold += 1
 		queue_free()
 	elif body.is_in_group("enemy") and dropped_by_player:
@@ -17,5 +17,5 @@ func _on_body_entered(body: Node2D):
 
 
 func _on_body_exited(body):
-	if body.is_in_group("player"):
+	if body == Player.instance:
 		can_pick_up = true

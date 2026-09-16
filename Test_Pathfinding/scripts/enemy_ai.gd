@@ -62,11 +62,13 @@ func _process(delta: float) -> void:
 			_move_ai(delta)
 		
 		EnemyManager.EnemyType.PIRATE:
-			_get_closest_target()
+			_get_random_target_or_player()
+			animated_sprite_2d.play("pirate_walk")
 			_move_ai(delta)
 		
 		EnemyManager.EnemyType.SKELETON:
 			_get_closest_target()
+			animated_sprite_2d.play("skeleton_walk")
 			_move_ai(delta)
 
 

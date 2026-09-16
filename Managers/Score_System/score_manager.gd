@@ -51,6 +51,7 @@ func reset() -> void:
 
 
 func _on_timer_timeout() -> void:
+	return
 	if points_per_tick <= 0:
 		return
 	add_score(points_per_tick, "time")

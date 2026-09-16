@@ -43,7 +43,7 @@ func spawn_enemies() -> void:
 		
 		var enemy_node: Enemy = enemy_scene.instantiate()
 		enemy_node.global_position = game_map.get_cell_world(coord)
-		enemy_node.setup(self, game_map, current_enemy_count, EnemyType.CRAB)
+		enemy_node.setup(self, game_map, current_enemy_count, EnemyType.PIRATE)
 		add_child(enemy_node)
 		current_enemy_count += 1
 

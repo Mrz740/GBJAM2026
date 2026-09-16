@@ -111,3 +111,6 @@ func _on_collision_area_body_entered(body: Node2D):
 		dead = true
 		animated_sprite_2d.play("death")
 		#hide()
+		await animated_sprite_2d.animation_finished
+		await get_tree().create_timer(0.25).timeout
+		$"../HUDLayer/DiedScreen".show()

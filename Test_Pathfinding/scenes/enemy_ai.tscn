@@ -11,6 +11,38 @@ region = Rect2(0, 160, 16, 16)
 atlas = ExtResource("2_ruo7y")
 region = Rect2(16, 160, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruo7y"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(0, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xelw7"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(16, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gn4wa"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(32, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mmqmg"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(48, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8vsbh"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(0, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p2a1v"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(16, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_two02"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(32, 192, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etv66"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(48, 192, 16, 16)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ufimc"]
 animations = [{
 "frames": [{
@@ -22,6 +54,40 @@ animations = [{
 }],
 "loop": 1,
 "name": &"crab_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ruo7y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xelw7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gn4wa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mmqmg")
+}],
+"loop": 1,
+"name": &"pirate_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8vsbh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p2a1v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_two02")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_etv66")
+}],
+"loop": 1,
+"name": &"skeleton_walk",
 "speed": 5.0
 }]
 
@@ -41,7 +107,8 @@ visualize_path = false
 unique_name_in_owner = true
 position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_ufimc")
-animation = &"crab_walk"
+animation = &"pirate_walk"
+frame_progress = 0.9552248
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=724067470]
 position = Vector2(8, 8)

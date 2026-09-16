@@ -1,0 +1,8 @@
+[gd_resource type="LabelSettings" format=3 uid="uid://ko788u5oqbee"]
+
+[ext_resource type="FontFile" uid="uid://b05jt67th4v8v" path="res://Test_Pathfinding/assets/Early GameBoy.ttf" id="1_weqs5"]
+
+[resource]
+font = ExtResource("1_weqs5")
+font_size = 8
+font_color = Color(0.91764706, 0.8784314, 0.75686276, 1)

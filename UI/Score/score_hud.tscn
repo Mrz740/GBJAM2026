@@ -1,6 +1,19 @@
 [gd_scene format=3 uid="uid://b4x521v72fv"]
 
 [ext_resource type="Script" uid="uid://vsagr6vo0j3q" path="res://UI/Score/score_hud.gd" id="1_3xrhy"]
+[ext_resource type="LabelSettings" uid="uid://ko788u5oqbee" path="res://Test_Pathfinding/assets/new_label_settings.tres" id="2_7rbeb"]
+[ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="3_t4lat"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ufimc"]
+bg_color = Color(0.18039216, 0.13333334, 0.18431373, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufimc"]
+atlas = ExtResource("3_t4lat")
+region = Rect2(32, 290, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t4lat"]
+atlas = ExtResource("3_t4lat")
+region = Rect2(0, 77, 16, 16)
 
 [node name="ScoreHUD" type="Control" unique_id=209382086 node_paths=PackedStringArray("score_label")]
 layout_mode = 3
@@ -13,12 +26,64 @@ mouse_filter = 2
 script = ExtResource("1_3xrhy")
 score_label = NodePath("ScoreTextLabel")
 
+[node name="Panel" type="Panel" parent="." unique_id=515210923]
+layout_mode = 0
+offset_top = 128.0
+offset_right = 160.0
+offset_bottom = 144.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ufimc")
+
 [node name="ScoreTextLabel" type="Label" parent="." unique_id=316085397]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -23.0
-offset_right = 80.0
+offset_left = 16.0
+offset_top = -16.0
+offset_right = 96.0
 grow_vertical = 0
-text = "Score: 0"
+text = "0"
+label_settings = ExtResource("2_7rbeb")
+vertical_alignment = 1
+
+[node name="MoneyTexture" type="TextureRect" parent="." unique_id=2032881845]
+layout_mode = 0
+offset_top = 128.0
+offset_right = 16.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_ufimc")
+
+[node name="Life1" type="TextureRect" parent="." unique_id=837233016]
+layout_mode = 0
+offset_left = 72.0
+offset_top = 128.0
+offset_right = 88.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_t4lat")
+
+[node name="Life2" type="TextureRect" parent="." unique_id=492398035]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 128.0
+offset_right = 104.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_t4lat")
+
+[node name="Life3" type="TextureRect" parent="." unique_id=1328144071]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 128.0
+offset_right = 120.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_t4lat")
+
+[node name="DaysLabel" type="Label" parent="." unique_id=1308984533]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 160.0
+offset_bottom = 144.0
+text = "day1"
+label_settings = ExtResource("2_7rbeb")
+horizontal_alignment = 1
+vertical_alignment = 1
