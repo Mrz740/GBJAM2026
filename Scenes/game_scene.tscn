@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://bq3xqon1f8nud" path="res://Player/player.tscn" id="2_b6fju"]
 [ext_resource type="PackedScene" uid="uid://b4x521v72fv" path="res://UI/Score/score_hud.tscn" id="3_hud"]
 [ext_resource type="Script" uid="uid://dcfbniihhtb23" path="res://Scenes/game_scene.gd" id="4_gsc"]
-[ext_resource type="PackedScene" uid="uid://duu15kldg4j2t" path="res://Test_Pathfinding/scenes/gold.tscn" id="6_uscyt"]
 [ext_resource type="Script" uid="uid://c5quhpf533no3" path="res://Test_Pathfinding/scripts/game_map.gd" id="7_2fmhe"]
 [ext_resource type="PackedScene" uid="uid://c3vwrpgk52q1g" path="res://Test_Pathfinding/scenes/enemy_ai.tscn" id="7_4xiap"]
 [ext_resource type="Script" uid="uid://og0e0v0f8rjp" path="res://Player/camera_2d.gd" id="7_5dgvu"]
@@ -91,7 +90,6 @@ enemy_count = 5
 
 [node name="Player" parent="." index="4" unique_id=277292832 node_paths=PackedStringArray("game_map") instance=ExtResource("2_b6fju")]
 position = Vector2(192, 112)
-gold_scene = ExtResource("6_uscyt")
 game_map = NodePath("../GameMap")
 move_speed = 40.0
 

@@ -7,7 +7,7 @@ const TILE_TYPE_DATA_LAYER: String = "type"
 const BLOCKING_TILE_TYPES: Array[String] = ["water"]
 const INVALID_TILE: Vector2i = Vector2i(-1, -1)
 
-var coin_value: int = 10
+var coin_value: int = 1
 var seconds_per_coin: float = 3.0
 
 var map: TileMapLayer = null
@@ -17,6 +17,7 @@ var _timer: Timer
 
 var _occupied_tiles: Dictionary[Vector2i, Node2D] = {}
 
+var collected_coins: int = 0
 
 func _ready() -> void:
 	_timer = Timer.new()
@@ -68,6 +69,16 @@ func spawn_coin_at(tile: Vector2i) -> void:
 	var new_coin: Node2D = COIN_SCENE.instantiate()
 	new_coin.value = coin_value
 	spawn_entity_at(new_coin, tile)
+
+
+func drop_coin_at(tile: Vector2i, value: int) -> Coin:
+	var new_coin: Coin = COIN_SCENE.instantiate()
+	new_coin.value = value
+	new_coin.dropped_by_player = true
+	new_coin.can_pick_up = false
+	spawn_entity_at(new_coin, tile)
+	ScoreManager.add_score(-new_coin.value)
+	return new_coin
 
 
 func spawn_coin_at_random() -> bool:

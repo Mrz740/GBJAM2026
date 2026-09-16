@@ -5,7 +5,6 @@ signal player_did_move
 
 static var instance: Player
 
-@export var gold_scene: PackedScene
 @export var game_map: GameMap
 @export var move_speed: float = 5.0
 
@@ -82,21 +81,19 @@ func _input(event: InputEvent) -> void:
 		digging = true
 		game_map.dig(global_position)
 	elif event.is_action_pressed("B"):
-		drop_gold()
+		drop_coin()
 
 
-func drop_gold() -> void:
+func drop_coin() -> void:
 	if current_gold <= 0:
 		return
-	
-	var gold_node: Gold = gold_scene.instantiate()
-	get_tree().current_scene.add_child(gold_node)
-	
+
 	var tile: Vector2i = game_map.local_to_map(global_position)
-	gold_node.global_position = game_map.map_to_local(tile)
-	
-	gold_node.dropped_by_player = true
-	gold_node.can_pick_up = false
+	if !SpawnerManager.is_tile_spawnable(tile):
+		return
+
+	current_gold -= 1
+	SpawnerManager.drop_coin_at(tile, SpawnerManager.coin_value)
 
 
 var message_time: float

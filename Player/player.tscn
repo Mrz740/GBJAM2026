@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://84aucg1s1cpd" path="res://Player/player.gd" id="1_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="2_4ntmi"]
-[ext_resource type="PackedScene" uid="uid://debxdo7i2qqhs" path="res://Pickups/coin.tscn" id="2_btcbx"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_btcbx"]
 atlas = ExtResource("2_4ntmi")
@@ -146,7 +145,6 @@ radius = 7.0
 [node name="Player" type="CharacterBody2D" unique_id=277292832]
 collision_mask = 2
 script = ExtResource("1_4ntmi")
-gold_scene = ExtResource("2_btcbx")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1750787578]
 unique_name_in_owner = true

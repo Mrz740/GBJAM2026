@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://c0dye24a1pniw" path="res://Test_Pathfinding/scripts/gold_spawner.gd" id="5_2v853"]
 [ext_resource type="TileSet" uid="uid://bvu0bo4xl36a3" path="res://Test_Pathfinding/assets/map_tile_set.tres" id="6_0unlv"]
 [ext_resource type="PackedScene" uid="uid://bq3xqon1f8nud" path="res://Player/player.tscn" id="6_g56qi"]
-[ext_resource type="PackedScene" uid="uid://duu15kldg4j2t" path="res://Test_Pathfinding/scenes/gold.tscn" id="6_u4puy"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_cmuu1"]
 noise_type = 3
@@ -26,7 +25,6 @@ fill_from = Vector2(0.5, 0.5)
 [node name="GoldSpawner" type="Node2D" parent="." unique_id=158464727 node_paths=PackedStringArray("game_map")]
 script = ExtResource("5_2v853")
 game_map = NodePath("../GameMap")
-gold_scene = ExtResource("6_u4puy")
 
 [node name="GameMap" type="Node2D" parent="." unique_id=1058837514]
 script = ExtResource("2_2v853")
@@ -77,7 +75,6 @@ idx = 1
 
 [node name="Player2" parent="." unique_id=277292832 node_paths=PackedStringArray("game_map") instance=ExtResource("6_g56qi")]
 position = Vector2(192, 112)
-gold_scene = ExtResource("6_u4puy")
 game_map = NodePath("../GameMap")
 move_speed = 40.0
 

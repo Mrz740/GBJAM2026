@@ -136,15 +136,18 @@ func _get_closest_target() -> void:
 	var max_dist: float = INF
 	
 	for area in areas:
-		if area is not Gold:
+		var coin: Coin = area.get_parent() as Coin
+		if coin == null:
 			continue
-			
-		var gold: Gold = area as Gold
-		var current_dist: float = (gold.global_position - global_position).length_squared()
-		
-		if current_dist < max_dist and gold.dropped_by_player:
+
+		if !coin.dropped_by_player:
+			continue
+
+		var current_dist: float = (coin.global_position - global_position).length_squared()
+
+		if current_dist < max_dist:
 			max_dist = current_dist
-			closest_target = gold
+			closest_target = coin
 	
 	target_position = closest_target.global_position
 

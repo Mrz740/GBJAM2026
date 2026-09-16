@@ -117,6 +117,8 @@ shape = SubResource("CircleShape2D_ufimc")
 [node name="Area2D" type="Area2D" parent="." unique_id=1595291828]
 unique_name_in_owner = true
 position = Vector2(8, 8)
+collision_mask = 8
+monitorable = false
 
 [node name="AreaCollisionShape" type="CollisionShape2D" parent="Area2D" unique_id=1976746498]
 unique_name_in_owner = true
