@@ -1,10 +1,15 @@
-class_name Gold
+class_name ChestKey
 extends Node2D
 
-@export var value: int = 5
+@export var value: int = 10
 
-var dropped_by_player: bool
 var can_pick_up: bool = true
+var test_timer: float = 0.25
+
+
+func _exit_tree():
+	if GameMap.instance:
+		GameMap.instance.map_updated.disconnect(_on_map_updated)
 
 
 func _ready() -> void:
@@ -12,9 +17,11 @@ func _ready() -> void:
 		GameMap.instance.map_updated.connect(_on_map_updated)
 
 
-func _exit_tree():
-	if GameMap.instance:
-		GameMap.instance.map_updated.disconnect(_on_map_updated)
+func _process(delta: float) -> void:
+	if test_timer > 0.0:
+		test_timer -= delta
+		return
+	can_pick_up = true
 
 
 func _on_map_updated() -> void:
@@ -23,18 +30,12 @@ func _on_map_updated() -> void:
 		queue_free()
 
 
-func _on_body_entered(body):
+func _on_area_2d_body_entered(body):
 	if body is Player:
 		if !can_pick_up:
 			return
-		ScoreManager.add_score(value, "coins")
+		if Player.instance.keys >= Player.instance.max_keys:
+			return
+		Player.instance.update_keys(1)
 		# Play sound effect
 		queue_free()
-	
-	elif body.is_in_group("enemy") and dropped_by_player:
-		queue_free()
-
-
-func _on_body_exited(body):
-	if body is Player:
-		can_pick_up = true

@@ -2,6 +2,10 @@
 class_name GameMap
 extends Node2D
 
+signal map_updated
+
+static var instance: GameMap
+
 enum TileType {
 	EMPTY,
 	FULL
@@ -71,8 +75,10 @@ const DIRECTIONS_4: Array[Vector2i] = [
 static var TILE_SIZE: int = 16
 static var HALF_TILE_SIZE: int = floori(TILE_SIZE * 0.5)
 
+@export var ship: Node2D
+
 @export var tile_set: TileSet
-@export var noise: Noise
+@export var fast_noise_lite: FastNoiseLite
 @export var falloff_texture: Texture2D
 @export var falloff_strength: float = 0.09
 
@@ -82,32 +88,54 @@ static var HALF_TILE_SIZE: int = floori(TILE_SIZE * 0.5)
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Generate Map", "Environment") var _generate_world = generate_world
 
-var land_tiles: Array[Vector2i] = []
+var scenes: Dictionary[float, PackedScene] = {
+	8.0 : SpawnerManager.COIN_SCENE,
+	1.0 : SpawnerManager.GOLD_SCENE,
+	0.05 : SpawnerManager.KEY_SCENE,
+}
 
+var x_spot_scenes: Dictionary[float, PackedScene] = {
+	8.0 : SpawnerManager.CHEST_SCENE,
+	6.0 : SpawnerManager.KEY_SCENE,
+	4.5 : SpawnerManager.GOLD_SCENE,
+	1.0 : SpawnerManager.COIN_SCENE,
+}
+
+var land_tiles: Array[Vector2i] = []
+var ship_tile: Vector2i
 var tile_source_idx: int = 1
 
 var water_atlas_placeholder: Vector2i = Vector2i(13, 0)
 var grass_atlas_placeholder: Vector2i = Vector2i(13, 1)
 var sand_atlas_placeholder: Vector2i = Vector2i(13, 2)
 
-# coords can be checked in the tileset
-var water_atlas: Vector2i = Vector2i(0, 0)
-var grass_atlas: Vector2i = Vector2i(4, 0)
-var sand_atlas: Vector2i = Vector2i(8, 0)
-var barely_dirt_atlas: Vector2i = Vector2i(12, 2)
-
 var astar: AStarGrid2D = AStarGrid2D.new()
 var map_rect: Rect2i = Rect2i()
 
 var noise_val_arr : Array[float] = []
 
-#var gold_positions: Dictionary[Vector2i, Gold] = {}
+# coords can be checked in the tileset
+var water_atlas: Vector2i = Vector2i(0, 0)
+var grass_atlas: Vector2i = Vector2i(4, 0)
+var sand_atlas: Vector2i = Vector2i(8, 0)
+var barely_dirt_atlas: Vector2i = Vector2i(12, 2)
+var rock_atlas: Vector2i = Vector2i(4, 19)
+var x_spot_atlas: Vector2i = Vector2i(10, 7)
+var full_white_atlas_coord: Vector2i = Vector2i(6,1)
 
 @onready var data_layer: TileMapLayer = %DataLayer
 @onready var water_display_layer: TileMapLayer = %WaterDisplayLayer
 @onready var grass_display_layer: TileMapLayer = %GrassDisplayLayer
 @onready var dirt_display_layer: TileMapLayer = %DirtDisplayLayer
 @onready var temp_dig_layer: TileMapLayer = %TempDigLayer
+
+
+func _enter_tree() -> void:
+	instance = self
+
+
+func _exit_tree() -> void:
+	instance = null
 
 
 func _ready() -> void:
@@ -119,10 +147,32 @@ func _ready() -> void:
 #region MAP GENERATION
 
 func generate_world() -> void:
+	
+	fast_noise_lite.seed = randi_range(0, 10)
+	
+	if GameManager.current_day == 1:
+		
+		# testing seeds, 7 can be a bit hard with the choke at the top right
+		var island_seed: int = randi_range(0, 10)
+		if island_seed == 7:
+			island_seed = 1
+		fast_noise_lite.seed = island_seed
+		
+		fast_noise_lite.frequency = 0.11
+		
+	elif GameManager.current_day == 2:
+		fast_noise_lite.frequency = 0.15
+		
+	else:
+		fast_noise_lite.frequency = 0.2
+	
 	data_layer.clear()
 	water_display_layer.clear()
 	grass_display_layer.clear()
 	dirt_display_layer.clear()
+	land_tiles.clear()
+	temp_dig_layer.clear()
+	
 	var falloff_img: Image = falloff_texture.get_image()
 	
 	for x in range(map_size):
@@ -130,44 +180,78 @@ func generate_world() -> void:
 			
 			var tile: Vector2i = Vector2i(x, y)
 			
-			var noise_val: float = noise.get_noise_2d(x,y) + 1.0 * 0.5
+			var noise_val: float = fast_noise_lite.get_noise_2d(x,y) + 1.0 * 0.5
 			noise_val_arr.append(noise_val)
 			
 			var falloff: float = falloff_img.get_pixel(x, y).r * falloff_strength
 			
 			noise_val -= falloff
-			#noise_val = falloff
 			
 			if noise_val >= 0.0:
 				set_tile(tile, TerrainType.GRASS)
 				land_tiles.append(tile)
-				#data_layer.set_cell(Vector2(x,y), tile_set.get_source_id(tile_source_idx), grass_atlas_placeholder)
 			else:
 				set_tile(tile, TerrainType.WATER)
-				#data_layer.set_cell(Vector2(x,y), tile_set.get_source_id(tile_source_idx), water_atlas_placeholder)
+	
+	for tile in data_layer.get_used_cells():
+		if tile.x == 0 or tile.x == map_size - 1 or tile.y == 0 or tile.y == 1 or tile.y == map_size - 1:
+			set_tile(tile, TerrainType.WATER)
+			land_tiles.erase(tile)
 	
 	var map_areas: Array[MapArea] = _get_map_areas()
 	var biggest_area: MapArea
-	
 	var biggest_area_size: int = 0
-	
 	for map_area in map_areas:
 		if map_area.tile_count > biggest_area_size:
 			biggest_area_size = map_area.tile_count
 			biggest_area = map_area
 	
-	for tile in data_layer.get_used_cells():
-		if tile.x == 0 or tile.x == map_size - 1 or tile.y == 0 or tile.y == map_size - 1:
-			set_tile(tile, TerrainType.WATER)
-			land_tiles.erase(tile)
-	
 	for map_area in map_areas:
-		if map_area != biggest_area:
+		if map_area.tile_count != biggest_area.tile_count:
 			for tile in map_area.cells:
 				set_tile(tile, TerrainType.WATER)
 				land_tiles.erase(tile)
-				#data_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), water_atlas_placeholder)
-				#astar.set_point_solid(tile)
+	
+	var highest_row: int = map_size - 1
+	for tile in land_tiles:
+		if tile.y < highest_row:
+			highest_row = tile.y
+			
+	var best_tiles: Array[Vector2i] = []
+	for tile in land_tiles:
+		if tile.y == highest_row:
+			best_tiles.append(tile)
+	
+	if best_tiles.is_empty():
+		return
+	
+	var idx: int = randi_range(0, best_tiles.size() - 1)
+	ship_tile = best_tiles[idx]
+	ship.position = map_to_local( ship_tile - Vector2i(0, 1) )
+	
+	if Player.instance:
+		Player.instance.position = map_to_local( ship_tile )
+	
+	best_tiles.clear()
+	
+	spawn_foliage_and_x_spots()
+
+
+func spawn_foliage_and_x_spots() -> void:
+	for tile in land_tiles:
+		if tile == ship_tile:
+			continue
+			
+		var dist_t: float = clampf(inverse_lerp(0.0, 10.0, tile.distance_to(ship_tile)), 0.0, 1.0)
+		
+		var rand_x_spot: float = randf() * dist_t + 0.05
+		var rand_rock_spot: float = randf() * dist_t
+		
+		if rand_rock_spot > 0.95:
+			temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), rock_atlas)
+		
+		elif rand_x_spot > 0.95:
+			temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), x_spot_atlas)
 
 
 func _refresh_all_tiles() -> void:
@@ -198,9 +282,8 @@ func _refresh_display_tile(cell_pos: Vector2i, display_layer: TileMapLayer, terr
 			
 			if display_layer == grass_display_layer:
 				
-				# the grass center atlas coord, the full white sprite
-				if atlas_coords == Vector2i(6,1):
-					if randi_range(0, 10) < 10:
+				if atlas_coords == full_white_atlas_coord:
+					if randi_range(0, 10) < 9:
 						display_layer.set_cell(new_pos, tile_set.get_source_id(tile_source_idx), atlas_coords)
 					else:
 						display_layer.set_cell(new_pos, tile_set.get_source_id(tile_source_idx), Vector2i(9,7))
@@ -283,44 +366,178 @@ func _setup_astar() -> void:
 		for j in map_size:
 			
 			var coords: Vector2i = Vector2i(i, j)
-			var tile_data: TileData = data_layer.get_cell_tile_data(coords)
 			
+			var tile_data: TileData = data_layer.get_cell_tile_data(coords)
 			if tile_data and tile_data.get_custom_data("type") == "water":
 				astar.set_point_solid(coords)
-			#else:
-				#gold_positions[coords] = null
+			
+			var tile_data_2: TileData = temp_dig_layer.get_cell_tile_data(coords)
+			if tile_data_2 and tile_data_2.get_custom_data("type") == "wall":
+				astar.set_point_solid(coords)
 
 #endregion
 
 
 #region DIG MAP
 
-func dig(pos: Vector2) -> void:
-	
-	var coord: Vector2i = local_to_map(pos)
+func dig(coord: Vector2i) -> void:
 	
 	if get_terrain_type(coord) == TerrainType.DIRT:
 		return
 	
+	if get_terrain_type(coord) == TerrainType.WATER:
+		return
+	
 	var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(coord)
 	
-	if atlas_coord == Vector2i(-1, -1):
-		temp_dig_layer.set_cell(coord, tile_set.get_source_id(tile_source_idx), barely_dirt_atlas)
+	if atlas_coord == rock_atlas:
+		temp_dig_layer.erase_cell(coord)
+		astar.set_point_solid(coord, false)
 	
-	else:
-		if (atlas_coord - Vector2i(0,1)).y >= 0:
-			temp_dig_layer.set_cell(coord, tile_set.get_source_id(tile_source_idx), atlas_coord - Vector2i(0, 1))
+	elif atlas_coord == x_spot_atlas:
+		temp_dig_layer.erase_cell(coord)
 		
-		if temp_dig_layer.get_cell_atlas_coords(coord).y == 0:
-			set_tile(coord, TerrainType.DIRT)
+	else:
+		if atlas_coord == Vector2i(-1, -1):
+			temp_dig_layer.set_cell(coord, tile_set.get_source_id(tile_source_idx), barely_dirt_atlas)
+		
+		else:
+			if (atlas_coord - Vector2i(0,1)).y >= 0:
+				temp_dig_layer.set_cell(coord, tile_set.get_source_id(tile_source_idx), atlas_coord - Vector2i(0, 1))
+			
+			if temp_dig_layer.get_cell_atlas_coords(coord).y == 0:
+				set_tile(coord, TerrainType.DIRT)
 	
+	var random_count: int = 0
 	if get_terrain_type(coord) != TerrainType.DIRT:
+		
+		if atlas_coord == Vector2i(-1, -1):
+			random_count = randi_range(0, 1)
+		elif atlas_coord == barely_dirt_atlas:
+			random_count = randi_range(0, 2)
+		
+		if atlas_coord == x_spot_atlas:
+			dig_x_spot(coord, random_count)
+		else:
+			for i in range(random_count):
+				spawn_gold(coord)
 		return
+	
+	random_count = randi_range(0, 6)
+	if atlas_coord == x_spot_atlas:
+		dig_x_spot(coord, random_count)
+	else:
+		for i in range(random_count):
+			spawn_gold(coord)
 	
 	_destroy_map()
 	#if _can_destroy_map(coord):
 		#print("destroy map")
 		#_destroy_map()
+
+
+func dig_x_spot(coord: Vector2i, random_count: int) -> void:
+	if randf() > 0.7:
+		for i in range(random_count):
+			spawn_gold(coord)
+		return
+	
+	var total_weight: float = 0.0
+	
+	for i in x_spot_scenes:
+		total_weight += i
+		
+	var rng: float = randf()
+	var chance_percentage: float = 0.0
+	
+	var scene: PackedScene
+	for i in x_spot_scenes:
+		chance_percentage += i / total_weight
+		if chance_percentage >= rng:
+			scene = x_spot_scenes[i]
+			break
+	
+	var coin = scene.instantiate()
+	
+	var start: Vector2 = map_to_local(coord)
+	var end : Vector2 = start
+	
+	var control: Vector2 = (start + end) * 0.5
+	control.y -= randf_range(40.0, 50.0)
+	
+	coin.global_position = start
+	coin.can_pick_up = false
+	add_child(coin)
+	
+	var tween_time: float = 0.6
+	
+	var tween: Tween = create_tween()
+	tween.bind_node(coin)
+	tween.tween_method(
+		func(t: float) -> void:
+			coin.global_position = _bezier_quadratic(start, control, end, t),
+		0.0, 1.0, tween_time
+	)
+	tween.tween_interval(tween_time)
+	tween.tween_callback(
+		func() -> void:
+			if in_water(local_to_map(coin.global_position)):
+				coin.queue_free()
+			else:
+				coin.can_pick_up = true
+	)
+
+
+func spawn_gold(coord: Vector2i) -> void:
+	var total_weight: float = 0.0
+	
+	for i in scenes:
+		total_weight += i
+		
+	var rng: float = randf()
+	var chance_percentage: float = 0.0
+	
+	var scene: PackedScene
+	for i in scenes:
+		chance_percentage += i / total_weight
+		if chance_percentage >= rng:
+			scene = scenes[i]
+			break
+	
+	var coin = scene.instantiate()
+	
+	var start: Vector2 = map_to_local(coord)
+	var end : Vector2 = start + Vector2(randf_range(-24.0, 24.0), randf_range(-24.0, 24.0))
+	
+	var control: Vector2 = (start + end) * 0.5
+	control.y -= randf_range(40.0, 50.0)
+	
+	coin.global_position = start
+	coin.can_pick_up = false
+	add_child(coin)
+	
+	var tween_time: float = 0.6
+	
+	var tween: Tween = create_tween()
+	tween.bind_node(coin)
+	tween.tween_method(
+		func(t: float) -> void:
+			coin.global_position = _bezier_quadratic(start, control, end, t),
+		0.0, 1.0, tween_time
+	)
+	tween.tween_interval(tween_time)
+	tween.tween_callback(
+		func() -> void:
+			if in_water(local_to_map(coin.global_position)):
+				coin.queue_free()
+			else:
+				coin.can_pick_up = true
+	)
+
+
+func _bezier_quadratic(p0: Vector2, p1: Vector2, p2: Vector2, t: float) -> Vector2:
+	var u: float = 1.0 - t
+	return (u * u * p0) + (2.0 * u * t * p1) + (t * t * p2)
 
 
 func _can_destroy_map(start: Vector2i) -> bool:
@@ -369,13 +586,10 @@ func _is_dirt(coord: Vector2i) -> bool:
 func _destroy_map() -> void:
 	var areas: Array[MapArea] = _get_map_areas()
 	
-	#print(areas.size())
-	
 	if areas.size() <= 1:
 		return
 	
 	var smallest_area_size: int = map_size * map_size
-	#var area_to_destroy: MapArea = null
 	
 	for area in areas:
 		if area.tile_count < smallest_area_size:
@@ -383,7 +597,7 @@ func _destroy_map() -> void:
 	
 	if smallest_area_size > max_destroy_count:
 		print("can't destroy area. it's too big ", smallest_area_size)
-		Player.instance.show_message()
+		Player.instance.show_too_big_message()
 		return
 	
 	var cells_to_destroy: Array[Vector2i] = []
@@ -393,15 +607,14 @@ func _destroy_map() -> void:
 			cells_to_destroy += area.cells
 	
 	for tile in cells_to_destroy:
-		#data_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), water_atlas_placeholder)
 		set_tile(tile, TerrainType.WATER)
 		temp_dig_layer.erase_cell(tile)
 		astar.set_point_solid(tile)
 		land_tiles.erase(tile)
 		
 		play_dig_animation(tile)
-		#if gold_positions[tile]:
-			#gold_positions[tile].queue_free()
+	
+	map_updated.emit()
 
 
 func play_dig_animation(tile: Vector2i) -> void:
@@ -409,10 +622,16 @@ func play_dig_animation(tile: Vector2i) -> void:
 		temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), frame)
 		await get_tree().create_timer(DIG_FRAME_TIME).timeout
 	temp_dig_layer.erase_cell(tile)
+	
+	#await get_tree().create_timer(5.0).timeout
+	#for frame in range(DIG_FRAMES.size()-1, 0, -1):
+		#temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), DIG_FRAMES[frame])
+		#await get_tree().create_timer(DIG_FRAME_TIME).timeout
+	#temp_dig_layer.erase_cell(tile)
+	#set_tile(tile, TerrainType.GRASS)
 
 
 func _get_map_areas() -> Array[MapArea]:
-	#print("get map areas")
 	var unvisited: Dictionary = {}
 	var regions: Array[MapArea] = []
 	var dirt_tiles: Array[Vector2i] = []
@@ -461,15 +680,16 @@ func _get_map_areas() -> Array[MapArea]:
 		else:
 			stray_dirt_tiles.append(dirt)
 	
-	unvisited.clear()
-	
-	for tile in stray_dirt_tiles:
-		unvisited[tile] = true
-	
-	while not unvisited.is_empty():
-		var start: Vector2i = unvisited.keys()[0]
-		var region: MapArea = _flood_fill(start, unvisited)
-		regions.append(region)
+	if !stray_dirt_tiles.is_empty():
+		unvisited.clear()
+		
+		for tile in stray_dirt_tiles:
+			unvisited[tile] = true
+		
+		while not unvisited.is_empty():
+			var start: Vector2i = unvisited.keys()[0]
+			var region: MapArea = _flood_fill(start, unvisited)
+			regions.append(region)
 	
 	return regions
 
@@ -513,8 +733,6 @@ func get_land_tiles() -> Array[Vector2i]:
 
 func in_water(tile: Vector2i) -> bool:
 	return get_terrain_type(tile) == TerrainType.WATER
-	#var tile_data: TileData = data_layer.get_cell_tile_data(tile)
-	#return !tile_data or tile_data.get_custom_data("type") == "water"
 
 
 func get_terrain_type(cellPos: Vector2i) -> TerrainType:
@@ -543,6 +761,10 @@ func map_to_local(coord: Vector2i) -> Vector2:
 
 func get_cell_world(coord: Vector2i) -> Vector2:
 	return map_to_local(coord) - Vector2.ONE * TILE_SIZE * 0.5
+
+
+func has_occupied_cell(coord: Vector2i) -> bool:
+	return temp_dig_layer.get_cell_atlas_coords(coord) == rock_atlas
 
 #endregion
 

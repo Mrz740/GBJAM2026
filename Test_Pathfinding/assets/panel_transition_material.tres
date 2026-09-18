@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bpdssxbsysnjt"]
+
+[ext_resource type="Shader" uid="uid://i6gsso3hapqa" path="res://Test_Pathfinding/scripts/game_screen_shader.gdshader" id="1_14k56"]
+[ext_resource type="Texture2D" uid="uid://m3veaty7jfms" path="res://Test_Pathfinding/assets/bayer_texture.png" id="2_iby3y"]
+
+[resource]
+shader = ExtResource("1_14k56")
+shader_parameter/color = Color(0.18039216, 0.13333334, 0.18431373, 1)
+shader_parameter/dither_amount = 1.0
+shader_parameter/direction = 1
+shader_parameter/bayer_texture = ExtResource("2_iby3y")

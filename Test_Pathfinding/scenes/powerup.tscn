@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://b4hhkpmuo7cqj"]
+
+[ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="1_5sna2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_koeoj"]
+atlas = ExtResource("1_5sna2")
+region = Rect2(0, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vv470"]
+atlas = ExtResource("1_5sna2")
+region = Rect2(16, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q4rxp"]
+atlas = ExtResource("1_5sna2")
+region = Rect2(32, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ttmu"]
+atlas = ExtResource("1_5sna2")
+region = Rect2(48, 256, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufimc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_koeoj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vv470")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q4rxp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ttmu")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Powerup" type="Node2D" unique_id=277269659]
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1663059214]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=144625321]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=730212228]
+sprite_frames = SubResource("SpriteFrames_ufimc")
+frame_progress = 0.3215042

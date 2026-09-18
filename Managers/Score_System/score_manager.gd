@@ -6,11 +6,13 @@ var points_per_tick: int = 1
 var seconds_per_tick: float = 0.5
 
 var current_score: int = 0
+var old_score: int = 0
 var current_score_multiplier: int = 1
 
 var _timer: Timer
 
 var total_score: Dictionary
+
 
 func _ready() -> void:
 	_timer = Timer.new()
@@ -25,6 +27,7 @@ func _ready() -> void:
 func add_score(points: int, source: String = "") -> void:
 	var gained := points * current_score_multiplier
 	current_score += gained
+	current_score = clampi(current_score, 0, 999)
 	score_changed.emit(current_score)
 	total_score[source] = total_score.get(source, 0) + gained
 
@@ -42,6 +45,14 @@ func start_run() -> void:
 
 func stop_run() -> void:
 	_timer.stop()
+
+
+func pause_run() -> void:
+	_timer.paused = true
+
+
+func unpause_run() -> void:
+	_timer.paused = false
 
 
 func reset() -> void:

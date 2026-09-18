@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://84aucg1s1cpd" path="res://Player/player.gd" id="1_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="2_4ntmi"]
+[ext_resource type="Texture2D" uid="uid://cc8vwrqb2savq" path="res://Test_Pathfinding/assets/new_atlas_texture.tres" id="3_gwnis"]
+[ext_resource type="FontFile" uid="uid://b05jt67th4v8v" path="res://Test_Pathfinding/assets/Early GameBoy.ttf" id="4_gwnis"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_btcbx"]
 atlas = ExtResource("2_4ntmi")
@@ -19,13 +21,13 @@ region = Rect2(32, 112, 16, 16)
 atlas = ExtResource("2_4ntmi")
 region = Rect2(48, 112, 16, 16)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vtle1"]
-atlas = ExtResource("2_4ntmi")
-region = Rect2(0, 128, 16, 16)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_od3ui"]
 atlas = ExtResource("2_4ntmi")
 region = Rect2(16, 128, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hshwv"]
+atlas = ExtResource("2_4ntmi")
+region = Rect2(0, 128, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_00tjw"]
 atlas = ExtResource("2_4ntmi")
@@ -84,13 +86,18 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_vtle1")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_od3ui")
 }],
 "loop": 0,
 "name": &"dig",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hshwv")
+}],
+"loop": 0,
+"name": &"dig_idle",
 "speed": 5.0
 }, {
 "frames": [{
@@ -159,14 +166,65 @@ size = Vector2(12, 6)
 [sub_resource type="CircleShape2D" id="CircleShape2D_ufimc"]
 radius = 7.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufimc"]
+atlas = ExtResource("2_4ntmi")
+region = Rect2(0, 320, 16, 16)
+
+[sub_resource type="LabelSettings" id="LabelSettings_k53q1"]
+font = ExtResource("4_gwnis")
+font_size = 8
+font_color = Color(0.18039216, 0.13333334, 0.18431373, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2nnlu"]
+atlas = ExtResource("2_4ntmi")
+region = Rect2(0, 76, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b1ygp"]
+atlas = ExtResource("2_4ntmi")
+region = Rect2(0, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o28un"]
+atlas = ExtResource("2_4ntmi")
+region = Rect2(16, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n471f"]
+atlas = ExtResource("2_4ntmi")
+region = Rect2(32, 256, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7emwf"]
+atlas = ExtResource("2_4ntmi")
+region = Rect2(48, 256, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufimc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b1ygp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o28un")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n471f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7emwf")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Player" type="CharacterBody2D" unique_id=277292832]
 collision_mask = 2
 script = ExtResource("1_4ntmi")
+walk_speed = 40.0
+fast_timer = 8.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1750787578]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_g4v7s")
-animation = &"hit"
+animation = &"idle"
 
 [node name="Hitbox" type="CollisionShape2D" parent="." unique_id=1577805754]
 position = Vector2(0, 3)
@@ -178,3 +236,38 @@ collision_mask = 9
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionArea" unique_id=218511771]
 shape = SubResource("CircleShape2D_ufimc")
+
+[node name="KeySprite" type="Sprite2D" parent="." unique_id=135441889]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -16)
+texture = SubResource("AtlasTexture_ufimc")
+
+[node name="Money" type="Sprite2D" parent="." unique_id=2088841806]
+unique_name_in_owner = true
+visible = false
+position = Vector2(-8, -24)
+texture = ExtResource("3_gwnis")
+
+[node name="MoneyLabel" type="Label" parent="Money" unique_id=616354578]
+unique_name_in_owner = true
+offset_left = 5.0
+offset_top = -8.0
+offset_right = 29.0
+offset_bottom = 16.0
+text = "0"
+label_settings = SubResource("LabelSettings_k53q1")
+vertical_alignment = 1
+
+[node name="Life" type="Sprite2D" parent="." unique_id=316977052]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -20)
+texture = SubResource("AtlasTexture_2nnlu")
+
+[node name="Powerup" type="AnimatedSprite2D" parent="." unique_id=1133615350]
+unique_name_in_owner = true
+visible = false
+position = Vector2(0, -16)
+sprite_frames = SubResource("SpriteFrames_ufimc")
+frame_progress = 0.43646327

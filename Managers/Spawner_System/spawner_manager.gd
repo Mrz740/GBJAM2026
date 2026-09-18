@@ -2,6 +2,10 @@ extends Node
 
 # Add here scenes for the enemies when we eventually have them
 const COIN_SCENE: PackedScene = preload("res://Pickups/coin.tscn")
+const GOLD_SCENE: PackedScene = preload("res://Test_Pathfinding/scenes/gold.tscn")
+const CHEST_SCENE: PackedScene = preload("res://Test_Pathfinding/scenes/chest.tscn")
+const KEY_SCENE: PackedScene = preload("res://Test_Pathfinding/scenes/key.tscn")
+const POWERUP_SCENE: PackedScene = preload("res://Test_Pathfinding/scenes/powerup.tscn")
 
 const TILE_TYPE_DATA_LAYER: String = "type"
 const BLOCKING_TILE_TYPES: Array[String] = ["water"]
@@ -16,8 +20,6 @@ var spawn_parent: Node = null
 var _timer: Timer
 
 var _occupied_tiles: Dictionary[Vector2i, Node2D] = {}
-
-var collected_coins: int = 0
 
 func _ready() -> void:
 	_timer = Timer.new()
@@ -56,6 +58,14 @@ func start_run() -> void:
 
 func stop_run() -> void:
 	_timer.stop()
+
+
+func unpause_run() -> void:
+	_timer.paused = false
+
+
+func pause_run() -> void:
+	_timer.paused = true
 
 
 func spawn_entity_at(entity: Node2D, tile: Vector2i) -> void:

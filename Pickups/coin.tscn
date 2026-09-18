@@ -2,9 +2,46 @@
 
 [ext_resource type="Script" uid="uid://c4ei8oa1vulyn" path="res://Pickups/coin.gd" id="1_oayp1"]
 [ext_resource type="Texture2D" uid="uid://cc8vwrqb2savq" path="res://Test_Pathfinding/assets/new_atlas_texture.tres" id="2_qgrjt"]
+[ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="3_1pu3x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
 size = Vector2(12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iodw8"]
+atlas = ExtResource("3_1pu3x")
+region = Rect2(0, 288, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xwpt"]
+atlas = ExtResource("3_1pu3x")
+region = Rect2(16, 288, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jgi1x"]
+atlas = ExtResource("3_1pu3x")
+region = Rect2(32, 288, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s17ww"]
+atlas = ExtResource("3_1pu3x")
+region = Rect2(48, 288, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufimc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iodw8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xwpt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jgi1x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s17ww")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="coin" type="Node2D" unique_id=1023716538]
 script = ExtResource("1_oayp1")
@@ -12,13 +49,18 @@ script = ExtResource("1_oayp1")
 [node name="PickupArea" type="Area2D" parent="." unique_id=1049086970]
 unique_name_in_owner = true
 collision_layer = 8
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupArea" unique_id=1905251832]
 shape = SubResource("RectangleShape2D_g4v7s")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=496001887]
+visible = false
 texture = ExtResource("2_qgrjt")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=437972242]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_ufimc")
+frame_progress = 0.12860651
 
 [connection signal="body_entered" from="PickupArea" to="." method="_on_pickup_area_body_entered"]
 [connection signal="body_exited" from="PickupArea" to="." method="_on_pickup_area_body_exited"]

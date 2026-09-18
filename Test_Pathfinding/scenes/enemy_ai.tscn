@@ -102,21 +102,19 @@ collision_mask = 2
 script = ExtResource("1_ruo7y")
 move_speed = 15.0
 visualize_path = false
+throw_rate = 3.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=418506286]
 unique_name_in_owner = true
-position = Vector2(8, 8)
 sprite_frames = SubResource("SpriteFrames_ufimc")
 animation = &"pirate_walk"
 frame_progress = 0.9552248
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=724067470]
-position = Vector2(8, 8)
 shape = SubResource("CircleShape2D_ufimc")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1595291828]
 unique_name_in_owner = true
-position = Vector2(8, 8)
 collision_mask = 8
 monitorable = false
 

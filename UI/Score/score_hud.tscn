@@ -15,7 +15,11 @@ region = Rect2(32, 290, 16, 16)
 atlas = ExtResource("3_t4lat")
 region = Rect2(0, 77, 16, 16)
 
-[node name="ScoreHUD" type="Control" unique_id=209382086 node_paths=PackedStringArray("score_label", "life_icons")]
+[sub_resource type="AtlasTexture" id="AtlasTexture_2nnlu"]
+atlas = ExtResource("3_t4lat")
+region = Rect2(0, 320, 16, 16)
+
+[node name="ScoreHUD" type="Control" unique_id=209382086 node_paths=PackedStringArray("score_label", "life_icons", "key_icons", "days_label", "time_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -26,6 +30,9 @@ mouse_filter = 2
 script = ExtResource("1_3xrhy")
 score_label = NodePath("ScoreTextLabel")
 life_icons = [NodePath("Life1"), NodePath("Life2"), NodePath("Life3")]
+key_icons = [NodePath("Key1"), NodePath("Key2"), NodePath("Key3")]
+days_label = NodePath("DaysLabel")
+time_label = NodePath("TimeLabel")
 
 [node name="Panel" type="Panel" parent="." unique_id=515210923]
 layout_mode = 0
@@ -39,11 +46,11 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 16.0
+offset_left = 13.0
 offset_top = -16.0
-offset_right = 96.0
+offset_right = 37.0
 grow_vertical = 0
-text = "0"
+text = "000"
 label_settings = ExtResource("2_7rbeb")
 vertical_alignment = 1
 
@@ -79,12 +86,60 @@ offset_bottom = 144.0
 texture = SubResource("AtlasTexture_t4lat")
 
 [node name="DaysLabel" type="Label" parent="." unique_id=1308984533]
+visible = false
 layout_mode = 0
-offset_left = 128.0
+offset_left = 88.0
 offset_top = 128.0
-offset_right = 160.0
+offset_right = 128.0
 offset_bottom = 144.0
 text = "day1"
 label_settings = ExtResource("2_7rbeb")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="TimeTitleLabel" type="Label" parent="." unique_id=9692504]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 128.0
+offset_right = 160.0
+offset_bottom = 144.0
+text = "Time"
+label_settings = ExtResource("2_7rbeb")
+horizontal_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="." unique_id=1890883220]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 136.0
+offset_right = 160.0
+offset_bottom = 152.0
+text = "000"
+label_settings = ExtResource("2_7rbeb")
+horizontal_alignment = 1
+
+[node name="Key1" type="TextureRect" parent="." unique_id=587979400]
+visible = false
+layout_mode = 0
+offset_left = 40.0
+offset_top = 128.0
+offset_right = 56.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_2nnlu")
+
+[node name="Key2" type="TextureRect" parent="." unique_id=292155091]
+visible = false
+layout_mode = 0
+offset_left = 48.0
+offset_top = 128.0
+offset_right = 64.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_2nnlu")
+
+[node name="Key3" type="TextureRect" parent="." unique_id=1107553693]
+visible = false
+layout_mode = 0
+offset_left = 56.0
+offset_top = 128.0
+offset_right = 72.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_2nnlu")

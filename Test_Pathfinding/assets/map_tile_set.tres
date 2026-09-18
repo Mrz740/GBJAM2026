@@ -213,6 +213,10 @@ texture = ExtResource("2_r38ev")
 3:17/0 = 0
 4:17/0 = 0
 5:17/0 = 0
+4:19/0 = 0
+4:19/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+4:19/0/custom_data_0 = "wall"
+10:7/0 = 0
 
 [resource]
 physics_layer_0/collision_layer = 2

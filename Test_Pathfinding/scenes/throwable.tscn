@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bb1r3k7yflwcy"]
+
+[ext_resource type="Script" uid="uid://cl5fnniekfs6u" path="res://Test_Pathfinding/scripts/throwable.gd" id="1_e5d1l"]
+[ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="2_1po43"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2nnlu"]
+radius = 2.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufimc"]
+atlas = ExtResource("2_1po43")
+region = Rect2(16, 272, 16, 16)
+
+[node name="Throwable" type="Node2D" unique_id=1350439973]
+script = ExtResource("1_e5d1l")
+speed = 50.0
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1846391349]
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=966583858]
+shape = SubResource("CircleShape2D_2nnlu")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=274171483]
+texture = SubResource("AtlasTexture_ufimc")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

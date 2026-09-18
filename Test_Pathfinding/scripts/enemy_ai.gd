@@ -1,12 +1,16 @@
 class_name Enemy
 extends CharacterBody2D
 
+const THROWABLE: PackedScene = preload("res://Test_Pathfinding/scenes/throwable.tscn")
+
 @export var move_speed : float = 5.0
 @export var visualize_path: bool = true
 @export var idx: int = 0
+@export var throw_rate: float = 5.0
+
+var throw_time: float
 
 var enemy_manager: EnemyManager = null
-var game_map: GameMap
 
 var enemy_type: EnemyManager.EnemyType
 var current_path: Array[Vector2i]
@@ -25,9 +29,8 @@ var enemy_radius: float
 @onready var line_2d: Line2D = %Line2D
 
 
-func setup(manager: EnemyManager, map: GameMap, index: int, type: EnemyManager.EnemyType) -> void:
+func setup(manager: EnemyManager, index: int, type: EnemyManager.EnemyType) -> void:
 	enemy_manager = manager
-	game_map = map
 	idx = index
 	name = "enemy_%s" % index
 	enemy_type = type
@@ -50,8 +53,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	
-	var current_tile: Vector2i = game_map.local_to_map(global_position)
-	if game_map.in_water(current_tile):
+	var current_tile: Vector2i = GameMap.instance.local_to_map(global_position)
+	if GameMap.instance.in_water(current_tile):
 		destroy_enemy()
 		return
 	
@@ -62,18 +65,18 @@ func _process(delta: float) -> void:
 			_move_ai(delta)
 		
 		EnemyManager.EnemyType.PIRATE:
-			_get_random_target_or_player()
+			_get_closest_target()
 			animated_sprite_2d.play("pirate_walk")
 			_move_ai(delta)
 		
 		EnemyManager.EnemyType.SKELETON:
-			_get_closest_target()
+			_get_position_away_from_player()
 			animated_sprite_2d.play("skeleton_walk")
 			_move_ai(delta)
+			_throw_items(delta)
 
 
 func _move_ai(delta: float) -> void:
-	
 	if target_position == -Vector2.ONE:
 		return
 	
@@ -88,7 +91,8 @@ func _move_ai(delta: float) -> void:
 		return
 	
 	can_update_path = false
-	var next_position: Vector2 = game_map.get_cell_world(current_path.front())
+	#var next_position: Vector2 = GameMap.instance.get_cell_world(current_path.front())
+	var next_position: Vector2 = GameMap.instance.map_to_local(current_path.front())
 	
 	# not using move_and_slide() so that enemies can overlap with each other. It's less prone to bugs
 	global_position = global_position.move_toward(next_position, move_speed * delta)
@@ -97,7 +101,7 @@ func _move_ai(delta: float) -> void:
 		current_path.pop_front()
 		can_update_path = true
 		
-		var current_tile: Vector2i = game_map.local_to_map(global_position)
+		var current_tile: Vector2i = GameMap.instance.local_to_map(global_position)
 		enemy_manager.update_enemy_current_tile(self, current_tile)
 
 
@@ -107,12 +111,12 @@ func _update_enemy_path() -> void:
 	if !is_valid_target():
 		return
 	
-	if game_map.is_point_walkable(target_position):
+	if GameMap.instance.is_point_walkable(target_position):
 		
-		var current_tile: Vector2i = game_map.local_to_map(global_position)
-		var target_tile: Vector2i = game_map.local_to_map(target_position)
+		var current_tile: Vector2i = GameMap.instance.local_to_map(global_position)
+		var target_tile: Vector2i = GameMap.instance.local_to_map(target_position)
 		
-		current_path = game_map.astar.get_id_path(current_tile, target_tile)
+		current_path = GameMap.instance.astar.get_id_path(current_tile, target_tile)
 		
 		if current_path.size() > 1:
 			current_path.pop_front()
@@ -120,8 +124,8 @@ func _update_enemy_path() -> void:
 		if visualize_path:
 			var test: Array
 			for p in current_path:
-				var offset: Vector2i = Vector2i.ONE * floori(game_map.TILE_SIZE * 0.5)
-				test.append(p * game_map.TILE_SIZE + offset)
+				var offset: Vector2i = Vector2i.ONE * floori(GameMap.instance.TILE_SIZE * 0.5)
+				test.append(p * GameMap.instance.TILE_SIZE + offset)
 			line_2d.points = test
 
 
@@ -139,12 +143,12 @@ func _get_closest_target() -> void:
 		var coin: Coin = area.get_parent() as Coin
 		if coin == null:
 			continue
-
+		
 		if !coin.dropped_by_player:
 			continue
-
+		
 		var current_dist: float = (coin.global_position - global_position).length_squared()
-
+		
 		if current_dist < max_dist:
 			max_dist = current_dist
 			closest_target = coin
@@ -156,12 +160,46 @@ func _get_random_target_or_player() -> void:
 	if (global_position - Player.instance.global_position).length_squared() < enemy_radius*enemy_radius:
 		target_position = Player.instance.global_position
 		return
-	
 	set_random_tile()
 
 
+func _get_position_away_from_player() -> void:
+	var player_pos: Vector2 = Player.instance.global_position
+	var radius: float = skeleton_detection_radius
+	
+	var center: Vector2i = GameMap.instance.local_to_map(player_pos)
+	var tiles: Array[Vector2i] = []
+	
+	var tile_radius: float = ceili(radius / GameMap.instance.TILE_SIZE)
+	var min_range: float = tile_radius * 0.75
+	
+	for x in range(center.x - tile_radius, center.x + tile_radius + 1):
+		for y in range(center.y - tile_radius, center.y + tile_radius + 1):
+			var coord: Vector2i = Vector2i(x, y)
+			
+			if enemy_manager.is_valid_tile(coord) and !enemy_manager.has_occupied_tile(coord) and coord.distance_squared_to(center) > min_range*min_range:
+				tiles.append(coord)
+	
+	if tiles.is_empty():
+		target_position = GameMap.instance.map_to_local(center)
+	else:
+		target_position = GameMap.instance.map_to_local(tiles[randi_range(0, tiles.size()-1)])
+
+
+func _throw_items(delta: float) -> void:
+	if throw_time > 0.0:
+		throw_time -= delta
+		return
+	throw_time = throw_rate
+	
+	var throwable: Throwable = THROWABLE.instantiate()
+	throwable.global_position = global_position
+	get_tree().current_scene.add_child(throwable)
+	throwable.throw(Player.instance.global_position, Player.instance.input_direction)
+
+
 func set_random_tile() -> void:
-	target_position = game_map.map_to_local(enemy_manager.get_random_tile_within_radius(global_position, enemy_radius))
+	target_position = GameMap.instance.map_to_local(enemy_manager.get_random_tile_within_radius(global_position, enemy_radius))
 
 
 func is_valid_target() -> bool:
@@ -171,4 +209,5 @@ func is_valid_target() -> bool:
 func destroy_enemy() -> void:
 	enemy_manager.enemy_current_tile.erase(self)
 	enemy_manager.enemy_next_tile.erase(self)
+	enemy_manager.reduce_enemy_count()
 	queue_free()
