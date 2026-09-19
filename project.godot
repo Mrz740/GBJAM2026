@@ -26,12 +26,14 @@ ScoreManager="*res://Managers/Score_System/score_manager.gd"
 SpawnerManager="*res://Managers/Spawner_System/spawner_manager.gd"
 PersistentColorRect="*uid://p82bqcpdcuf5"
 GameManager="*uid://d2w8myl7ukpll"
-AudioManager="*uid://cq414apchnhnx"
+SoundManager="*res://Managers/Sound_Manager/sound_manager.gd"
 
 [display]
 
 window/size/viewport_width=160
 window/size/viewport_height=144
+window/size/mode=3
+window/size/borderless=true
 window/size/always_on_top=true
 window/size/transparent=true
 window/stretch/mode="canvas_items"

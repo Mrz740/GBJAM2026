@@ -40,30 +40,30 @@ func update_focus_position() -> void:
 
 func decrease_volume() -> void:
 	if current_btn == buttons[0]:
-		AudioManager.change_master(-1)
-		buttons[0].text = str(AudioManager.get_master_volume())
+		SoundManager.change_master(-1)
+		buttons[0].text = str(SoundManager.get_master_volume())
 	
 	elif current_btn == buttons[1]:
-		AudioManager.change_music(-1)
-		buttons[1].text = str(AudioManager.get_music_volume())
+		SoundManager.change_music(-1)
+		buttons[1].text = str(SoundManager.get_music_volume())
 	
 	elif current_btn == buttons[2]:
-		AudioManager.change_sfx(-1)
-		buttons[2].text = str(AudioManager.get_sfx_volume())
+		SoundManager.change_sfx(-1)
+		buttons[2].text = str(SoundManager.get_sfx_volume())
 
 
 func increase_volume() -> void:
 	if current_btn == buttons[0]:
-		AudioManager.change_master(1)
-		buttons[0].text = str(AudioManager.get_master_volume())
+		SoundManager.change_master(1)
+		buttons[0].text = str(SoundManager.get_master_volume())
 	
 	elif current_btn == buttons[1]:
-		AudioManager.change_music(1)
-		buttons[1].text = str(AudioManager.get_music_volume())
+		SoundManager.change_music(1)
+		buttons[1].text = str(SoundManager.get_music_volume())
 	
 	elif current_btn == buttons[2]:
-		AudioManager.change_sfx(1)
-		buttons[2].text = str(AudioManager.get_sfx_volume())
+		SoundManager.change_sfx(1)
+		buttons[2].text = str(SoundManager.get_sfx_volume())
 
 
 func open_pause() -> void:

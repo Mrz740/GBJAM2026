@@ -2,6 +2,7 @@ class_name Coin
 extends Node2D
 
 @export var value: int = 1
+@export var pickup_sfx: AudioStream
 
 var dropped_by_player: bool
 var can_pick_up: bool = true
@@ -37,7 +38,7 @@ func _on_pickup_area_body_entered(body: Node2D) -> void:
 			return
 		_collected = true
 		ScoreManager.add_score(value, "coins")
-		# Play sound effect
+		SoundManager.play_sfx(pickup_sfx)
 		queue_free()
 	elif body.is_in_group("enemy") and dropped_by_player:
 		_collected = true
