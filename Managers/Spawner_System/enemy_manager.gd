@@ -96,7 +96,7 @@ func get_random_tile_within_radius(pos: Vector2, radius: float) -> Vector2i:
 		for y in range(center_coord.y - tile_radius, center_coord.y + tile_radius + 1):
 			var coord: Vector2i = Vector2i(x, y)
 			
-			if is_valid_tile(coord) and !has_occupied_tile(coord):
+			if is_valid_tile(coord) and !spawn_has_occupied_tile(coord):
 				tiles.append(coord)
 	
 	if tiles.is_empty():
@@ -146,10 +146,18 @@ func update_enemy_next_tile(enemy: Enemy, tile: Vector2i) -> void:
 	enemy_next_tile[enemy] = tile
 
 
-func has_occupied_tile(tile: Vector2i) -> bool:
+func spawn_has_occupied_tile(tile: Vector2i) -> bool:
 	for e in enemy_current_tile:
 		if enemy_current_tile[e] == tile:
 			return true
+	return false
+
+
+func has_occupied_tile(tile: Vector2i, enemy: Enemy) -> bool:
+	for e in enemy_current_tile:
+		if enemy_current_tile[e] == tile and e != enemy:
+			if e.idx > enemy.idx:
+				return true
 	return false
 
 #endregion

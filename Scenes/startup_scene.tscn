@@ -12,7 +12,6 @@ menu_buttons = [NodePath("Control/MainMenu/BtnStart"), NodePath("Control/MainMen
 settings_buttons = [NodePath("Control/SettingsMenu/MasterDBLabel"), NodePath("Control/SettingsMenu/MusicDBLabel"), NodePath("Control/SettingsMenu/SFXDBLabel"), NodePath("Control/SettingsMenu/BtnBack")]
 
 [node name="Background" parent="." index="0" unique_id=690367307]
-visible = false
 mouse_filter = 2
 
 [node name="TextureRect" type="TextureRect" parent="." index="1" unique_id=636360625]
@@ -267,3 +266,26 @@ offset_top = 32.0
 offset_right = 16.0
 offset_bottom = 48.0
 texture = ExtResource("4_7nkqh")
+
+[node name="ColorRect" type="ColorRect" parent="." index="3" unique_id=2135021088]
+visible = false
+offset_top = 96.0
+offset_right = 160.0
+offset_bottom = 144.0
+color = Color(0.18039216, 0.13333334, 0.18431373, 1)
+
+[node name="Label" type="Label" parent="ColorRect" index="0" unique_id=145029061]
+custom_minimum_size = Vector2(160, 144)
+custom_maximum_size = Vector2(160, 60)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "By the seas! My crew has finally done it! We found the map to the bloody treasure! 
+
+"
+label_settings = ExtResource("4_ig4u5")
+autowrap_mode = 3

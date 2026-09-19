@@ -121,6 +121,15 @@ func is_tile_spawnable(tile: Vector2i) -> bool:
 		return false
 
 	var tile_data: TileData = map.get_cell_tile_data(tile)
+	
+	# VERY CRUDE FIX TO COINS NOT SPAWNING ON ROCKS
+	# =============================================
+	var game_map: GameMap = map.get_parent()
+	if game_map.temp_dig_layer.get_cell_atlas_coords(tile) == game_map.rock_atlas:
+		return false
+	# =============================================
+	# VERY CRUDE FIX TO COINS NOT SPAWNING ON ROCKS
+	
 	if tile_data == null:
 		return false
 

@@ -109,6 +109,9 @@ var water_atlas_placeholder: Vector2i = Vector2i(13, 0)
 var grass_atlas_placeholder: Vector2i = Vector2i(13, 1)
 var sand_atlas_placeholder: Vector2i = Vector2i(13, 2)
 
+var rock_spawn_chnace: float = 0.95
+var x_spot_spawn_chance: float = 0.95
+
 var astar: AStarGrid2D = AStarGrid2D.new()
 var map_rect: Rect2i = Rect2i()
 
@@ -247,10 +250,10 @@ func spawn_foliage_and_x_spots() -> void:
 		var rand_x_spot: float = randf() * dist_t + 0.05
 		var rand_rock_spot: float = randf() * dist_t
 		
-		if rand_rock_spot > 0.95:
+		if rand_rock_spot > rock_spawn_chnace:
 			temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), rock_atlas)
 		
-		elif rand_x_spot > 0.95:
+		elif rand_x_spot > x_spot_spawn_chance:
 			temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), x_spot_atlas)
 
 
@@ -506,8 +509,29 @@ func spawn_gold(coord: Vector2i) -> void:
 	
 	var coin = scene.instantiate()
 	
+	#var x: int = randi_range(-1, 1)
+	#var y: int = randi_range(-1, 1)
+	
+	var candidates: Array[Vector2i] = []
+	for x in range(coord.x - 1, coord.x + 1):
+		for y in range(coord.y - 1, coord.y + 1): 
+			if temp_dig_layer.get_cell_atlas_coords(Vector2i(x,y)) != rock_atlas:
+				candidates.append(Vector2i(x,y))
+	
+	var end_tile: Vector2i = coord
+	if !candidates.is_empty():
+		end_tile = candidates[ randi_range(0, candidates.size()-1) ]
+	
+	var rand_range: float = -3.0
+	var global_x: float = randf_range(-rand_range, rand_range)
+	#var global_x: float = rand_range
+	var global_y: float = randf_range(-rand_range, rand_range)
+	#var global_y: float = rand_range
+	
+	
 	var start: Vector2 = map_to_local(coord)
-	var end : Vector2 = start + Vector2(randf_range(-24.0, 24.0), randf_range(-24.0, 24.0))
+	#var end : Vector2 = start + Vector2(randf_range(-24.0, 24.0), randf_range(-24.0, 24.0))
+	var end: Vector2 = map_to_local(end_tile) + Vector2(global_x, global_y)
 	
 	var control: Vector2 = (start + end) * 0.5
 	control.y -= randf_range(40.0, 50.0)
@@ -525,7 +549,7 @@ func spawn_gold(coord: Vector2i) -> void:
 			coin.global_position = _bezier_quadratic(start, control, end, t),
 		0.0, 1.0, tween_time
 	)
-	tween.tween_interval(tween_time)
+	tween.tween_interval(tween_time*1.5)
 	tween.tween_callback(
 		func() -> void:
 			if in_water(local_to_map(coin.global_position)):

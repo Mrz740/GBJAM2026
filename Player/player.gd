@@ -44,6 +44,7 @@ var digging: bool
 var hurt: bool
 
 var input_direction: Vector2 
+var old_direction: Vector2
 
 @onready var player_label: Label = %player_label
 @onready var collision_area: Area2D = %CollisionArea
@@ -54,6 +55,7 @@ var input_direction: Vector2
 @onready var money_label: Label = %MoneyLabel
 @onready var life: Sprite2D = %Life
 @onready var powerup: AnimatedSprite2D = %Powerup
+@onready var dig_indicator: Sprite2D = %DigIndicator
 
 
 func _enter_tree() -> void:
@@ -79,6 +81,10 @@ func _process(delta: float) -> void:
 	
 	if a_hold:
 		a_hold_time += delta
+		if a_hold_time > a_hold_threshold:
+			dig_indicator.show()
+	else:
+		dig_indicator.hide()
 	
 	if message_time > 0.0:
 		player_label.show()
@@ -107,6 +113,7 @@ func _input(event: InputEvent) -> void:
 			GameManager.pause_game()
 			end_day_screen.show()
 			return
+		
 		a_hold = true
 		a_hold_time = 0.0
 	
@@ -114,7 +121,7 @@ func _input(event: InputEvent) -> void:
 		a_hold = false
 		var coord: Vector2i = GameMap.instance.local_to_map(global_position)
 		if a_hold_time >= a_hold_threshold:
-			coord += Vector2i(input_direction)
+			coord += Vector2i(old_direction)
 		try_dig(coord)
 	
 	elif event.is_action_pressed("B"):
@@ -123,6 +130,10 @@ func _input(event: InputEvent) -> void:
 
 func get_input() -> void:
 	input_direction = Input.get_vector("LEFT", "RIGHT", "UP", "DOWN")
+	
+	dig_indicator.position = input_direction * 16
+	if input_direction:
+		old_direction = input_direction
 	
 	if hurt and !animated_sprite_2d.is_playing():
 		hurt = false

@@ -87,7 +87,7 @@ func _move_ai(delta: float) -> void:
 		return
 	
 	var next_tile: Vector2i = current_path.front()
-	if enemy_manager.has_occupied_tile(next_tile):
+	if enemy_manager.has_occupied_tile(next_tile, self):
 		return
 	
 	can_update_path = false
@@ -177,7 +177,7 @@ func _get_position_away_from_player() -> void:
 		for y in range(center.y - tile_radius, center.y + tile_radius + 1):
 			var coord: Vector2i = Vector2i(x, y)
 			
-			if enemy_manager.is_valid_tile(coord) and !enemy_manager.has_occupied_tile(coord) and coord.distance_squared_to(center) > min_range*min_range:
+			if enemy_manager.is_valid_tile(coord) and !enemy_manager.has_occupied_tile(coord, self) and coord.distance_squared_to(center) > min_range*min_range:
 				tiles.append(coord)
 	
 	if tiles.is_empty():
