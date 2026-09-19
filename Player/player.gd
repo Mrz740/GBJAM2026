@@ -122,6 +122,10 @@ func _input(event: InputEvent) -> void:
 		var coord: Vector2i = GameMap.instance.local_to_map(global_position)
 		if a_hold_time >= a_hold_threshold:
 			coord += Vector2i(old_direction)
+			var coord2: Vector2i = coord + Vector2i(old_direction)
+			#try_dig2(coord, coord2)
+		#else:
+			#try_dig(coord)
 		try_dig(coord)
 	
 	elif event.is_action_pressed("B"):
@@ -187,6 +191,21 @@ func try_dig(coord: Vector2i):
 	animated_sprite_2d.play("dig")
 	digging = true
 	GameMap.instance.dig(coord)
+
+
+func try_dig2(coord: Vector2i, coord2: Vector2i):
+	if GameMap.instance.local_to_map(global_position) == GameMap.instance.ship_tile:
+		GameManager.pause_game()
+		end_day_screen.show()
+		return
+	
+	if digging:
+		return
+	
+	animated_sprite_2d.play("dig")
+	digging = true
+	GameMap.instance.dig(coord)
+	GameMap.instance.dig.call_deferred(coord2)
 
 
 func drop_coin() -> void:

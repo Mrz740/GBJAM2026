@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SceneDialogueResource" format=3 uid="uid://cbjmahrpnl26l"]
+
+[ext_resource type="Texture2D" uid="uid://b5nteid4i3nno" path="res://Test_Pathfinding/assets/Scene_3_X_MARK.png" id="1_xl01u"]
+[ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="2_7y0af"]
+
+[resource]
+script = ExtResource("2_7y0af")
+scene_dialogue = Array[String](["X marks the spot, lads!", "Grab your shovels and start diggin'!"])
+scene_texture = ExtResource("1_xl01u")
+metadata/_custom_type_script = "uid://gxq8iajckl4r"

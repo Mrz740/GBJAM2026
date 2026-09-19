@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SceneDialogueResource" format=3 uid="uid://c1wbw2p2jwkrb"]
+
+[ext_resource type="Texture2D" uid="uid://daayf8smpi8ua" path="res://Test_Pathfinding/assets/Scene_7_CURSE.png" id="1_3xn0l"]
+[ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="2_cimla"]
+
+[resource]
+script = ExtResource("2_cimla")
+scene_dialogue = Array[String](["BELLADONNA DIGGER!", "Your greed has sealed your fate.", "Now you shall pay the price! ", "AHHHH! What is this!?", "You have three days.", "THREE DAYS FOR WHAT?!", "You have three days to pay the toll of a soul.", "Survive this island and repay your debt.", "Fail, and your soul will wander these shores forever,", "searching for treasure, but never finding it."])
+scene_texture = ExtResource("1_3xn0l")
+metadata/_custom_type_script = "uid://gxq8iajckl4r"

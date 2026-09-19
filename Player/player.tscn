@@ -219,7 +219,6 @@ animations = [{
 [node name="Player" type="CharacterBody2D" unique_id=277292832]
 collision_mask = 2
 script = ExtResource("1_4ntmi")
-walk_speed = 40.0
 fast_timer = 8.0
 
 [node name="DigIndicator" type="Sprite2D" parent="." unique_id=1835856588]

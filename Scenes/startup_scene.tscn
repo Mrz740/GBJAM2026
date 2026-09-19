@@ -5,6 +5,51 @@
 [ext_resource type="Texture2D" uid="uid://cdf1gtenef0e2" path="res://Test_Pathfinding/assets/TESTING_Title_Screen.png" id="3_04pjf"]
 [ext_resource type="Texture2D" uid="uid://cc8vwrqb2savq" path="res://Test_Pathfinding/assets/new_atlas_texture.tres" id="4_7nkqh"]
 [ext_resource type="LabelSettings" uid="uid://ko788u5oqbee" path="res://Test_Pathfinding/assets/new_label_settings.tres" id="4_ig4u5"]
+[ext_resource type="Script" uid="uid://c030tpl08sgns" path="res://Scripts/Startup/intro_scene.gd" id="6_p53yc"]
+[ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="7_aprjv"]
+[ext_resource type="Texture2D" uid="uid://7sw3vsmf08kp" path="res://Test_Pathfinding/assets/Scene_1_MAP.png" id="7_ucdes"]
+[ext_resource type="Resource" uid="uid://1oerys1ixg62" path="res://Test_Pathfinding/SceneDialogue/scene1.tres" id="8_tgfxl"]
+[ext_resource type="Resource" uid="uid://dwmgrfb4chvkm" path="res://Test_Pathfinding/SceneDialogue/scene2.tres" id="9_v4oa2"]
+[ext_resource type="Resource" uid="uid://cbjmahrpnl26l" path="res://Test_Pathfinding/SceneDialogue/scene3.tres" id="10_6jucu"]
+[ext_resource type="Resource" uid="uid://dnnqiklj748pa" path="res://Test_Pathfinding/SceneDialogue/scene4.tres" id="11_cttxu"]
+[ext_resource type="Resource" uid="uid://d3r16vo44pd3a" path="res://Test_Pathfinding/SceneDialogue/scene5.tres" id="12_f46nj"]
+[ext_resource type="Resource" uid="uid://gxpdvvma8gn5" path="res://Test_Pathfinding/SceneDialogue/scene6.tres" id="13_lm1bh"]
+[ext_resource type="Resource" uid="uid://c1wbw2p2jwkrb" path="res://Test_Pathfinding/SceneDialogue/scene7.tres" id="14_omgs5"]
+[ext_resource type="Texture2D" uid="uid://c7jlq54l157xv" path="res://Test_Pathfinding/assets/Scene_BG.png" id="15_f46nj"]
+[ext_resource type="Texture2D" uid="uid://6yv2skk21h4w" path="res://Test_Pathfinding/assets/Scene_2_ISLAND_transparent.png" id="16_lm1bh"]
+[ext_resource type="Script" uid="uid://cappw4noxy615" path="res://Test_Pathfinding/scripts/scene_2.gd" id="18_omgs5"]
+[ext_resource type="Script" uid="uid://cj6j8aenfcqno" path="res://Test_Pathfinding/scripts/scene_3.gd" id="19_7o4oc"]
+[ext_resource type="Script" uid="uid://be4npely488tu" path="res://Test_Pathfinding/scripts/scene_4.gd" id="20_4c4km"]
+[ext_resource type="Texture2D" uid="uid://1a0alywxacc1" path="res://Test_Pathfinding/assets/TEST_storylines3_no_crabs.png" id="20_n71yr"]
+[ext_resource type="Texture2D" uid="uid://b1yo1huamdmry" path="res://Test_Pathfinding/assets/Scene_3_X_MARK_no_crab.png" id="20_w000c"]
+[ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="21_4c4km"]
+[ext_resource type="Script" uid="uid://dvv6gwuuk8mfu" path="res://Test_Pathfinding/scripts/scene_5.gd" id="22_7o4oc"]
+[ext_resource type="Texture2D" uid="uid://dhqcyrdfc4vvv" path="res://Test_Pathfinding/assets/Scene_5_SHIP_water.png" id="23_w000c"]
+[ext_resource type="Texture2D" uid="uid://p15ydbaddyr" path="res://Test_Pathfinding/assets/Scene_5_SHIP_transparent.png" id="24_o34rv"]
+[ext_resource type="Texture2D" uid="uid://yphqnjch12w0" path="res://Test_Pathfinding/assets/Scene_6_CHEST.png" id="27_w000c"]
+[ext_resource type="Texture2D" uid="uid://daayf8smpi8ua" path="res://Test_Pathfinding/assets/Scene_7_CURSE.png" id="28_o34rv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vdu33"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(0, 160, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t3vyw"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(16, 160, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufimc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vdu33")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t3vyw")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="startup_scene" unique_id=2008706374 node_paths=PackedStringArray("menu_buttons", "settings_buttons") instance=ExtResource("1_7wexv")]
 script = ExtResource("2_4xr2o")
@@ -33,6 +78,7 @@ mouse_filter = 2
 
 [node name="MainMenu" type="Control" parent="Control" index="0" unique_id=1755487629]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,10 +99,10 @@ vertical_alignment = 1
 [node name="BtnOptions" type="Label" parent="Control/MainMenu" index="1" unique_id=909545775]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 40.0
+offset_top = 44.0
 offset_right = 72.0
-offset_bottom = 64.0
-text = "OPTIONS"
+offset_bottom = 67.99997
+text = "Options"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
 
@@ -64,16 +110,15 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 7.775)
 layout_mode = 0
 offset_left = 16.0
-offset_top = 48.0
+offset_top = 56.0
 offset_right = 72.0
-offset_bottom = 72.0
-text = "CREDITS"
+offset_bottom = 80.0
+text = "Credits"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
 
 [node name="SettingsMenu" type="Control" parent="Control" index="1" unique_id=1484228734]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -94,9 +139,9 @@ color = Color(0.18039216, 0.13333334, 0.18431373, 1)
 [node name="MasterDBLabel" type="Label" parent="Control/SettingsMenu" index="1" unique_id=586685852]
 layout_mode = 0
 offset_left = 96.0
-offset_top = 40.0
+offset_top = 30.0
 offset_right = 144.0
-offset_bottom = 64.0
+offset_bottom = 54.0
 text = "100"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
@@ -113,9 +158,9 @@ vertical_alignment = 1
 [node name="MusicDBLabel" type="Label" parent="Control/SettingsMenu" index="2" unique_id=1448520126]
 layout_mode = 0
 offset_left = 96.0
-offset_top = 48.0
+offset_top = 42.0
 offset_right = 143.0
-offset_bottom = 72.0
+offset_bottom = 66.0
 text = "100"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
@@ -132,9 +177,9 @@ vertical_alignment = 1
 [node name="SFXDBLabel" type="Label" parent="Control/SettingsMenu" index="3" unique_id=1329290274]
 layout_mode = 0
 offset_left = 96.0
-offset_top = 56.0
+offset_top = 54.0
 offset_right = 144.0
-offset_bottom = 80.0
+offset_bottom = 78.0
 text = "100"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
@@ -245,18 +290,18 @@ vertical_alignment = 1
 [node name="BtnBackCredits" type="Label" parent="Control/CreditsMenu" index="5" unique_id=1665030944]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 66.0
-offset_top = 103.4
-offset_right = 122.0
-offset_bottom = 126.399994
+offset_left = 64.0
+offset_top = 104.0
+offset_right = 120.0
+offset_bottom = 128.0
 text = "Back"
 label_settings = ExtResource("4_ig4u5")
+vertical_alignment = 1
 
 [node name="BackFocus" type="TextureRect" parent="Control/CreditsMenu/BtnBackCredits" index="0" unique_id=1462357642]
 layout_mode = 0
 offset_left = -16.0
-offset_top = -7.4000015
-offset_bottom = 8.599998
+offset_bottom = 16.0
 texture = ExtResource("4_7nkqh")
 
 [node name="Focus" type="TextureRect" parent="Control" index="3" unique_id=378710288]
@@ -267,25 +312,205 @@ offset_right = 16.0
 offset_bottom = 48.0
 texture = ExtResource("4_7nkqh")
 
-[node name="ColorRect" type="ColorRect" parent="." index="3" unique_id=2135021088]
-visible = false
-offset_top = 96.0
+[node name="IntroScene" type="Control" parent="." index="3" unique_id=554479217 node_paths=PackedStringArray("startup_scene", "scene_nodes")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 offset_right = 160.0
 offset_bottom = 144.0
-color = Color(0.18039216, 0.13333334, 0.18431373, 1)
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_p53yc")
+startup_scene = NodePath("..")
+scene_dialogue_resources = Array[ExtResource("7_aprjv")]([ExtResource("8_tgfxl"), ExtResource("9_v4oa2"), ExtResource("10_6jucu"), ExtResource("11_cttxu"), ExtResource("12_f46nj"), ExtResource("13_lm1bh"), ExtResource("14_omgs5")])
+scene_nodes = [NodePath("Scene1"), NodePath("Scene2"), NodePath("Scene3"), NodePath("Scene4"), NodePath("Scene5"), NodePath("Scene6"), NodePath("Scene7")]
 
-[node name="Label" type="Label" parent="ColorRect" index="0" unique_id=145029061]
-custom_minimum_size = Vector2(160, 144)
-custom_maximum_size = Vector2(160, 60)
+[node name="ColorRect" type="ColorRect" parent="IntroScene" index="0" unique_id=2135021088]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "By the seas! My crew has finally done it! We found the map to the bloody treasure! 
+color = Color(0.18039216, 0.13333334, 0.18431373, 1)
 
-"
+[node name="Bg" type="TextureRect" parent="IntroScene" index="1" unique_id=2143926219]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="TextureRect" type="TextureRect" parent="IntroScene" index="2" unique_id=1073457037]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="Scene1" type="Node2D" parent="IntroScene" index="3" unique_id=483226440]
+
+[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene1" index="0" unique_id=1663230647]
+position = Vector2(80, 72)
+texture = ExtResource("7_ucdes")
+
+[node name="Scene2" type="Node2D" parent="IntroScene" index="4" unique_id=1034776741 node_paths=PackedStringArray("tween_object")]
+visible = false
+script = ExtResource("18_omgs5")
+start_y = 120.0
+end_y = 80.0
+duration = 6.0
+tween_object = NodePath("Sprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene2" index="0" unique_id=1494784702]
+position = Vector2(80, 120)
+texture = ExtResource("16_lm1bh")
+
+[node name="Scene3" type="Node2D" parent="IntroScene" index="5" unique_id=1588105360 node_paths=PackedStringArray("tween_object")]
+visible = false
+script = ExtResource("19_7o4oc")
+tween_object = NodePath("Sprite2D/AnimatedSprite2D")
+
+[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene3" index="0" unique_id=2001487335]
+position = Vector2(80, 72)
+texture = ExtResource("20_w000c")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="IntroScene/Scene3/Sprite2D" index="0" unique_id=460908198]
+position = Vector2(40, -8)
+sprite_frames = SubResource("SpriteFrames_ufimc")
+frame_progress = 0.6477728
+
+[node name="Scene4" type="Node2D" parent="IntroScene" index="6" unique_id=2133931939 node_paths=PackedStringArray("tween_object", "tween_object2")]
+visible = false
+script = ExtResource("20_4c4km")
+tween_object = NodePath("Sprite2D/AnimatedSprite2D")
+tween_object2 = NodePath("Sprite2D/AnimatedSprite2D2")
+
+[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene4" index="0" unique_id=2005497461]
+position = Vector2(80, 72)
+texture = ExtResource("20_n71yr")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="IntroScene/Scene4/Sprite2D" index="0" unique_id=109719786]
+position = Vector2(-48, -8)
+sprite_frames = SubResource("SpriteFrames_ufimc")
+frame_progress = 0.49222514
+
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="IntroScene/Scene4/Sprite2D" index="1" unique_id=2063978702]
+position = Vector2(40, -8)
+sprite_frames = SubResource("SpriteFrames_ufimc")
+frame_progress = 0.5202302
+
+[node name="Scene5" type="Node2D" parent="IntroScene" index="7" unique_id=1735281055 node_paths=PackedStringArray("tween_object")]
+visible = false
+script = ExtResource("22_7o4oc")
+start_y = 64.0
+end_y = 66.0
+speed = 5.0
+tween_object = NodePath("Sprite2D2")
+
+[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene5" index="0" unique_id=366623620]
+position = Vector2(80, 64)
+texture = ExtResource("23_w000c")
+
+[node name="Sprite2D2" type="Sprite2D" parent="IntroScene/Scene5" index="1" unique_id=1081188683]
+position = Vector2(80, 64)
+texture = ExtResource("24_o34rv")
+
+[node name="Scene6" type="Node2D" parent="IntroScene" index="8" unique_id=1788210400]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene6" index="0" unique_id=1102939539]
+position = Vector2(80, 72)
+texture = ExtResource("27_w000c")
+
+[node name="Scene7" type="Node2D" parent="IntroScene" index="9" unique_id=335147163]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene7" index="0" unique_id=2142368799]
+position = Vector2(80, 72)
+texture = ExtResource("28_o34rv")
+
+[node name="Control" type="Control" parent="IntroScene" index="10" unique_id=2120219818]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 96.0
+offset_right = 152.0
+offset_bottom = 136.0
+
+[node name="Bg2" type="TextureRect" parent="IntroScene/Control" index="0" unique_id=1814674845]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 96.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="Bg3" type="TextureRect" parent="IntroScene/Control" index="1" unique_id=580332784]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = 45.740005
+offset_right = 8.0
+offset_bottom = 149.74
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="Dialogue" type="ColorRect" parent="IntroScene/Control" index="2" unique_id=1779741034]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18039216, 0.13333334, 0.18431373, 1)
+
+[node name="DialogueLabel" type="Label" parent="IntroScene/Control" index="3" unique_id=1976352512]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.18
+offset_top = -4.34
+offset_right = -3.1799927
+offset_bottom = 17.66
+grow_horizontal = 2
+grow_vertical = 2
+text = "Fail, and your soul will wander these shores forever,"
 label_settings = ExtResource("4_ig4u5")
-autowrap_mode = 3
+autowrap_mode = 2
+
+[node name="Label" type="Label" parent="IntroScene" index="11" unique_id=1657038864]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 128.0
+offset_right = 175.99963
+offset_bottom = 151.0
+text = "[A]"
+label_settings = ExtResource("4_ig4u5")
+
+[node name="Label2" type="Label" parent="IntroScene" index="12" unique_id=1816729432]
+visible = false
+layout_mode = 0
+offset_left = 3.0
+offset_right = 89.0
+offset_bottom = 23.0
+text = "[START] skip"
+label_settings = ExtResource("4_ig4u5")

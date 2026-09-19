@@ -161,13 +161,13 @@ func generate_world() -> void:
 			island_seed = 1
 		fast_noise_lite.seed = island_seed
 		
-		fast_noise_lite.frequency = 0.11
-		
-	elif GameManager.current_day == 2:
 		fast_noise_lite.frequency = 0.15
 		
-	else:
+	elif GameManager.current_day == 2:
 		fast_noise_lite.frequency = 0.2
+		
+	else:
+		fast_noise_lite.frequency = 0.25
 	
 	data_layer.clear()
 	water_display_layer.clear()

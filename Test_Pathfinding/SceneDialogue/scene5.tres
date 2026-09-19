@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="SceneDialogueResource" format=3 uid="uid://d3r16vo44pd3a"]
+
+[ext_resource type="Texture2D" uid="uid://bvap3icjmays7" path="res://Test_Pathfinding/assets/Scene_5_SHIP.png" id="1_f86vu"]
+[ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="2_571m7"]
+
+[resource]
+script = ExtResource("2_571m7")
+scene_dialogue = Array[String](["Later that night, a dark storm fell upon the sea. 
+"])
+scene_texture = ExtResource("1_f86vu")
+metadata/_custom_type_script = "uid://gxq8iajckl4r"

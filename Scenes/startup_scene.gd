@@ -1,3 +1,4 @@
+class_name MainMenu
 extends Node2D
 
 # using control nodes for buttons instead of buttons because godot has its own handling of menu
@@ -15,6 +16,8 @@ var current_btn: Control
 
 @onready var focus_texture: TextureRect = %Focus
 
+var in_intro_scene: bool = true
+
 
 func _ready() -> void:
 	current_btn = menu_buttons[0]
@@ -22,6 +25,8 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if in_intro_scene:
+		return
 	if event.is_action_pressed("UP"):
 		update_current_button(true)
 	elif event.is_action_pressed("DOWN"):

@@ -60,6 +60,7 @@ func spawn_enemies(count: int) -> void:
 		enemy_node.global_position = GameMap.instance.get_cell_world(coord)
 		
 		var rng_type: int = randi_range(0, 2)
+		#var rng_type: int = 0
 		
 		enemy_node.setup(self, current_enemy_count, rng_type as EnemyType)
 		add_child(enemy_node)

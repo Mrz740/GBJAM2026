@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SceneDialogueResource" format=3 uid="uid://dnnqiklj748pa"]
+
+[ext_resource type="Texture2D" uid="uid://bg05jw3u7abvc" path="res://Test_Pathfinding/assets/Scene_4_TREASURE.png" id="1_1a2q6"]
+[ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="2_32kdw"]
+
+[resource]
+script = ExtResource("2_32kdw")
+scene_dialogue = Array[String](["Look at these beauties!", "With this much treasure, we'll be eatin', drinkin',", "and livin' like kings for days!"])
+scene_texture = ExtResource("1_1a2q6")
+metadata/_custom_type_script = "uid://gxq8iajckl4r"

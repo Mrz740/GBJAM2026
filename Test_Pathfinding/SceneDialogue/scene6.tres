@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SceneDialogueResource" format=3 uid="uid://gxpdvvma8gn5"]
+
+[ext_resource type="Texture2D" uid="uid://yphqnjch12w0" path="res://Test_Pathfinding/assets/Scene_6_CHEST.png" id="1_ut375"]
+[ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="2_m1rm6"]
+
+[resource]
+script = ExtResource("2_m1rm6")
+scene_dialogue = Array[String](["The treasure chest began to glow,", "surrounded by a dark, sinister aura. "])
+scene_texture = ExtResource("1_ut375")
+metadata/_custom_type_script = "uid://gxq8iajckl4r"

@@ -100,19 +100,19 @@ vertical_alignment = 1
 [node name="TimeTitleLabel" type="Label" parent="." unique_id=9692504]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 128.0
+offset_top = 125.205
 offset_right = 160.0
-offset_bottom = 144.0
-text = "Time"
+offset_bottom = 141.2049
+text = "TIME"
 label_settings = ExtResource("2_7rbeb")
 horizontal_alignment = 1
 
 [node name="TimeLabel" type="Label" parent="." unique_id=1890883220]
 layout_mode = 0
 offset_left = 128.0
-offset_top = 136.0
+offset_top = 133.025
 offset_right = 160.0
-offset_bottom = 152.0
+offset_bottom = 149.025
 text = "000"
 label_settings = ExtResource("2_7rbeb")
 horizontal_alignment = 1
