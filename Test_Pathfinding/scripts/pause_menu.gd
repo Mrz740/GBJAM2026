@@ -4,6 +4,7 @@ extends Panel
 @export var focus_texture: TextureRect
 @export var options_menu: Control
 @export var died_screen: Control
+@export var end_day_screen: Control
 
 var current_btn: Control
 
@@ -13,7 +14,7 @@ func _ready():
 
 
 func _input(event: InputEvent) -> void:
-	if !visible and !died_screen.visible:
+	if !visible and !died_screen.visible and !end_day_screen.visible:
 		if event.is_action_pressed("START"):
 			GameManager.pause_game()
 			show.call_deferred()

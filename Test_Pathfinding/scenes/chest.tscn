@@ -38,6 +38,8 @@ animations = [{
 }]
 
 [node name="Chest" type="Node2D" unique_id=795559349]
+z_index = 1
+y_sort_enabled = true
 script = ExtResource("1_3jjf0")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1260873578]

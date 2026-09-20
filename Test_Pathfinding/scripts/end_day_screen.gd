@@ -1,3 +1,4 @@
+class_name EndDayScreen
 extends Control
 
 # using control nodes for buttons instead of buttons because godot has its own handling of menu
@@ -90,14 +91,7 @@ func _input(event: InputEvent) -> void:
 				animate_panel(-1.0, 1.0, 1)
 				await get_tree().create_timer(animation_timer + 0.01).timeout
 				update_gold()
-				if ScoreManager.current_score >= GameManager.target_gold:
-					days_left_label.text = "You're free!"
-				else:
-					days_left_label.text = "You lose"
-				days_left_label.show()
-				
-				await get_tree().create_timer(3.0).timeout
-				GameManager.end_game()
+				handle_ending()
 			else:
 				animate_panel(-1.0, 1.0, 1)
 				await get_tree().create_timer(animation_timer + 0.01).timeout
@@ -107,8 +101,36 @@ func _input(event: InputEvent) -> void:
 			hide()
 			GameManager.unpause_game.call_deferred()
 
-
 func punish_next_day() -> void:
 	animate_panel(-1.0, 1.0, 1)
 	await get_tree().create_timer(animation_timer + 0.01).timeout
 	GameManager.punish_next_day()
+
+
+var label_tween: Tween
+func handle_ending() -> void:
+	if ScoreManager.current_score >= GameManager.target_gold:
+		days_left_label.text = "You're free...?"
+		days_left_label.visible_characters = 11
+		days_left_label.show()
+		
+		var character_count : int = days_left_label.text.length()
+		var character_delay : float = 0.25
+		
+		if label_tween != null and label_tween.is_running():
+			label_tween.kill()
+		
+		label_tween = create_tween()
+		label_tween.tween_interval(0.5)
+		for i in 4:
+			label_tween.tween_callback(
+				func() -> void:
+					days_left_label.visible_characters += 1
+			)
+			label_tween.tween_interval(character_delay)
+	
+	else:
+		days_left_label.text = "You lose"
+	
+	await get_tree().create_timer(3.0).timeout
+	GameManager.end_game()

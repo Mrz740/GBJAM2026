@@ -61,6 +61,7 @@ animations = [{
 }]
 
 [node name="coin" type="Node2D" unique_id=1023716538]
+z_index = 1
 y_sort_enabled = true
 script = ExtResource("1_oayp1")
 pickup_sfx = SubResource("AudioStreamRandomizer_coin")

@@ -389,6 +389,7 @@ func _setup_astar() -> void:
 
 #region DIG MAP
 
+signal map_dug(coord: Vector2i)
 func dig(coord: Vector2i) -> void:
 	
 	if get_terrain_type(coord) == TerrainType.DIRT:
@@ -396,6 +397,8 @@ func dig(coord: Vector2i) -> void:
 	
 	if get_terrain_type(coord) == TerrainType.WATER:
 		return
+	
+	map_dug.emit(coord)
 	
 	var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(coord)
 	
@@ -477,6 +480,7 @@ func dig_x_spot(coord: Vector2i, random_count: int) -> void:
 	
 	coin.global_position = start
 	coin.can_pick_up = false
+	coin.z_index = 5
 	add_child(coin)
 	
 	var tween_time: float = 0.6
@@ -491,6 +495,7 @@ func dig_x_spot(coord: Vector2i, random_count: int) -> void:
 	tween.tween_interval(tween_time)
 	tween.tween_callback(
 		func() -> void:
+			coin.z_index = 1
 			if in_water(local_to_map(coin.global_position)):
 				coin.queue_free()
 			else:
@@ -546,6 +551,7 @@ func spawn_gold(coord: Vector2i) -> void:
 	
 	coin.global_position = start
 	coin.can_pick_up = false
+	coin.z_index = 5
 	add_child(coin)
 	
 	var tween_time: float = 0.6
@@ -560,12 +566,92 @@ func spawn_gold(coord: Vector2i) -> void:
 	tween.tween_interval(tween_time)
 	tween.tween_callback(
 		func() -> void:
+			coin.z_index = 1
 			if in_water(local_to_map(coin.global_position)):
 				coin.queue_free()
 			#else:
 				#print("can pick up")
 				#coin.can_pick_up = true
 	)
+
+
+func spawn_gold_to_center(enemy_type: EnemyManager.EnemyType, pos: Vector2) -> void:
+	if land_tiles.is_empty():
+		return
+	
+	var map_x: int = floori(map_size / 2.0)
+	var center_tile: Vector2i = Vector2i(map_x, map_x)
+	
+	var closest_dist: float = INF
+	var closest_tile: Vector2i = center_tile
+	for tile in land_tiles:
+		if has_occupied_cell(tile):
+			continue
+		var current_dist: float = tile.distance_squared_to(center_tile)
+		if current_dist < closest_dist:
+			closest_dist = current_dist
+			closest_tile = tile
+	
+	var gold_amount: int = 0
+	match enemy_type:
+		EnemyManager.EnemyType.CRAB:
+			gold_amount = randi_range(5, 10)
+			
+		EnemyManager.EnemyType.PIRATE:
+			gold_amount = randi_range(8, 14)
+			
+		EnemyManager.EnemyType.SKELETON:
+			gold_amount = randi_range(13, 20)
+	
+	for i in gold_amount:
+		var coin = SpawnerManager.COIN_SCENE.instantiate()
+		
+		var candidates: Array[Vector2i] = []
+		for x in range(closest_tile.x - 1, closest_tile.x + 1):
+			for y in range(closest_tile.y - 1, closest_tile.y + 1): 
+				var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(Vector2i(x,y))
+				if atlas_coord != rock_atlas and atlas_coord != tree_atlas_coord:
+					candidates.append(Vector2i(x,y))
+		
+		var end_tile: Vector2i = closest_tile
+		if !candidates.is_empty():
+			end_tile = candidates[ randi_range(0, candidates.size()-1) ]
+		
+		var rand_range: float = -3.0
+		var global_x: float = randf_range(-rand_range, rand_range)
+		var global_y: float = randf_range(-rand_range, rand_range)
+		
+		var start: Vector2 = pos
+		var end: Vector2 = map_to_local(end_tile) + Vector2(global_x, global_y)
+		
+		var control: Vector2 = (start + end) * 0.5
+		var distance: float = start.distance_to(end)
+		control.y -= distance + randf_range(40.0, 50.0)
+		
+		coin.global_position = start
+		coin.can_pick_up = false
+		coin.z_index = 5
+		add_child(coin)
+		
+		# 17.0 is the distance from 0,0 to 12,12
+		var normalized_distance: float = clampf(inverse_lerp(0.0, 17.0, distance), 0.0, 1.0)
+		var time: float = lerp(0.6, 2.5, normalized_distance)
+		var tween_time: float = time
+		
+		var tween: Tween = create_tween()
+		tween.bind_node(coin)
+		tween.tween_method(
+			func(t: float) -> void:
+				coin.global_position = _bezier_quadratic(start, control, end, t),
+			0.0, 1.0, tween_time
+		)
+		tween.tween_interval(tween_time)
+		tween.tween_callback(
+			func() -> void:
+				coin.z_index = 1
+				if in_water(local_to_map(coin.global_position)):
+					coin.queue_free()
+		)
 
 
 func _bezier_quadratic(p0: Vector2, p1: Vector2, p2: Vector2, t: float) -> Vector2:
@@ -630,7 +716,7 @@ func _destroy_map() -> void:
 	
 	if smallest_area_size > max_destroy_count:
 		print("can't destroy area. it's too big ", smallest_area_size)
-		Player.instance.show_too_big_message()
+		Player.instance.show_too_big_message(smallest_area_size)
 		return
 	
 	var cells_to_destroy: Array[Vector2i] = []

@@ -89,6 +89,7 @@ animations = [{
 }]
 
 [node name="Throwable" type="Node2D" unique_id=1350439973]
+z_index = 1
 script = ExtResource("1_e5d1l")
 speed = 50.0
 

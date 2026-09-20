@@ -11,6 +11,8 @@ region = Rect2(16, 304, 16, 16)
 size = Vector2(12, 12)
 
 [node name="Gold" type="Area2D" unique_id=433800455]
+z_index = 1
+y_sort_enabled = true
 script = ExtResource("1_yl0l8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=479737314]

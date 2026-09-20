@@ -11,6 +11,8 @@ region = Rect2(0, 320, 16, 16)
 radius = 8.0
 
 [node name="Key" type="Sprite2D" unique_id=727492627]
+z_index = 1
+y_sort_enabled = true
 texture = SubResource("AtlasTexture_ufimc")
 script = ExtResource("2_ncswx")
 

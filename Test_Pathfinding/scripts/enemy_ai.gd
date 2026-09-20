@@ -23,10 +23,14 @@ var pirate_detection_radius: float = 35.0
 var skeleton_detection_radius: float = 35.0
 var enemy_radius: float
 
+var stun_cooldown: float
+var stun_time: float = 3.5
+
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var area_collision_shape: CollisionShape2D = %AreaCollisionShape
 @onready var area_2d: Area2D = %Area2D
 @onready var line_2d: Line2D = %Line2D
+@onready var collision_shape_2d: CollisionShape2D = %CollisionShape2D
 
 
 func setup(manager: EnemyManager, index: int, type: EnemyManager.EnemyType) -> void:
@@ -49,6 +53,29 @@ func _ready() -> void:
 	line_2d.visible = visualize_path
 	if Player.instance != null:
 		Player.instance.player_did_move.connect(_update_enemy_path)
+	
+	if GameMap.instance != null:
+		GameMap.instance.map_dug.connect(_on_map_dug)
+
+
+func _on_map_dug(coord: Vector2i) -> void:
+	var current_tile: Vector2i = GameMap.instance.local_to_map(global_position)
+	if current_tile == coord:
+		stun()
+
+
+func stun() -> void:
+	match enemy_type:
+		EnemyManager.EnemyType.CRAB:
+			animated_sprite_2d.play("crab_stunned")
+		
+		EnemyManager.EnemyType.PIRATE:
+			animated_sprite_2d.play("pirate_stunned")
+		
+		EnemyManager.EnemyType.SKELETON:
+			animated_sprite_2d.play("skeleton_stunned")
+	
+	stun_cooldown = stun_time
 
 
 func _process(delta: float) -> void:
@@ -58,20 +85,30 @@ func _process(delta: float) -> void:
 		destroy_enemy()
 		return
 	
+	if stun_cooldown > 0.0:
+		stun_cooldown -= delta
+		var enemy_blink_time: float = 5.0
+		visible = int(stun_cooldown * enemy_blink_time) % 2 == 0
+		collision_shape_2d.disabled = true
+		return
+	else:
+		visible = true
+		collision_shape_2d.disabled = false
+	
 	match enemy_type:
 		EnemyManager.EnemyType.CRAB:
-			_get_random_target_or_player()
 			animated_sprite_2d.play("crab_walk")
+			_get_random_target_or_player()
 			_move_ai(delta)
 		
 		EnemyManager.EnemyType.PIRATE:
-			_get_closest_target()
 			animated_sprite_2d.play("pirate_walk")
+			_get_closest_target()
 			_move_ai(delta)
 		
 		EnemyManager.EnemyType.SKELETON:
-			_get_position_away_from_player()
 			animated_sprite_2d.play("skeleton_walk")
+			_get_position_away_from_player()
 			_move_ai(delta)
 			_throw_items(delta)
 
@@ -103,6 +140,20 @@ func _move_ai(delta: float) -> void:
 		
 		var current_tile: Vector2i = GameMap.instance.local_to_map(global_position)
 		enemy_manager.update_enemy_current_tile(self, current_tile)
+	
+	
+	#var direction: Vector2 = next_position - global_position
+	#if direction.length() > 1.0:
+		#velocity = direction.normalized() * move_speed
+		#move_and_slide()
+	#else:
+		#velocity = Vector2.ZERO
+		#
+		#current_path.pop_front()
+		#can_update_path = true
+		#
+		#var current_tile: Vector2i = GameMap.instance.local_to_map(global_position)
+		#enemy_manager.update_enemy_current_tile(self, current_tile)
 
 
 func _update_enemy_path() -> void:
@@ -207,6 +258,7 @@ func is_valid_target() -> bool:
 
 
 func destroy_enemy() -> void:
+	GameMap.instance.spawn_gold_to_center(enemy_type, global_position)
 	enemy_manager.enemy_current_tile.erase(self)
 	enemy_manager.enemy_next_tile.erase(self)
 	enemy_manager.reduce_enemy_count()

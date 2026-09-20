@@ -25,7 +25,7 @@ var label_tween: Tween
 
 
 func _ready() -> void:
-	if scene_dialogue_resources.is_empty():
+	if scene_dialogue_resources.is_empty() or GameManager.skip_intro:
 		skip_intro()
 	else:
 		start_dialogue()

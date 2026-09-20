@@ -386,6 +386,7 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D" unique_id=277292832 node_paths=PackedStringArray("dig_indicators")]
+z_index = 1
 y_sort_enabled = true
 collision_mask = 2
 script = ExtResource("1_4ntmi")
@@ -395,27 +396,28 @@ dig_indicators = [NodePath("DigIndicator1"), NodePath("DigIndicator2"), NodePath
 [node name="DigIndicator1" type="AnimatedSprite2D" parent="." unique_id=1152720125]
 visible = false
 top_level = true
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_2nnlu")
 frame_progress = 0.5127214
 
 [node name="DigIndicator2" type="AnimatedSprite2D" parent="." unique_id=361868982]
 visible = false
 top_level = true
-position = Vector2(-16, 0)
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_2nnlu")
 frame_progress = 0.5127214
 
 [node name="DigIndicator3" type="AnimatedSprite2D" parent="." unique_id=1461626707]
 visible = false
 top_level = true
-position = Vector2(-32, 0)
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_2nnlu")
 frame_progress = 0.5127214
 
 [node name="DigIndicator4" type="AnimatedSprite2D" parent="." unique_id=137480112]
 visible = false
 top_level = true
-position = Vector2(-32, 0)
+z_index = 1
 sprite_frames = SubResource("SpriteFrames_2nnlu")
 frame_progress = 0.5127214
 
@@ -441,6 +443,7 @@ shape = SubResource("CircleShape2D_ufimc")
 [node name="KeySprite" type="AnimatedSprite2D" parent="." unique_id=750939892]
 unique_name_in_owner = true
 visible = false
+z_index = 10
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_00f23")
 frame_progress = 0.8230324
@@ -448,11 +451,13 @@ frame_progress = 0.8230324
 [node name="Money" type="Sprite2D" parent="." unique_id=2088841806]
 unique_name_in_owner = true
 visible = false
+z_index = 10
 position = Vector2(-8, -24)
 texture = ExtResource("3_gwnis")
 
 [node name="MoneyLabel" type="Label" parent="Money" unique_id=616354578]
 unique_name_in_owner = true
+z_index = 10
 offset_left = 5.0
 offset_top = -8.0
 offset_right = 29.0
@@ -464,12 +469,14 @@ vertical_alignment = 1
 [node name="Life" type="Sprite2D" parent="." unique_id=316977052]
 unique_name_in_owner = true
 visible = false
+z_index = 10
 position = Vector2(0, -20)
 texture = SubResource("AtlasTexture_2nnlu")
 
 [node name="Powerup" type="AnimatedSprite2D" parent="." unique_id=1133615350]
 unique_name_in_owner = true
 visible = false
+z_index = 10
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_ufimc")
 frame_progress = 0.43646327
@@ -477,5 +484,6 @@ frame_progress = 0.43646327
 [node name="ShovelPowerup" type="AnimatedSprite2D" parent="." unique_id=591595598]
 unique_name_in_owner = true
 visible = false
+z_index = 10
 position = Vector2(0, -16)
 sprite_frames = SubResource("SpriteFrames_pmdv3")

@@ -10,9 +10,9 @@ static var instance: Player
 @export var walk_speed: float = 45.0
 @export var run_speed: float = 65.0
 @export var fast_timer: float = 5.0
-@export var end_day_screen: Control
 @export var died_screen: Control
 @export var dig_indicators: Array[AnimatedSprite2D]
+@export var end_day_screen: EndDayScreen
 
 var current_speed: float
 
@@ -48,6 +48,8 @@ var hurt: bool
 
 var input_direction: Vector2 
 var old_direction: Vector2
+
+var old_area_size: int = -1
 
 @onready var player_label: Label = %player_label
 @onready var collision_area: Area2D = %CollisionArea
@@ -127,6 +129,8 @@ func _input(event: InputEvent) -> void:
 		a_hold_time = 0.0
 	
 	elif event.is_action_released("A"):
+		if GameMap.instance.local_to_map(global_position) == GameMap.instance.ship_tile:
+			return
 		a_hold = false
 		
 		if digging:
@@ -210,29 +214,9 @@ func get_input() -> void:
 
 
 func try_dig(coord: Vector2i):
-	if GameMap.instance.local_to_map(global_position) == GameMap.instance.ship_tile:
-		GameManager.pause_game()
-		end_day_screen.show()
-		return
-	
 	animated_sprite_2d.play("dig")
 	digging = true
 	GameMap.instance.dig(coord)
-
-
-func try_dig2(coord: Vector2i, coord2: Vector2i):
-	if GameMap.instance.local_to_map(global_position) == GameMap.instance.ship_tile:
-		GameManager.pause_game()
-		end_day_screen.show()
-		return
-	
-	if digging:
-		return
-	
-	animated_sprite_2d.play("dig")
-	digging = true
-	GameMap.instance.dig(coord)
-	GameMap.instance.dig.call_deferred(coord2)
 
 
 func drop_coin() -> void:
@@ -246,7 +230,10 @@ func drop_coin() -> void:
 	SpawnerManager.drop_coin_at(tile, SpawnerManager.coin_value)
 
 
-func show_too_big_message() -> void:
+func show_too_big_message(smallest_area_size: int) -> void:
+	if smallest_area_size == old_area_size:
+		return
+	old_area_size = smallest_area_size
 	player_label.text = "too big..."
 	message_time = max_message_time
 

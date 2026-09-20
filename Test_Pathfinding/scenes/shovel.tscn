@@ -39,6 +39,8 @@ animations = [{
 }]
 
 [node name="Shovel" type="Node2D" unique_id=110870647]
+z_index = 1
+y_sort_enabled = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1030567849]
 sprite_frames = SubResource("SpriteFrames_ufimc")

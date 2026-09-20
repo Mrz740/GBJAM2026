@@ -8,6 +8,8 @@ var day_difficulty: float
 var time_day: float = 200.0
 var times_beaten: int
 
+var skip_intro: bool
+
 var shorten_time_days: Array[float] = [15.0, 10.0, 5.0]
 
 var _timer: Timer
@@ -16,6 +18,7 @@ var shovel_powerup: int = 1
 var max_shovel_dig: int = 4
 
 func _ready() -> void:
+	skip_intro = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	_timer = Timer.new()
@@ -113,6 +116,7 @@ func punish_next_day() -> void:
 
 
 func back_to_menu() -> void:
+	skip_intro = true
 	ScoreManager.stop_run()
 	SpawnerManager.stop_run()
 	reset_shovel()

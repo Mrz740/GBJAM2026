@@ -3,6 +3,10 @@
 [ext_resource type="Script" uid="uid://bhkjxk4oldbaf" path="res://Test_Pathfinding/scripts/enemy_ai.gd" id="1_ruo7y"]
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="2_ruo7y"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_fipjb"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(0, 176, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_0inhm"]
 atlas = ExtResource("2_ruo7y")
 region = Rect2(0, 160, 16, 16)
@@ -10,6 +14,10 @@ region = Rect2(0, 160, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_yhblk"]
 atlas = ExtResource("2_ruo7y")
 region = Rect2(16, 160, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4txle"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(0, 240, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ruo7y"]
 atlas = ExtResource("2_ruo7y")
@@ -26,6 +34,10 @@ region = Rect2(32, 224, 16, 16)
 [sub_resource type="AtlasTexture" id="AtlasTexture_mmqmg"]
 atlas = ExtResource("2_ruo7y")
 region = Rect2(48, 224, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkmbd"]
+atlas = ExtResource("2_ruo7y")
+region = Rect2(0, 208, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8vsbh"]
 atlas = ExtResource("2_ruo7y")
@@ -47,6 +59,14 @@ region = Rect2(48, 192, 16, 16)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_fipjb")
+}],
+"loop": 1,
+"name": &"crab_stunned",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_0inhm")
 }, {
 "duration": 1.0,
@@ -54,6 +74,14 @@ animations = [{
 }],
 "loop": 1,
 "name": &"crab_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4txle")
+}],
+"loop": 1,
+"name": &"pirate_stunned",
 "speed": 5.0
 }, {
 "frames": [{
@@ -71,6 +99,14 @@ animations = [{
 }],
 "loop": 1,
 "name": &"pirate_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkmbd")
+}],
+"loop": 1,
+"name": &"skeleton_stunned",
 "speed": 5.0
 }, {
 "frames": [{
@@ -98,6 +134,8 @@ radius = 5.656854
 radius = 35.0
 
 [node name="enemy_ai" type="CharacterBody2D" unique_id=584772008 groups=["enemy"]]
+z_index = 1
+y_sort_enabled = true
 collision_mask = 2
 script = ExtResource("1_ruo7y")
 move_speed = 12.0
@@ -107,10 +145,10 @@ throw_rate = 3.0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=418506286]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_ufimc")
-animation = &"pirate_walk"
-frame_progress = 0.9552248
+animation = &"crab_stunned"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=724067470]
+unique_name_in_owner = true
 shape = SubResource("CircleShape2D_ufimc")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1595291828]
