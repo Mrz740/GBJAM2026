@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://xlcc2pof33fy"]
+
+[ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="1_ahxm8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvuvy"]
+atlas = ExtResource("1_ahxm8")
+region = Rect2(0, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a0cwy"]
+atlas = ExtResource("1_ahxm8")
+region = Rect2(16, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7kp2x"]
+atlas = ExtResource("1_ahxm8")
+region = Rect2(32, 144, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_civ3w"]
+atlas = ExtResource("1_ahxm8")
+region = Rect2(48, 144, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufimc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvuvy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a0cwy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7kp2x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_civ3w")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Shovel" type="Node2D" unique_id=110870647]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1030567849]
+sprite_frames = SubResource("SpriteFrames_ufimc")
+frame = 3
+frame_progress = 0.42756823

@@ -10,6 +10,84 @@ radius = 2.0
 atlas = ExtResource("2_1po43")
 region = Rect2(16, 272, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_e5d1l"]
+atlas = ExtResource("2_1po43")
+region = Rect2(0, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1po43"]
+atlas = ExtResource("2_1po43")
+region = Rect2(16, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_23sua"]
+atlas = ExtResource("2_1po43")
+region = Rect2(32, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o1xk0"]
+atlas = ExtResource("2_1po43")
+region = Rect2(48, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3peww"]
+atlas = ExtResource("2_1po43")
+region = Rect2(64, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxlri"]
+atlas = ExtResource("2_1po43")
+region = Rect2(80, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xksm4"]
+atlas = ExtResource("2_1po43")
+region = Rect2(96, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kck3y"]
+atlas = ExtResource("2_1po43")
+region = Rect2(112, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c04hr"]
+atlas = ExtResource("2_1po43")
+region = Rect2(128, 336, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5lce5"]
+atlas = ExtResource("2_1po43")
+region = Rect2(144, 336, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ufimc"]
+animations = [{
+"frames": [{
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_e5d1l")
+}, {
+"duration": 5.0,
+"texture": SubResource("AtlasTexture_1po43")
+}, {
+"duration": 2.5,
+"texture": SubResource("AtlasTexture_23sua")
+}, {
+"duration": 2.5,
+"texture": SubResource("AtlasTexture_o1xk0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3peww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxlri")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xksm4")
+}, {
+"duration": 2.0,
+"texture": SubResource("AtlasTexture_kck3y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c04hr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5lce5")
+}],
+"loop": 0,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Throwable" type="Node2D" unique_id=1350439973]
 script = ExtResource("1_e5d1l")
 speed = 50.0
@@ -22,6 +100,11 @@ monitorable = false
 shape = SubResource("CircleShape2D_2nnlu")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=274171483]
+visible = false
 texture = SubResource("AtlasTexture_ufimc")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=284363033]
+unique_name_in_owner = true
+sprite_frames = SubResource("SpriteFrames_ufimc")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

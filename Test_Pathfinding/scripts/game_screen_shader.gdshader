@@ -6,7 +6,6 @@ uniform int direction;
 uniform sampler2D bayer_texture: filter_nearest;
 
 void fragment() {
-	vec2 pixel = floor(vec2(UV.x * 160.0, UV.y * 144.0));
 	float bayer = texture(bayer_texture, UV).r;
 	
 	float dither = 0.0;

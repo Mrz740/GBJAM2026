@@ -1,9 +1,11 @@
+class_name IntroScene
 extends Control
 
 @export var startup_scene: MainMenu
-@export var skip_hold_threshold: float = 3.0
 @export var scene_dialogue_resources: Array[SceneDialogueResource]
 @export var scene_nodes: Array[Node2D]
+@export var continue_label: Label
+@export var character_portrait: Sprite2D
 
 var current_scene: SceneDialogueResource
 
@@ -13,13 +15,13 @@ var total_dialogue: int
 
 var start_hold: bool
 var start_hold_time: float
+var skip_hold_threshold: float = 1.0
 
 var time_per_character: float = 0.05
 
 var label_tween: Tween
 
-@onready var dialogue_label: Label = %DialogueLabel
-@onready var bg: TextureRect = %Bg
+@export var dialogue_label: Label
 
 
 func _ready() -> void:
@@ -33,23 +35,17 @@ func _process(delta: float) -> void:
 	if start_hold:
 		start_hold_time += delta
 	
-	if visible:
-		bg.texture = current_scene.scene_texture
+	#if visible:
+		#character_portrait.texture = current_scene.scene_texture
+
 
 func _input(event: InputEvent) -> void:
 	if !visible:
 		return
 	if event.is_action_pressed("A"):
-		var text_size: int = current_scene.scene_dialogue[current_dialogue_idx].length()
-		if dialogue_label.visible_characters == -1 or dialogue_label.visible_characters == text_size:
-			
-			if current_dialogue_idx < current_scene.scene_dialogue.size()-1:
-				next_dialogue()
-			else:
-				next_scene()
-		else:
-			label_tween.kill()
-			dialogue_label.visible_characters = -1
+		if current_scene_idx >= scene_nodes.size()-1:
+			return
+		handle_next_dialogue()
 	
 	if event.is_action_pressed("START"):
 		start_hold = true
@@ -59,6 +55,19 @@ func _input(event: InputEvent) -> void:
 		start_hold = false
 		if start_hold_time > skip_hold_threshold:
 			skip_intro()
+
+
+func handle_next_dialogue() -> void:
+	var text_size: int = current_scene.scene_dialogue[current_dialogue_idx].length()
+	if dialogue_label.visible_characters == -1 or dialogue_label.visible_characters == text_size:
+		
+		if current_dialogue_idx < current_scene.scene_dialogue.size()-1:
+			next_dialogue()
+		else:
+			next_scene()
+	else:
+		label_tween.kill()
+		dialogue_label.visible_characters = -1
 
 
 func start_dialogue() -> void:
@@ -94,13 +103,22 @@ func next_scene() -> void:
 	if current_scene_idx >= scene_dialogue_resources.size():
 		skip_intro()
 		return
+	
+	character_portrait.texture = current_scene.scene_texture
 	current_scene = scene_dialogue_resources[current_scene_idx]
 	current_dialogue_idx = -1
-	next_dialogue()
+	
+	if current_scene_idx < scene_nodes.size()-1:
+		next_dialogue()
+	else:
+		dialogue_label.text = ""
+		continue_label.hide()
 
 
 func next_dialogue() -> void:
 	current_dialogue_idx += 1
+	if current_dialogue_idx >= current_scene.scene_dialogue.size():
+		return
 	dialogue_label.text = current_scene.scene_dialogue[current_dialogue_idx]
 	dialogue_label.visible_characters = 0
 	

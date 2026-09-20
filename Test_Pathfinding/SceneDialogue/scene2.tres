@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SceneDialogueResource" format=3 uid="uid://dwmgrfb4chvkm"]
 
-[ext_resource type="Texture2D" uid="uid://cf54ujcntquav" path="res://Test_Pathfinding/assets/Scene_2_ISLAND.png" id="1_1gnfy"]
+[ext_resource type="Texture2D" uid="uid://b52iclj6tbnom" path="res://Test_Pathfinding/assets/character_portrait.tres" id="1_1gnfy"]
 [ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="2_r01p1"]
 
 [resource]

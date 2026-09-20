@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SceneDialogueResource" format=3 uid="uid://1oerys1ixg62"]
 
 [ext_resource type="Script" uid="uid://gxq8iajckl4r" path="res://Test_Pathfinding/scripts/scene_dialogue_resource.gd" id="1_255ko"]
-[ext_resource type="Texture2D" uid="uid://7sw3vsmf08kp" path="res://Test_Pathfinding/assets/Scene_1_MAP.png" id="1_syhpe"]
+[ext_resource type="Texture2D" uid="uid://b52iclj6tbnom" path="res://Test_Pathfinding/assets/character_portrait.tres" id="1_syhpe"]
 
 [resource]
 script = ExtResource("1_255ko")

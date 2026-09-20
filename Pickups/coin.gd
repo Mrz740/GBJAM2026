@@ -17,6 +17,15 @@ func _ready() -> void:
 	if GameMap.instance:
 		GameMap.instance.map_updated.connect(_on_map_updated)
 	animated_sprite_2d.play("default")
+	timer = 1.0
+
+
+var timer: float
+func _process(delta: float) -> void:
+	if timer > 0.0:
+		timer -= delta
+		return
+	can_pick_up = true
 
 
 func _exit_tree():

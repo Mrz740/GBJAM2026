@@ -4,16 +4,18 @@ extends Node2D
 enum ChestLoot {
 	GOLD,
 	LIFE,
-	POWERUP
+	POWERUP,
+	SHOVEL
 }
 
 var _collected: bool = false
 var can_pick_up: bool
 
 var loot_dictionary: Dictionary[ChestLoot, float] = {
-	ChestLoot.GOLD : 5.0,
-	ChestLoot.LIFE : 1.0,
+	ChestLoot.GOLD : 2.0,
+	ChestLoot.LIFE : 0.5,
 	ChestLoot.POWERUP : 1.0,
+	ChestLoot.SHOVEL: 1.0
 }
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
@@ -83,6 +85,9 @@ func get_chest_loot() -> void:
 		
 		ChestLoot.POWERUP:
 			Player.instance.gain_powerup()
+		
+		ChestLoot.SHOVEL:
+			Player.instance.upgrade_shovel()
 	
 
 func _on_area_2d_body_exited(body):

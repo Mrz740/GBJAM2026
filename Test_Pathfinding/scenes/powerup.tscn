@@ -40,10 +40,6 @@ animations = [{
 
 [node name="Powerup" type="Node2D" unique_id=277269659]
 
-[node name="Area2D" type="Area2D" parent="." unique_id=1663059214]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=144625321]
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=730212228]
 sprite_frames = SubResource("SpriteFrames_ufimc")
 frame_progress = 0.3215042

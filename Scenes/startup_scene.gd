@@ -121,26 +121,30 @@ func press_button() -> void:
 func decrease_volume() -> void:
 	if current_btn == settings_buttons[0]:
 		SoundManager.change_master(-1)
-		settings_buttons[0].text = str(SoundManager.get_master_volume())
 	
 	elif current_btn == settings_buttons[1]:
 		SoundManager.change_music(-1)
-		settings_buttons[1].text = str(SoundManager.get_music_volume())
 	
 	elif current_btn == settings_buttons[2]:
 		SoundManager.change_sfx(-1)
-		settings_buttons[2].text = str(SoundManager.get_sfx_volume())
+	
+	update_audio_labels()
 
 
 func increase_volume() -> void:
 	if current_btn == settings_buttons[0]:
 		SoundManager.change_master(1)
-		settings_buttons[0].text = str(SoundManager.get_master_volume())
 	
 	elif current_btn == settings_buttons[1]:
 		SoundManager.change_music(1)
-		settings_buttons[1].text = str(SoundManager.get_music_volume())
 	
 	elif current_btn == settings_buttons[2]:
 		SoundManager.change_sfx(1)
-		settings_buttons[2].text = str(SoundManager.get_sfx_volume())
+	
+	update_audio_labels()
+
+
+func update_audio_labels() -> void:
+	settings_buttons[0].text = str(roundi(SoundManager.get_master_volume()))
+	settings_buttons[1].text = str(roundi(SoundManager.get_music_volume()))
+	settings_buttons[2].text = str(roundi(SoundManager.get_sfx_volume()))

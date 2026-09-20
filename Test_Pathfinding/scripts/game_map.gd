@@ -110,6 +110,7 @@ var grass_atlas_placeholder: Vector2i = Vector2i(13, 1)
 var sand_atlas_placeholder: Vector2i = Vector2i(13, 2)
 
 var rock_spawn_chnace: float = 0.95
+var tree_spawn_chance: float = 0.9999
 var x_spot_spawn_chance: float = 0.95
 
 var astar: AStarGrid2D = AStarGrid2D.new()
@@ -124,7 +125,8 @@ var sand_atlas: Vector2i = Vector2i(8, 0)
 var barely_dirt_atlas: Vector2i = Vector2i(12, 2)
 var rock_atlas: Vector2i = Vector2i(4, 19)
 var x_spot_atlas: Vector2i = Vector2i(10, 7)
-var full_white_atlas_coord: Vector2i = Vector2i(6,1)
+var full_white_atlas_coord: Vector2i = Vector2i(6, 1)
+var tree_atlas_coord: Vector2i = Vector2i(16, 15)
 
 @onready var data_layer: TileMapLayer = %DataLayer
 @onready var water_display_layer: TileMapLayer = %WaterDisplayLayer
@@ -249,9 +251,13 @@ func spawn_foliage_and_x_spots() -> void:
 		
 		var rand_x_spot: float = randf() * dist_t + 0.05
 		var rand_rock_spot: float = randf() * dist_t
+		var rand_tree_spot: float = randf() * dist_t
 		
 		if rand_rock_spot > rock_spawn_chnace:
 			temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), rock_atlas)
+		
+		if rand_tree_spot > 0.97:
+			temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), tree_atlas_coord)
 		
 		elif rand_x_spot > x_spot_spawn_chance:
 			temp_dig_layer.set_cell(tile, tile_set.get_source_id(tile_source_idx), x_spot_atlas)
@@ -393,7 +399,7 @@ func dig(coord: Vector2i) -> void:
 	
 	var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(coord)
 	
-	if atlas_coord == rock_atlas:
+	if atlas_coord == rock_atlas or atlas_coord == tree_atlas_coord:
 		temp_dig_layer.erase_cell(coord)
 		astar.set_point_solid(coord, false)
 	
@@ -428,6 +434,7 @@ func dig(coord: Vector2i) -> void:
 	
 	random_count = randi_range(0, 6)
 	if atlas_coord == x_spot_atlas:
+		random_count = randi_range(3, 8)
 		dig_x_spot(coord, random_count)
 	else:
 		for i in range(random_count):
@@ -440,7 +447,7 @@ func dig(coord: Vector2i) -> void:
 
 
 func dig_x_spot(coord: Vector2i, random_count: int) -> void:
-	if randf() > 0.7:
+	if randf() > 0.95:
 		for i in range(random_count):
 			spawn_gold(coord)
 		return
@@ -515,7 +522,8 @@ func spawn_gold(coord: Vector2i) -> void:
 	var candidates: Array[Vector2i] = []
 	for x in range(coord.x - 1, coord.x + 1):
 		for y in range(coord.y - 1, coord.y + 1): 
-			if temp_dig_layer.get_cell_atlas_coords(Vector2i(x,y)) != rock_atlas:
+			var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(Vector2i(x,y))
+			if atlas_coord != rock_atlas and atlas_coord != tree_atlas_coord:
 				candidates.append(Vector2i(x,y))
 	
 	var end_tile: Vector2i = coord
@@ -549,13 +557,14 @@ func spawn_gold(coord: Vector2i) -> void:
 			coin.global_position = _bezier_quadratic(start, control, end, t),
 		0.0, 1.0, tween_time
 	)
-	tween.tween_interval(tween_time*1.5)
+	tween.tween_interval(tween_time)
 	tween.tween_callback(
 		func() -> void:
 			if in_water(local_to_map(coin.global_position)):
 				coin.queue_free()
-			else:
-				coin.can_pick_up = true
+			#else:
+				#print("can pick up")
+				#coin.can_pick_up = true
 	)
 
 
@@ -788,7 +797,8 @@ func get_cell_world(coord: Vector2i) -> Vector2:
 
 
 func has_occupied_cell(coord: Vector2i) -> bool:
-	return temp_dig_layer.get_cell_atlas_coords(coord) == rock_atlas
+	var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(coord)
+	return atlas_coord == rock_atlas or atlas_coord == tree_atlas_coord
 
 #endregion
 

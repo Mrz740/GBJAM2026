@@ -17,6 +17,7 @@ func _ready() -> void:
 	if player:
 		player.health_changed.connect(_on_health_changed)
 		_on_health_changed(player.current_health)
+		_on_keys_updated()
 	
 	days_label.text = "Day%s" % GameManager.current_day 
 

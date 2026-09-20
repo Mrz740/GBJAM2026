@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cvxex6x7opy2b"]
+
+[ext_resource type="Shader" uid="uid://bib0ld7aejwy4" path="res://Test_Pathfinding/scripts/ghost_shader.gdshader" id="1_qj5mb"]
+[ext_resource type="Texture2D" uid="uid://y0j1ci7pevi8" path="res://Test_Pathfinding/assets/bayer_texture_atlas_size.png" id="2_534g5"]
+
+[resource]
+shader = ExtResource("1_qj5mb")
+shader_parameter/color = Color(0, 0, 0, 1)
+shader_parameter/dither_amount = -1.0
+shader_parameter/direction = 0
+shader_parameter/bayer_texture = ExtResource("2_534g5")

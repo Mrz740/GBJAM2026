@@ -63,25 +63,25 @@ texture = SubResource("AtlasTexture_ufimc")
 
 [node name="Life1" type="TextureRect" parent="." unique_id=837233016]
 layout_mode = 0
-offset_left = 72.0
+offset_left = 80.0
 offset_top = 128.0
-offset_right = 88.0
+offset_right = 96.0
 offset_bottom = 144.0
 texture = SubResource("AtlasTexture_t4lat")
 
 [node name="Life2" type="TextureRect" parent="." unique_id=492398035]
 layout_mode = 0
-offset_left = 88.0
+offset_left = 96.0
 offset_top = 128.0
-offset_right = 104.0
+offset_right = 112.0
 offset_bottom = 144.0
 texture = SubResource("AtlasTexture_t4lat")
 
 [node name="Life3" type="TextureRect" parent="." unique_id=1328144071]
 layout_mode = 0
-offset_left = 104.0
+offset_left = 112.0
 offset_top = 128.0
-offset_right = 120.0
+offset_right = 128.0
 offset_bottom = 144.0
 texture = SubResource("AtlasTexture_t4lat")
 
@@ -129,17 +129,17 @@ texture = SubResource("AtlasTexture_2nnlu")
 [node name="Key2" type="TextureRect" parent="." unique_id=292155091]
 visible = false
 layout_mode = 0
-offset_left = 48.0
+offset_left = 52.0
 offset_top = 128.0
-offset_right = 64.0
+offset_right = 68.0
 offset_bottom = 144.0
 texture = SubResource("AtlasTexture_2nnlu")
 
 [node name="Key3" type="TextureRect" parent="." unique_id=1107553693]
 visible = false
 layout_mode = 0
-offset_left = 56.0
+offset_left = 64.0
 offset_top = 128.0
-offset_right = 72.0
+offset_right = 80.0
 offset_bottom = 144.0
 texture = SubResource("AtlasTexture_2nnlu")

@@ -27,7 +27,14 @@
 [ext_resource type="Texture2D" uid="uid://dhqcyrdfc4vvv" path="res://Test_Pathfinding/assets/Scene_5_SHIP_water.png" id="23_w000c"]
 [ext_resource type="Texture2D" uid="uid://p15ydbaddyr" path="res://Test_Pathfinding/assets/Scene_5_SHIP_transparent.png" id="24_o34rv"]
 [ext_resource type="Texture2D" uid="uid://yphqnjch12w0" path="res://Test_Pathfinding/assets/Scene_6_CHEST.png" id="27_w000c"]
-[ext_resource type="Texture2D" uid="uid://daayf8smpi8ua" path="res://Test_Pathfinding/assets/Scene_7_CURSE.png" id="28_o34rv"]
+[ext_resource type="Texture2D" uid="uid://d1l25mpmsf5rk" path="res://Test_Pathfinding/assets/Scene_7_CURSE_alone.png" id="28_vqjjw"]
+[ext_resource type="Script" uid="uid://cjjstw52pnpd6" path="res://Test_Pathfinding/scripts/scene_7.gd" id="28_x2jc8"]
+[ext_resource type="Material" uid="uid://c1vecnvrnbw3x" path="res://Test_Pathfinding/assets/ghost_material.tres" id="29_vqjjw"]
+[ext_resource type="Texture2D" uid="uid://biqfef7awtnd" path="res://Test_Pathfinding/assets/Scene_7_CURSE_ghost.png" id="31_204gv"]
+[ext_resource type="Texture2D" uid="uid://bexrqxolpo5kp" path="res://Test_Pathfinding/assets/Scene_7_CURSE_exclamation_mark.png" id="32_x2jc8"]
+[ext_resource type="Material" uid="uid://cvxex6x7opy2b" path="res://Test_Pathfinding/assets/skull_material.tres" id="33_1cdhg"]
+[ext_resource type="FontFile" uid="uid://cxmlscae5kirj" path="res://Test_Pathfinding/assets/pixel_operator/PixelOperator8.ttf" id="33_yl7b8"]
+[ext_resource type="Texture2D" uid="uid://b52iclj6tbnom" path="res://Test_Pathfinding/assets/character_portrait.tres" id="34_204gv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vdu33"]
 atlas = ExtResource("21_4c4km")
@@ -50,6 +57,134 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1cdhg"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(160, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mgh0x"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(192, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ecs63"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(224, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3iorj"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(256, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w6h87"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(288, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kupuf"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(320, 320, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hyknt"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(352, 320, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2nnlu"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1cdhg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mgh0x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ecs63")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3iorj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w6h87")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kupuf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hyknt")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w433b"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(336, 192, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_204gv"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(160, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_isjsn"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(192, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5uocs"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(224, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1fcol"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(256, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dqp7v"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(288, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vrpf7"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(320, 288, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbqx1"]
+atlas = ExtResource("21_4c4km")
+region = Rect2(352, 288, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_00f23"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_204gv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_isjsn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5uocs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1fcol")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dqp7v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vrpf7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xbqx1")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="LabelSettings" id="LabelSettings_204gv"]
+font = ExtResource("33_yl7b8")
+font_size = 8
+font_color = Color(0.91764706, 0.8784314, 0.75686276, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1cdhg"]
+font = ExtResource("33_yl7b8")
+font_size = 8
+font_color = Color(0.91764706, 0.8784314, 0.75686276, 1)
 
 [node name="startup_scene" unique_id=2008706374 node_paths=PackedStringArray("menu_buttons", "settings_buttons") instance=ExtResource("1_7wexv")]
 script = ExtResource("2_4xr2o")
@@ -78,7 +213,6 @@ mouse_filter = 2
 
 [node name="MainMenu" type="Control" parent="Control" index="0" unique_id=1755487629]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -205,7 +339,6 @@ vertical_alignment = 1
 
 [node name="CreditsMenu" type="Control" parent="Control" index="2" unique_id=682223315]
 unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -235,7 +368,7 @@ offset_right = 6.0
 offset_bottom = -24.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "curlpixel-artist"
+text = "Curlpixel-Artist"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
 
@@ -251,7 +384,7 @@ offset_right = 6.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "uinya-music"
+text = "Uinya-Music&Sound"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
 
@@ -267,7 +400,7 @@ offset_right = 6.0
 offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "mrz740-programmer"
+text = "Mrz740-Programmer"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
 
@@ -283,7 +416,7 @@ offset_right = 6.0
 offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "pengubic-programmer"
+text = "Pengubic-Programmer"
 label_settings = ExtResource("4_ig4u5")
 vertical_alignment = 1
 
@@ -312,7 +445,7 @@ offset_right = 16.0
 offset_bottom = 48.0
 texture = ExtResource("4_7nkqh")
 
-[node name="IntroScene" type="Control" parent="." index="3" unique_id=554479217 node_paths=PackedStringArray("startup_scene", "scene_nodes")]
+[node name="IntroScene" type="Control" parent="." index="3" unique_id=554479217 node_paths=PackedStringArray("startup_scene", "scene_nodes", "continue_label", "character_portrait", "dialogue_label")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -325,6 +458,9 @@ script = ExtResource("6_p53yc")
 startup_scene = NodePath("..")
 scene_dialogue_resources = Array[ExtResource("7_aprjv")]([ExtResource("8_tgfxl"), ExtResource("9_v4oa2"), ExtResource("10_6jucu"), ExtResource("11_cttxu"), ExtResource("12_f46nj"), ExtResource("13_lm1bh"), ExtResource("14_omgs5")])
 scene_nodes = [NodePath("Scene1"), NodePath("Scene2"), NodePath("Scene3"), NodePath("Scene4"), NodePath("Scene5"), NodePath("Scene6"), NodePath("Scene7")]
+continue_label = NodePath("ContinueLabel")
+character_portrait = NodePath("Control2/CharacterPortrait")
+dialogue_label = NodePath("Control2/DialogueLabel")
 
 [node name="ColorRect" type="ColorRect" parent="IntroScene" index="0" unique_id=2135021088]
 layout_mode = 1
@@ -423,21 +559,63 @@ texture = ExtResource("23_w000c")
 position = Vector2(80, 64)
 texture = ExtResource("24_o34rv")
 
-[node name="Scene6" type="Node2D" parent="IntroScene" index="8" unique_id=1788210400]
+[node name="Scene6" type="Node2D" parent="IntroScene" index="8" unique_id=1788210400 node_paths=PackedStringArray("tween_object")]
 visible = false
+script = ExtResource("19_7o4oc")
+tween_object = NodePath("AnimatedSprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene6" index="0" unique_id=1102939539]
 position = Vector2(80, 72)
 texture = ExtResource("27_w000c")
 
-[node name="Scene7" type="Node2D" parent="IntroScene" index="9" unique_id=335147163]
-visible = false
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="IntroScene/Scene6" index="1" unique_id=1344554753]
+position = Vector2(80, 64)
+sprite_frames = SubResource("SpriteFrames_2nnlu")
+frame_progress = 0.26573783
 
-[node name="Sprite2D" type="Sprite2D" parent="IntroScene/Scene7" index="0" unique_id=2142368799]
+[node name="Scene7" type="Node2D" parent="IntroScene" index="9" unique_id=335147163 node_paths=PackedStringArray("tween_object", "timer", "intro_scene", "exclamation_mark", "skull")]
+visible = false
+script = ExtResource("28_x2jc8")
+start_y = 72.0
+end_y = 76.0
+speed = 2.0
+tween_object = NodePath("Ghost")
+animation_time = 2.0
+ghost_material = ExtResource("29_vqjjw")
+timer = NodePath("Timer")
+intro_scene = NodePath("..")
+exclamation_mark = NodePath("ExclamationMark")
+skull = NodePath("Skull")
+skull_material = ExtResource("33_1cdhg")
+ghost_texture = SubResource("AtlasTexture_w433b")
+player_texture = ExtResource("34_204gv")
+
+[node name="BG" type="Sprite2D" parent="IntroScene/Scene7" index="0" unique_id=2142368799]
 position = Vector2(80, 72)
-texture = ExtResource("28_o34rv")
+texture = ExtResource("28_vqjjw")
+
+[node name="Ghost" type="Sprite2D" parent="IntroScene/Scene7" index="1" unique_id=2090017617]
+material = ExtResource("29_vqjjw")
+position = Vector2(80, 72)
+texture = ExtResource("31_204gv")
+
+[node name="ExclamationMark" type="Sprite2D" parent="IntroScene/Scene7" index="2" unique_id=1183923521]
+visible = false
+position = Vector2(80, 72)
+texture = ExtResource("32_x2jc8")
+
+[node name="Timer" type="Timer" parent="IntroScene/Scene7" index="3" unique_id=93727665]
+wait_time = 0.5
+one_shot = true
+
+[node name="Skull" type="AnimatedSprite2D" parent="IntroScene/Scene7" index="4" unique_id=334404076]
+material = ExtResource("33_1cdhg")
+position = Vector2(80, 56)
+sprite_frames = SubResource("SpriteFrames_00f23")
+frame_progress = 0.84576935
 
 [node name="Control" type="Control" parent="IntroScene" index="10" unique_id=2120219818]
+visible = false
 anchors_preset = 0
 offset_left = 8.0
 offset_top = 96.0
@@ -497,16 +675,104 @@ text = "Fail, and your soul will wander these shores forever,"
 label_settings = ExtResource("4_ig4u5")
 autowrap_mode = 2
 
-[node name="Label" type="Label" parent="IntroScene" index="11" unique_id=1657038864]
-layout_mode = 0
-offset_left = 136.0
-offset_top = 128.0
-offset_right = 175.99963
-offset_bottom = 151.0
-text = "[A]"
-label_settings = ExtResource("4_ig4u5")
+[node name="Control2" type="Control" parent="IntroScene" index="11" unique_id=490605607]
+anchors_preset = 0
+offset_left = 8.0
+offset_top = 96.0
+offset_right = 152.0
+offset_bottom = 136.0
 
-[node name="Label2" type="Label" parent="IntroScene" index="12" unique_id=1816729432]
+[node name="Bg2" type="TextureRect" parent="IntroScene/Control2" index="0" unique_id=941101588]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_right = 8.0
+offset_bottom = 104.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="Bg4" type="TextureRect" parent="IntroScene/Control2" index="1" unique_id=964690284]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+offset_right = -112.0
+offset_bottom = 104.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="Bg5" type="TextureRect" parent="IntroScene/Control2" index="2" unique_id=210876335]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -166.215
+offset_right = -150.215
+offset_bottom = 104.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="Bg3" type="TextureRect" parent="IntroScene/Control2" index="3" unique_id=1917421745]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+offset_top = 45.740005
+offset_right = 8.0
+offset_bottom = 149.74
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_f46nj")
+
+[node name="Dialogue" type="ColorRect" parent="IntroScene/Control2" index="4" unique_id=348526776]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_bottom = 6.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.18039216, 0.13333334, 0.18431373, 1)
+
+[node name="DialogueLabel" type="Label" parent="IntroScene/Control2" index="5" unique_id=1122063597]
+custom_maximum_size = Vector2(117, -1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 33.0
+offset_top = 8.0
+offset_right = 5.9999084
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "and your soul will wander these shores forever,"
+label_settings = SubResource("LabelSettings_204gv")
+autowrap_mode = 2
+
+[node name="CharacterPortrait" type="Sprite2D" parent="IntroScene/Control2" index="6" unique_id=1170481566]
+position = Vector2(16, 24)
+texture = ExtResource("34_204gv")
+
+[node name="ContinueLabel" type="Label" parent="IntroScene" index="12" unique_id=1657038864]
+layout_mode = 0
+offset_left = 139.115
+offset_top = 134.135
+offset_right = 179.11464
+offset_bottom = 157.135
+text = "[A]"
+label_settings = SubResource("LabelSettings_1cdhg")
+
+[node name="Label2" type="Label" parent="IntroScene" index="13" unique_id=1816729432]
 visible = false
 layout_mode = 0
 offset_left = 3.0

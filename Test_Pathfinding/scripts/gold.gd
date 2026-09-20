@@ -10,6 +10,15 @@ var can_pick_up: bool = true
 func _ready() -> void:
 	if GameMap.instance:
 		GameMap.instance.map_updated.connect(_on_map_updated)
+	timer = 1.0
+
+
+var timer: float
+func _process(delta: float) -> void:
+	if timer > 0.0:
+		timer -= delta
+		return
+	can_pick_up = true
 
 
 func _exit_tree():

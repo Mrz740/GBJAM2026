@@ -59,7 +59,11 @@ func spawn_enemies(count: int) -> void:
 		var enemy_node: Enemy = enemy_scene.instantiate()
 		enemy_node.global_position = GameMap.instance.get_cell_world(coord)
 		
-		var rng_type: int = randi_range(0, 2)
+		var rng_type: int = 0
+		if GameManager.current_day < 2:
+			rng_type = randi_range(0, 1)
+		else:
+			rng_type = randi_range(0, 2)
 		#var rng_type: int = 0
 		
 		enemy_node.setup(self, current_enemy_count, rng_type as EnemyType)

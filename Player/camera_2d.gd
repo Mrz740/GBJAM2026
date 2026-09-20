@@ -27,5 +27,5 @@ func _process(_delta: float) -> void:
 	var target_position: Vector2 = Player.instance.global_position
 	
 	target_position.x = clampf(target_position.x, min_x, max_x)
-	target_position.y = clampf(target_position.y, min_y, max_y)
+	target_position.y = clampf(target_position.y, min_y, max_y + 8.0)
 	global_position = target_position

@@ -12,6 +12,8 @@ var shorten_time_days: Array[float] = [15.0, 10.0, 5.0]
 
 var _timer: Timer
 
+var shovel_powerup: int = 1
+var max_shovel_dig: int = 4
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -80,6 +82,7 @@ func start_game() -> void:
 	
 	ScoreManager.start_run()
 	current_day = 1
+	reset_shovel()
 	get_tree().change_scene_to_file("res://Scenes/game_scene.tscn")
 	start_timer()
 
@@ -91,6 +94,7 @@ func end_game() -> void:
 
 func reset_game() -> void:
 	current_day = 1
+	reset_shovel()
 	ScoreManager.stop_run()
 	ScoreManager.current_score = 0
 	get_tree().reload_current_scene()
@@ -111,5 +115,15 @@ func punish_next_day() -> void:
 func back_to_menu() -> void:
 	ScoreManager.stop_run()
 	SpawnerManager.stop_run()
+	reset_shovel()
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/startup_scene.tscn")
+
+
+func upgrade_shovel() -> void:
+	if shovel_powerup < max_shovel_dig:
+		shovel_powerup += 1
+
+
+func reset_shovel() -> void:
+	shovel_powerup = 1
