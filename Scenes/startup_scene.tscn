@@ -35,6 +35,7 @@
 [ext_resource type="Material" uid="uid://cvxex6x7opy2b" path="res://Test_Pathfinding/assets/skull_material.tres" id="33_1cdhg"]
 [ext_resource type="FontFile" uid="uid://cxmlscae5kirj" path="res://Test_Pathfinding/assets/pixel_operator/PixelOperator8.ttf" id="33_yl7b8"]
 [ext_resource type="Texture2D" uid="uid://b52iclj6tbnom" path="res://Test_Pathfinding/assets/character_portrait.tres" id="34_204gv"]
+[ext_resource type="LabelSettings" uid="uid://cb5osls3r0sx6" path="res://Test_Pathfinding/assets/regular_text_label.tres" id="35_mgh0x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vdu33"]
 atlas = ExtResource("21_4c4km")
@@ -175,11 +176,6 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
-
-[sub_resource type="LabelSettings" id="LabelSettings_204gv"]
-font = ExtResource("33_yl7b8")
-font_size = 8
-font_color = Color(0.91764706, 0.8784314, 0.75686276, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_1cdhg"]
 font = ExtResource("33_yl7b8")
@@ -751,12 +747,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 33.0
 offset_top = 8.0
-offset_right = 5.9999084
-offset_bottom = 9.0
+offset_right = 6.0
+offset_bottom = -2.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "and your soul will wander these shores forever,"
-label_settings = SubResource("LabelSettings_204gv")
+label_settings = ExtResource("35_mgh0x")
 autowrap_mode = 2
 
 [node name="CharacterPortrait" type="Sprite2D" parent="IntroScene/Control2" index="6" unique_id=1170481566]

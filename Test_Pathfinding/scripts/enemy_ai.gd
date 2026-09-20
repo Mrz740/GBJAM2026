@@ -103,7 +103,7 @@ func _process(delta: float) -> void:
 		
 		EnemyManager.EnemyType.PIRATE:
 			animated_sprite_2d.play("pirate_walk")
-			_get_closest_target()
+			_set_closest_target()
 			_move_ai(delta)
 		
 		EnemyManager.EnemyType.SKELETON:
@@ -180,11 +180,14 @@ func _update_enemy_path() -> void:
 			line_2d.points = test
 
 
-func _get_closest_target() -> void:
+func _set_closest_target() -> void:
 	if Player.instance == null:
 		target_position = -Vector2.ONE
 		return
-		
+	target_position = get_closest_target()
+
+
+func get_closest_target() -> Vector2:
 	var areas: Array = area_2d.get_overlapping_areas()
 	
 	var closest_target: Node2D = Player.instance
@@ -204,12 +207,14 @@ func _get_closest_target() -> void:
 			max_dist = current_dist
 			closest_target = coin
 	
-	target_position = closest_target.global_position
+	return closest_target.global_position
 
 
 func _get_random_target_or_player() -> void:
-	if (global_position - Player.instance.global_position).length_squared() < enemy_radius*enemy_radius:
-		target_position = Player.instance.global_position
+	var closest: Vector2 = get_closest_target()
+	#if (global_position - Player.instance.global_position).length_squared() < enemy_radius*enemy_radius:
+	if closest.distance_squared_to(global_position) < enemy_radius * enemy_radius:
+		target_position = closest
 		return
 	set_random_tile()
 
