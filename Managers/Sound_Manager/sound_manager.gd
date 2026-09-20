@@ -18,6 +18,9 @@ var _next_sfx_player: int = 0
 
 
 func _ready() -> void:
+	# keep audio running while the tree is paused (pause menu, end-of-day screens)
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 	_music_player = AudioStreamPlayer.new()
 	_music_player.bus = MUSIC_BUS
 	add_child(_music_player)

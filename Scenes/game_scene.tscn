@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bq3xqon1f8nud" path="res://Player/player.tscn" id="2_b6fju"]
 [ext_resource type="PackedScene" uid="uid://b4x521v72fv" path="res://UI/Score/score_hud.tscn" id="3_hud"]
 [ext_resource type="Script" uid="uid://dcfbniihhtb23" path="res://Scenes/game_scene.gd" id="4_gsc"]
+[ext_resource type="AudioStream" uid="uid://otmsdj1w3mfs" path="res://Assets/Audio/Music/gameplay_theme.wav" id="4_music"]
 [ext_resource type="Script" uid="uid://c5quhpf533no3" path="res://Test_Pathfinding/scripts/game_map.gd" id="7_2fmhe"]
 [ext_resource type="PackedScene" uid="uid://c3vwrpgk52q1g" path="res://Test_Pathfinding/scenes/enemy_ai.tscn" id="7_4xiap"]
 [ext_resource type="Script" uid="uid://og0e0v0f8rjp" path="res://Player/camera_2d.gd" id="7_5dgvu"]
@@ -80,6 +81,7 @@ y_sort_enabled = true
 script = ExtResource("4_gsc")
 map = NodePath("GameMap/DataLayer")
 spawn_parent = NodePath("Pickups")
+music = ExtResource("4_music")
 
 [node name="Background" parent="." index="0" unique_id=690367307]
 visible = false

@@ -120,6 +120,7 @@ func back_to_menu() -> void:
 	ScoreManager.stop_run()
 	SpawnerManager.stop_run()
 	reset_shovel()
+	SoundManager.stop_music()
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/startup_scene.tscn")
 
