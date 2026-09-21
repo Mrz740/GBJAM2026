@@ -264,15 +264,23 @@ func hide_lack_of_keys() -> void:
 
 
 func lose_health(amount: int) -> void:
+	if hurt or dead:
+		return
 	current_health -= amount
 	health_changed.emit(current_health)
 	if current_health <= 0:
+		if dead:
+			return
+		SoundManager.play_sfx(death_sfx)
 		dead = true
 		animated_sprite_2d.play("death")
 		await animated_sprite_2d.animation_finished
 		await get_tree().create_timer(0.25).timeout
 		died_screen.show()
 		return
+	
+	if !hurt:
+		SoundManager.play_sfx(hit_sfx)
 	digging = false
 	hurt = true
 	animated_sprite_2d.play("hit")

@@ -18,6 +18,7 @@ var shovel_powerup: int = 1
 var max_shovel_dig: int = 4
 
 func _ready() -> void:
+	times_beaten = 0
 	skip_intro = false
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	

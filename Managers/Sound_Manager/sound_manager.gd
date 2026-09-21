@@ -23,8 +23,6 @@ func _ready() -> void:
 	# keep audio running while the tree is paused (pause menu, end-of-day screens)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
-	music_volume = clampf(music_volume, 0.0, 20.0)
-	
 	_music_player = AudioStreamPlayer.new()
 	_music_player.bus = MUSIC_BUS
 	add_child(_music_player)
@@ -86,7 +84,6 @@ func change_master(direction: float) -> void:
 func change_music(direction: float) -> void:
 	# -1 to decrease, 1 to increase
 	music_volume = _step_volume(music_volume, direction)
-	music_volume = clampf(music_volume, 0.0, 20.0)
 	_apply_volume(MUSIC_BUS, music_volume)
 
 

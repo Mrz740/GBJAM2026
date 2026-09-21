@@ -111,24 +111,29 @@ func punish_next_day() -> void:
 var label_tween: Tween
 func handle_ending() -> void:
 	if ScoreManager.current_score >= GameManager.target_gold:
-		days_left_label.text = "You're free...?"
-		days_left_label.visible_characters = 11
-		days_left_label.show()
-		
-		var character_count : int = days_left_label.text.length()
-		var character_delay : float = 0.25
-		
-		if label_tween != null and label_tween.is_running():
-			label_tween.kill()
-		
-		label_tween = create_tween()
-		label_tween.tween_interval(0.5)
-		for i in 4:
-			label_tween.tween_callback(
-				func() -> void:
-					days_left_label.visible_characters += 1
-			)
-			label_tween.tween_interval(character_delay)
+		if GameManager.times_beaten >= 2:
+			days_left_label.text = "You had paid the toll. You are free!"
+			days_left_label.visible_characters = -1
+			days_left_label.show()
+		else:
+			days_left_label.text = "You're free...?"
+			days_left_label.visible_characters = 11
+			days_left_label.show()
+			
+			var character_count : int = days_left_label.text.length()
+			var character_delay : float = 0.25
+			
+			if label_tween != null and label_tween.is_running():
+				label_tween.kill()
+			
+			label_tween = create_tween()
+			label_tween.tween_interval(0.5)
+			for i in 4:
+				label_tween.tween_callback(
+					func() -> void:
+						days_left_label.visible_characters += 1
+				)
+				label_tween.tween_interval(character_delay)
 	
 	else:
 		days_left_label.text = "You lose"

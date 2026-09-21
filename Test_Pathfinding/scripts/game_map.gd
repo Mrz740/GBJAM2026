@@ -395,13 +395,13 @@ func _setup_astar() -> void:
 signal map_dug(coord: Vector2i)
 func dig(coord: Vector2i) -> void:
 	
+	map_dug.emit(coord)
+	
 	if get_terrain_type(coord) == TerrainType.DIRT:
 		return
 	
 	if get_terrain_type(coord) == TerrainType.WATER:
 		return
-	
-	map_dug.emit(coord)
 	
 	var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(coord)
 	
@@ -439,7 +439,7 @@ func dig(coord: Vector2i) -> void:
 				spawn_gold(coord)
 		return
 	
-	random_count = randi_range(0, 6)
+	random_count = randi_range(0, 4)
 	if atlas_coord == x_spot_atlas:
 		random_count = randi_range(3, 8)
 		dig_x_spot(coord, random_count)
@@ -598,17 +598,17 @@ func spawn_gold_to_center(enemy_type: EnemyManager.EnemyType, pos: Vector2) -> v
 			closest_dist = current_dist
 			closest_tile = tile
 	
-	print(closest_tile)
+	#print(closest_tile)
 	var gold_amount: int = 0
 	match enemy_type:
 		EnemyManager.EnemyType.CRAB:
-			gold_amount = randi_range(5, 10)
+			gold_amount = randi_range(10, 15)
 			
 		EnemyManager.EnemyType.PIRATE:
-			gold_amount = randi_range(8, 14)
+			gold_amount = randi_range(12, 20)
 			
 		EnemyManager.EnemyType.SKELETON:
-			gold_amount = randi_range(13, 20)
+			gold_amount = randi_range(20, 30)
 	
 	for i in gold_amount:
 		var coin = SpawnerManager.COIN_SCENE.instantiate()
@@ -722,7 +722,7 @@ func _destroy_map() -> void:
 			smallest_area_size = area.tile_count
 	
 	if smallest_area_size > max_destroy_count:
-		print("can't destroy area. it's too big ", smallest_area_size)
+		#print("can't destroy area. it's too big ", smallest_area_size)
 		Player.instance.show_too_big_message(smallest_area_size)
 		return
 	

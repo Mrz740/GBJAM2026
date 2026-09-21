@@ -28,6 +28,8 @@ var enemy_radius: float
 var stun_cooldown: float
 var stun_time: float = 3.5
 
+var dead: bool
+
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
 @onready var area_collision_shape: CollisionShape2D = %AreaCollisionShape
 @onready var area_2d: Area2D = %Area2D
@@ -77,6 +79,7 @@ func stun() -> void:
 		EnemyManager.EnemyType.SKELETON:
 			animated_sprite_2d.play("skeleton_stunned")
 	
+	SoundManager.play_sfx(enemy_hurt)
 	stun_cooldown = stun_time
 
 
@@ -133,10 +136,12 @@ func _move_ai(delta: float) -> void:
 	#var next_position: Vector2 = GameMap.instance.get_cell_world(current_path.front())
 	var next_position: Vector2 = GameMap.instance.map_to_local(current_path.front())
 	
+	var next_tile_is_valid: bool = GameMap.instance.get_terrain_type(current_path.front()) != GameMap.TerrainType.WATER
+	
 	# not using move_and_slide() so that enemies can overlap with each other. It's less prone to bugs
 	global_position = global_position.move_toward(next_position, move_speed * delta)
 	
-	if global_position.is_equal_approx(next_position):
+	if global_position.is_equal_approx(next_position) or !next_tile_is_valid:
 		current_path.pop_front()
 		can_update_path = true
 		
@@ -145,7 +150,7 @@ func _move_ai(delta: float) -> void:
 	
 	
 	#var direction: Vector2 = next_position - global_position
-	#if direction.length() > 1.0:
+	#if direction.length() > 1.0 && next_tile_is_valid:
 		#velocity = direction.normalized() * move_speed
 		#move_and_slide()
 	#else:
@@ -265,8 +270,11 @@ func is_valid_target() -> bool:
 
 
 func destroy_enemy() -> void:
-	GameMap.instance.spawn_gold_to_center(enemy_type, global_position)
-	enemy_manager.enemy_current_tile.erase(self)
-	enemy_manager.enemy_next_tile.erase(self)
-	enemy_manager.reduce_enemy_count()
+	if !dead:
+		dead = true
+		GameMap.instance.spawn_gold_to_center(enemy_type, global_position)
+		enemy_manager.enemy_current_tile.erase(self)
+		enemy_manager.enemy_next_tile.erase(self)
+		enemy_manager.reduce_enemy_count()
+		#SoundManager.play_sfx(enemy_death)
 	queue_free()

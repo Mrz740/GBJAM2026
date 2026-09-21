@@ -38,5 +38,5 @@ func _on_area_2d_body_entered(body):
 		if Player.instance.keys >= Player.instance.max_keys:
 			return
 		Player.instance.update_keys(1)
-		# Play sound effect
+		SoundManager.play_sfx(key_sfx)
 		queue_free()
