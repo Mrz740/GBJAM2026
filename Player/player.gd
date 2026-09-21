@@ -73,6 +73,7 @@ func _exit_tree() -> void:
 
 
 func _ready() -> void:
+	can_reach_ship = true
 	for dig in dig_indicators:
 		dig.play("default")
 	collision_area.body_entered.connect(_on_collision_area_body_entered)
@@ -248,6 +249,7 @@ func hide_lack_of_keys() -> void:
 
 
 func lose_health(amount: int) -> void:
+	return
 	current_health -= amount
 	health_changed.emit(current_health)
 	if current_health <= 0:
@@ -365,6 +367,7 @@ func _on_map_updated() -> void:
 		lose_health(3)
 		return
 	
+	#print("updating map. can reach ship: ", can_reach_ship)
 	if !can_reach_ship:
 		return
 	

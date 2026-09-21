@@ -587,11 +587,14 @@ func spawn_gold_to_center(enemy_type: EnemyManager.EnemyType, pos: Vector2) -> v
 	for tile in land_tiles:
 		if has_occupied_cell(tile):
 			continue
+		if get_terrain_type(tile) == TerrainType.WATER:
+			continue
 		var current_dist: float = tile.distance_squared_to(center_tile)
 		if current_dist < closest_dist:
 			closest_dist = current_dist
 			closest_tile = tile
 	
+	print(closest_tile)
 	var gold_amount: int = 0
 	match enemy_type:
 		EnemyManager.EnemyType.CRAB:
@@ -610,7 +613,7 @@ func spawn_gold_to_center(enemy_type: EnemyManager.EnemyType, pos: Vector2) -> v
 		for x in range(closest_tile.x - 1, closest_tile.x + 1):
 			for y in range(closest_tile.y - 1, closest_tile.y + 1): 
 				var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(Vector2i(x,y))
-				if atlas_coord != rock_atlas and atlas_coord != tree_atlas_coord:
+				if atlas_coord != rock_atlas and atlas_coord != tree_atlas_coord and get_terrain_type(Vector2i(x, y)) != TerrainType.WATER:
 					candidates.append(Vector2i(x,y))
 		
 		var end_tile: Vector2i = closest_tile
