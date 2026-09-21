@@ -445,7 +445,6 @@ offset_bottom = 50.0
 texture = ExtResource("4_7nkqh")
 
 [node name="IntroScene" type="Control" parent="." index="3" unique_id=554479217 node_paths=PackedStringArray("startup_scene", "scene_nodes", "continue_label", "character_portrait", "dialogue_label")]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
