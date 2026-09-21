@@ -14,7 +14,11 @@ func _ready():
 
 
 func _input(event: InputEvent) -> void:
-	if !visible and !died_screen.visible and !end_day_screen.visible:
+	if died_screen.visible:
+		return
+	if end_day_screen.visible:
+		return
+	if !visible:
 		if event.is_action_pressed("START"):
 			SoundManager.play_sfx_menu()
 			GameManager.pause_game()

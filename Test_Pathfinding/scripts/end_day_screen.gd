@@ -29,9 +29,9 @@ func _ready() -> void:
 	var days_left: int = 4 - GameManager.current_day
 	
 	if days_left > 1:
-		days_left_label.text = "%s days left" % days_left
+		days_left_label.text = "%s DAYS LEFT" % days_left
 	else:
-		days_left_label.text = "%s day left" % days_left
+		days_left_label.text = "%s DAY LEFT" % days_left
 		
 	update_gold()
 	target_gold_label.text = "%03d" % GameManager.target_gold

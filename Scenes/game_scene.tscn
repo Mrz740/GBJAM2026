@@ -578,10 +578,10 @@ next_panel = NodePath("ExplainPanel2")
 custom_maximum_size = Vector2(160, -1)
 layout_mode = 0
 offset_left = 3.0
-offset_top = 8.0
+offset_top = 3.0
 offset_right = 163.0
-offset_bottom = 104.0
-text = "[A]: Dig tile.
+offset_bottom = 121.0
+text = "[A]: Dig tile. Interact with ship and leave island.
 
 [A](hold): Dig tile(s) in front of player. Stuns enemies in those tiles.
 
@@ -604,6 +604,7 @@ autowrap_mode = 3
 
 [node name="ExplainPanel2" type="Panel" parent="HUDLayer/ExplainPanel" index="2" unique_id=80178705]
 process_mode = 3
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
