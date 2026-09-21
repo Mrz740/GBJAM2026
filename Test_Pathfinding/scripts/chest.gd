@@ -3,9 +3,9 @@ extends Node2D
 
 enum ChestLoot {
 	GOLD,
-	LIFE,
 	POWERUP,
-	SHOVEL
+	SHOVEL,
+	LIFE
 }
 
 var _collected: bool = false
@@ -13,9 +13,9 @@ var can_pick_up: bool
 
 var loot_dictionary: Dictionary[ChestLoot, float] = {
 	ChestLoot.GOLD : 2.0,
-	ChestLoot.LIFE : 0.5,
 	ChestLoot.POWERUP : 1.0,
-	ChestLoot.SHOVEL: 1.0
+	ChestLoot.SHOVEL: 1.0,
+	ChestLoot.LIFE : 0.5
 }
 
 @onready var animated_sprite_2d: AnimatedSprite2D = %AnimatedSprite2D
@@ -60,17 +60,25 @@ func _on_area_2d_body_entered(body):
 func get_chest_loot() -> void:
 	var total_weight: float = 0.0
 	
-	for i in loot_dictionary:
-		total_weight += loot_dictionary[i]
+	var less: int = 0
+	if GameManager.shovel_powerup == GameManager.max_shovel_dig:
+		less += 1
+	if Player.instance.current_health == Player.instance.max_health:
+		less += 1
+	
+	var keys: Array[ChestLoot] = loot_dictionary.keys()
+	for i in range(loot_dictionary.keys().size() - less):
+		total_weight += loot_dictionary[keys[i]]
 	
 	var rng: float = randf()
 	var chance_percentage: float = 0.0
 	
-	var chest_loot: ChestLoot
-	for i in loot_dictionary:
-		chance_percentage += loot_dictionary[i] / total_weight
+	var chest_loot: ChestLoot = ChestLoot.GOLD
+	#for i in loot_dictionary:
+	for i in range(loot_dictionary.keys().size() - less):
+		chance_percentage += loot_dictionary[keys[i]] / total_weight
 		if chance_percentage >= rng:
-			chest_loot = i
+			chest_loot = keys[i]
 			break
 	
 	match chest_loot:
@@ -80,14 +88,19 @@ func get_chest_loot() -> void:
 			ScoreManager.add_score(rand_value, "coins")
 			Player.instance.gain_money(rand_value)
 		
-		ChestLoot.LIFE:
-			Player.instance.gain_health(1)
-		
 		ChestLoot.POWERUP:
 			Player.instance.gain_powerup()
 		
 		ChestLoot.SHOVEL:
 			Player.instance.upgrade_shovel()
+		
+		ChestLoot.LIFE:
+			Player.instance.gain_health(1)
+		
+		_:
+			var rand_value: int = randi_range(20, 50)
+			ScoreManager.add_score(rand_value, "coins")
+			Player.instance.gain_money(rand_value)
 	
 
 func _on_area_2d_body_exited(body):

@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="1_0gs7p"]
 [ext_resource type="Script" uid="uid://c7wh726tlo5sw" path="res://Test_Pathfinding/scripts/key.gd" id="2_ncswx"]
+[ext_resource type="AudioStream" uid="uid://di7c01smrgpuk" path="res://Test_Pathfinding/assets/TestAudio/key_pickup.wav" id="3_18swo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ufimc"]
 atlas = ExtResource("1_0gs7p")
@@ -15,6 +16,7 @@ z_index = 1
 y_sort_enabled = true
 texture = SubResource("AtlasTexture_ufimc")
 script = ExtResource("2_ncswx")
+key_sfx = ExtResource("3_18swo")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1108869504]
 

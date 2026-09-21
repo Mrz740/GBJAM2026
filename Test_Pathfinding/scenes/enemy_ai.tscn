@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bhkjxk4oldbaf" path="res://Test_Pathfinding/scripts/enemy_ai.gd" id="1_ruo7y"]
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="2_ruo7y"]
+[ext_resource type="AudioStream" uid="uid://b4vaov22tecvm" path="res://Test_Pathfinding/assets/TestAudio/enemy_hurt.wav" id="2_yhblk"]
+[ext_resource type="AudioStream" uid="uid://cvmedhi0g8cq3" path="res://Test_Pathfinding/assets/TestAudio/enemy_hurt2.wav" id="3_xelw7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fipjb"]
 atlas = ExtResource("2_ruo7y")
@@ -141,6 +143,8 @@ script = ExtResource("1_ruo7y")
 move_speed = 12.0
 visualize_path = false
 throw_rate = 3.0
+enemy_hurt = ExtResource("2_yhblk")
+enemy_death = ExtResource("3_xelw7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=418506286]
 unique_name_in_owner = true

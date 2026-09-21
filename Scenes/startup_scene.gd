@@ -28,20 +28,26 @@ func _input(event: InputEvent) -> void:
 	if in_intro_scene:
 		return
 	if event.is_action_pressed("UP"):
+		SoundManager.play_sfx_menu()
+
 		update_current_button(true)
 	elif event.is_action_pressed("DOWN"):
+		SoundManager.play_sfx_menu()
 		update_current_button(false)
 	
 	if event.is_action_pressed("START"):
+		SoundManager.play_sfx_menu()
 		press_button()
 	
 	if !settings_menu.visible:
 		return
 		
 	if event.is_action_pressed("LEFT"):
+		SoundManager.play_sfx_menu()
 		decrease_volume()
 	
 	elif event.is_action_pressed("RIGHT"):
+		SoundManager.play_sfx_menu()
 		increase_volume()
 
 

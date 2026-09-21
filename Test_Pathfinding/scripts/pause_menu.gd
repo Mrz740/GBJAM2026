@@ -16,21 +16,28 @@ func _ready():
 func _input(event: InputEvent) -> void:
 	if !visible and !died_screen.visible and !end_day_screen.visible:
 		if event.is_action_pressed("START"):
+			SoundManager.play_sfx_menu()
 			GameManager.pause_game()
 			show.call_deferred()
 		return
 	
 	if event.is_action_pressed("UP"):
+		SoundManager.play_sfx_menu()
+		
 		var current_idx: int = buttons.find(current_btn)
 		current_btn = buttons[ (current_idx - 1) % buttons.size() ]
 		update_focus_position()
 	
 	elif event.is_action_pressed("DOWN"):
+		SoundManager.play_sfx_menu()
+		
 		var current_idx: int = buttons.find(current_btn)
 		current_btn = buttons[ (current_idx + 1) % buttons.size() ]
 		update_focus_position()
 	
 	if event.is_action_pressed("START"):
+		SoundManager.play_sfx_menu()
+		
 		if current_btn == buttons[0]:
 			hide()
 			unpause_game.call_deferred()

@@ -1,7 +1,13 @@
 [gd_scene format=3 uid="uid://duu15kldg4j2t"]
 
 [ext_resource type="Script" uid="uid://b447lo7hoi1jm" path="res://Test_Pathfinding/scripts/gold.gd" id="1_yl0l8"]
+[ext_resource type="AudioStream" uid="uid://c4pr35yech2d4" path="res://Test_Pathfinding/assets/TestAudio/gold_pickup.wav" id="2_i7uec"]
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="2_mx7ar"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_mx7ar"]
+random_pitch = 1.0594631
+streams_count = 1
+stream_0/stream = ExtResource("2_i7uec")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mx7ar"]
 atlas = ExtResource("2_mx7ar")
@@ -14,6 +20,7 @@ size = Vector2(12, 12)
 z_index = 1
 y_sort_enabled = true
 script = ExtResource("1_yl0l8")
+gold_sfx = SubResource("AudioStreamRandomizer_mx7ar")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=479737314]
 texture = SubResource("AtlasTexture_mx7ar")

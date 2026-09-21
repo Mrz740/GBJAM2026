@@ -7,6 +7,8 @@ const THROWABLE: PackedScene = preload("res://Test_Pathfinding/scenes/throwable.
 @export var visualize_path: bool = true
 @export var idx: int = 0
 @export var throw_rate: float = 5.0
+@export var enemy_hurt: AudioStream
+@export var enemy_death: AudioStream
 
 var throw_time: float
 

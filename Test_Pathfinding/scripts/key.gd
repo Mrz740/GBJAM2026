@@ -2,6 +2,7 @@ class_name ChestKey
 extends Node2D
 
 @export var value: int = 10
+@export var key_sfx: AudioStream
 
 var can_pick_up: bool = true
 var test_timer: float = 0.25

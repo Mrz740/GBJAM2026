@@ -86,6 +86,7 @@ func _input(event: InputEvent) -> void:
 		focus.global_position = current_btn.global_position - Vector2(8, 4)
 	
 	elif event.is_action_pressed("A"):
+		SoundManager.play_sfx_menu()
 		if current_btn == yes:
 			if GameManager.current_day >= 3:
 				animate_panel(-1.0, 1.0, 1)

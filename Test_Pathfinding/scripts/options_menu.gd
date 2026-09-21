@@ -15,6 +15,8 @@ func _input(event: InputEvent) -> void:
 		return
 	
 	if event.is_action_pressed("UP"):
+		SoundManager.play_sfx_menu()
+
 		var current_idx: int = buttons.find(current_btn)
 		current_btn = buttons[ (current_idx - 1) % buttons.size() ]
 		update_focus_position()
@@ -24,11 +26,17 @@ func _input(event: InputEvent) -> void:
 		update_focus_position()
 	
 	if event.is_action_pressed("LEFT"):
+		SoundManager.play_sfx_menu()
+		
 		decrease_volume()
 	elif event.is_action_pressed("RIGHT"):
+		SoundManager.play_sfx_menu()
+
 		increase_volume()
 	
 	if event.is_action_pressed("START"):
+		SoundManager.play_sfx_menu()
+		
 		if current_btn == buttons[3]:
 			hide()
 			open_pause.call_deferred()

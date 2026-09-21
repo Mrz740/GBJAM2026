@@ -14,6 +14,16 @@ static var instance: Player
 @export var dig_indicators: Array[AnimatedSprite2D]
 @export var end_day_screen: EndDayScreen
 
+@export var dig_sfx: AudioStream
+@export var death_sfx: AudioStream
+@export var hit_sfx: AudioStream
+@export var speed_powerup_sfx: AudioStream
+@export var life_sfx: AudioStream
+@export var shovel_sfx_1: AudioStream
+@export var shovel_sfx_2: AudioStream
+@export var shovel_sfx_3: AudioStream
+@export var money_sfx: AudioStream
+
 var current_speed: float
 
 var a_hold_time: float
@@ -81,6 +91,10 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	if GameMap.instance.in_water(GameMap.instance.local_to_map(global_position)):
+		lose_health(3)
+		return
+	
 	if fast_cooldown > 0.0:
 		fast_cooldown -= delta
 		current_speed = run_speed
@@ -217,6 +231,7 @@ func get_input() -> void:
 func try_dig(coord: Vector2i):
 	animated_sprite_2d.play("dig")
 	digging = true
+	SoundManager.play_sfx(dig_sfx)
 	GameMap.instance.dig(coord)
 
 
@@ -249,7 +264,6 @@ func hide_lack_of_keys() -> void:
 
 
 func lose_health(amount: int) -> void:
-	return
 	current_health -= amount
 	health_changed.emit(current_health)
 	if current_health <= 0:
@@ -267,7 +281,11 @@ func lose_health(amount: int) -> void:
 func gain_health(amount: int) -> void:
 	if current_health < max_health:
 		current_health += amount
+		current_health = clampi(current_health, 0, max_health)
+	
 	health_changed.emit(current_health)
+	
+	SoundManager.play_sfx(life_sfx)
 	
 	if health_blink_tween:
 		health_blink_tween.kill()
@@ -298,6 +316,8 @@ func gain_powerup() -> void:
 	powerup.show()
 	powerup.play("default")
 	
+	SoundManager.play_sfx(speed_powerup_sfx)
+	
 	powerup_blink_tween = create_tween()
 	powerup_blink_tween.tween_interval(blink_time)
 	powerup_blink_tween.tween_callback(powerup.hide)
@@ -317,6 +337,13 @@ func upgrade_shovel() -> void:
 	
 	GameManager.upgrade_shovel()
 	
+	if GameManager.shovel_powerup == 2:
+		SoundManager.play_sfx(shovel_sfx_1)
+	elif GameManager.shovel_powerup == 3:
+		SoundManager.play_sfx(shovel_sfx_2)
+	elif GameManager.shovel_powerup == 4:
+		SoundManager.play_sfx(shovel_sfx_3)
+	
 	shovel_powerup.show()
 	shovel_powerup.play("default")
 	
@@ -333,6 +360,8 @@ func upgrade_shovel() -> void:
 
 func gain_money(rand_value: float) -> void:
 	money_target += rand_value
+	
+	SoundManager.play_sfx(money_sfx)
 	
 	if money_tween:
 		money_tween.kill()

@@ -2,8 +2,26 @@
 
 [ext_resource type="Script" uid="uid://84aucg1s1cpd" path="res://Player/player.gd" id="1_4ntmi"]
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="2_4ntmi"]
+[ext_resource type="AudioStream" uid="uid://dyuegc6wdiisu" path="res://Test_Pathfinding/assets/TestAudio/dig1.wav" id="2_fhl08"]
 [ext_resource type="Texture2D" uid="uid://cc8vwrqb2savq" path="res://Test_Pathfinding/assets/new_atlas_texture.tres" id="3_gwnis"]
+[ext_resource type="AudioStream" uid="uid://cnqlkggl5lkt4" path="res://Test_Pathfinding/assets/TestAudio/dig2.wav" id="3_vtle1"]
+[ext_resource type="AudioStream" uid="uid://c2kjmjumqv4vg" path="res://Test_Pathfinding/assets/TestAudio/player_hit.wav" id="4_apopc"]
+[ext_resource type="AudioStream" uid="uid://dwgedneq3bgmk" path="res://Test_Pathfinding/assets/TestAudio/dig_3.wav" id="4_gu6f8"]
 [ext_resource type="FontFile" uid="uid://b05jt67th4v8v" path="res://Test_Pathfinding/assets/Early GameBoy.ttf" id="4_gwnis"]
+[ext_resource type="AudioStream" uid="uid://dpj6jrf4634js" path="res://Test_Pathfinding/assets/TestAudio/speedUpgrade.wav" id="5_5htga"]
+[ext_resource type="AudioStream" uid="uid://cqbfb58mp8rm0" path="res://Test_Pathfinding/assets/TestAudio/player_death.wav" id="5_dkpta"]
+[ext_resource type="AudioStream" uid="uid://d3arodm2vrbke" path="res://Test_Pathfinding/assets/TestAudio/shovelUpgrade.wav" id="6_p5o4e"]
+[ext_resource type="AudioStream" uid="uid://cj48hfiygib8j" path="res://Test_Pathfinding/assets/TestAudio/shovelUpgrade2.wav" id="7_gu6f8"]
+[ext_resource type="AudioStream" uid="uid://df4ef4fe0w58h" path="res://Test_Pathfinding/assets/TestAudio/shovelUpgrade3.wav" id="8_dkpta"]
+[ext_resource type="AudioStream" uid="uid://d3u3gkrkwjpdk" path="res://Test_Pathfinding/assets/TestAudio/player_life.wav" id="8_lfmf2"]
+[ext_resource type="AudioStream" uid="uid://c1yi63chm8d3q" path="res://Test_Pathfinding/assets/TestAudio/goodCoin.wav" id="12_dkpta"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_ca6dj"]
+random_pitch = 1.0293022
+streams_count = 3
+stream_0/stream = ExtResource("2_fhl08")
+stream_1/stream = ExtResource("3_vtle1")
+stream_2/stream = ExtResource("4_gu6f8")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vtle1"]
 atlas = ExtResource("2_4ntmi")
@@ -392,6 +410,15 @@ collision_mask = 2
 script = ExtResource("1_4ntmi")
 fast_timer = 8.0
 dig_indicators = [NodePath("DigIndicator1"), NodePath("DigIndicator2"), NodePath("DigIndicator3"), NodePath("DigIndicator4")]
+dig_sfx = SubResource("AudioStreamRandomizer_ca6dj")
+death_sfx = ExtResource("5_dkpta")
+hit_sfx = ExtResource("4_apopc")
+speed_powerup_sfx = ExtResource("5_5htga")
+life_sfx = ExtResource("8_lfmf2")
+shovel_sfx_1 = ExtResource("6_p5o4e")
+shovel_sfx_2 = ExtResource("7_gu6f8")
+shovel_sfx_3 = ExtResource("8_dkpta")
+money_sfx = ExtResource("12_dkpta")
 
 [node name="DigIndicator1" type="AnimatedSprite2D" parent="." unique_id=1152720125]
 visible = false

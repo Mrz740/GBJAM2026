@@ -89,10 +89,13 @@ func animate_panel(start_: float, end: float, direction: int, material: ShaderMa
 
 
 func _input(event: InputEvent) -> void:
+	if !visible:
+		return
 	if !allow_next:
 		return
 	
 	if event.is_action_pressed("A"):
+		SoundManager.play_sfx_menu()
 		if intro_scene.current_dialogue_idx == 8 and !wait_for_skull:
 			wait_for_skull = true
 			animate_panel(-1.0, 1.0, -1, skull_material)

@@ -1,25 +1,15 @@
 [gd_scene format=3 uid="uid://debxdo7i2qqhs"]
 
 [ext_resource type="Script" uid="uid://c4ei8oa1vulyn" path="res://Pickups/coin.gd" id="1_oayp1"]
+[ext_resource type="AudioStream" uid="uid://csb6wr1i67ci6" path="res://Test_Pathfinding/assets/TestAudio/coin.wav" id="2_iodw8"]
 [ext_resource type="Texture2D" uid="uid://cc8vwrqb2savq" path="res://Test_Pathfinding/assets/new_atlas_texture.tres" id="2_qgrjt"]
 [ext_resource type="Texture2D" uid="uid://kxijnlar1la" path="res://Test_Pathfinding/assets/test_ground_tileset.png" id="3_1pu3x"]
-[ext_resource type="AudioStream" uid="uid://cf8ax0aodes24" path="res://Pickups/coin_01.ogg" id="4_coin1"]
-[ext_resource type="AudioStream" uid="uid://1j214fjoho7u" path="res://Pickups/coin_02.ogg" id="5_coin2"]
-[ext_resource type="AudioStream" uid="uid://8tj6o4mu0d3u" path="res://Pickups/coin_03.ogg" id="6_coin3"]
-[ext_resource type="AudioStream" uid="uid://b2l1laurd2fr1" path="res://Pickups/coin_04.ogg" id="7_coin4"]
-[ext_resource type="AudioStream" uid="uid://dw5l3dfniebt4" path="res://Pickups/coin_05.ogg" id="8_coin5"]
-[ext_resource type="AudioStream" uid="uid://dp4ym1sen4bbu" path="res://Pickups/coin_06.ogg" id="9_coin6"]
 
 [sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_coin"]
 playback_mode = 1
-random_pitch = 1.05
-streams_count = 6
-stream_0/stream = ExtResource("4_coin1")
-stream_1/stream = ExtResource("5_coin2")
-stream_2/stream = ExtResource("6_coin3")
-stream_3/stream = ExtResource("7_coin4")
-stream_4/stream = ExtResource("8_coin5")
-stream_5/stream = ExtResource("9_coin6")
+random_pitch = 1.122462
+streams_count = 1
+stream_0/stream = ExtResource("2_iodw8")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g4v7s"]
 size = Vector2(12, 12)

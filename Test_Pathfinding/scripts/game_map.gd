@@ -85,6 +85,9 @@ static var HALF_TILE_SIZE: int = floori(TILE_SIZE * 0.5)
 @export var map_size: int = 50
 @export var max_destroy_count: int = 10
 
+@export var hit_rock_sfx: AudioStream
+@export var island_sink_sfx: AudioStream
+
 @warning_ignore("unused_private_class_variable")
 @export_tool_button("Generate Map", "Environment") var _generate_world = generate_world
 
@@ -403,6 +406,7 @@ func dig(coord: Vector2i) -> void:
 	var atlas_coord: Vector2i = temp_dig_layer.get_cell_atlas_coords(coord)
 	
 	if atlas_coord == rock_atlas or atlas_coord == tree_atlas_coord:
+		SoundManager.play_sfx(hit_rock_sfx)
 		temp_dig_layer.erase_cell(coord)
 		astar.set_point_solid(coord, false)
 	
@@ -721,6 +725,8 @@ func _destroy_map() -> void:
 		print("can't destroy area. it's too big ", smallest_area_size)
 		Player.instance.show_too_big_message(smallest_area_size)
 		return
+	
+	SoundManager.play_sfx(island_sink_sfx)
 	
 	var cells_to_destroy: Array[Vector2i] = []
 	
